@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 const Home = () => {
   return (
     <div>
-    <Header/>
     <Button>  
       <Link to='/resumebuild/contact'>Start</Link>
     </Button>

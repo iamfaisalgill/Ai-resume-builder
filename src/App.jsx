@@ -12,23 +12,29 @@ import Skills from './pages/Skills'
 import Summary from './pages/Summary'
 import SelectTheme from './pages/SelectTheme'
 import DownloadFile from './pages/DownloadFile'
+import { ThemeProvider } from "@/components/theme-provider"
+import {ResumeInfoContext} from '@/context/ResumeInfoContext'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [resumeInfo,setResumeInfo]=useState();
 
   return (
     <>
+     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Header/>
-      <Routes>
-        <Route path='/' element={<Home/>} />
-        <Route path='/resumebuild/contact' element={<ContactDetails/>} />
-        <Route path='/resumebuild/experience' element={<Experience/>} />
-        <Route path='/resumebuild/education' element={<Education/>} />
-        <Route path='/resumebuild/skills' element={<Skills/>} />
-        <Route path='/resumebuild/summary' element={<Summary/>} />
-        <Route path='/resumebuild/select-theme' element={<SelectTheme/>} />
-        <Route path='/:selectedTheme/download' element={<DownloadFile/>} />
-      </Routes>
+      <ResumeInfoContext.Provider value={{resumeInfo,setResumeInfo}}>
+        <Routes>
+          <Route path='/' element={<Home/>} />
+          <Route path='/resumebuild/contact' element={<ContactDetails/>} />
+          <Route path='/resumebuild/experience' element={<Experience/>} />
+          <Route path='/resumebuild/education' element={<Education/>} />
+          <Route path='/resumebuild/skills' element={<Skills/>} />
+          <Route path='/resumebuild/summary' element={<Summary/>} />
+          <Route path='/resumebuild/select-theme' element={<SelectTheme/>} />
+          <Route path='/:selectedTheme/download' element={<DownloadFile/>} />
+        </Routes>
+      </ResumeInfoContext.Provider>
+      </ThemeProvider>
     </>
   )
 }

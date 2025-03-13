@@ -1,11 +1,72 @@
-import React from 'react'
+import React from "react";
+import { ChevronRight, FilePen, User } from "lucide-react";
+import { Link, useMatch } from "react-router-dom";
+import { ModeToggle } from "./mode-toggle";
+import Logo from '/logo.svg'
 
 const Header = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  const isResumeBuildPath = useMatch("/resumebuild/*");
+  const isContactInfoPath = useMatch("/resumebuild/contact");
+  const isExperiencePath = useMatch("/resumebuild/experience");
+  const isEducationPath = useMatch("/resumebuild/education");
+  const isSkillsPath = useMatch("/resumebuild/skills");
+  const isSummaryPath = useMatch("/resumebuild/summary");
 
-export default Header
+  return (
+    <header
+      className={`flex items-center gap-4 ${
+        isResumeBuildPath ? "justify-between" : ""
+      } p-4 bg-card shadow-md`}
+    >
+      {/* Left side - Logo */}
+      <Link to='/' className="flex-1">
+        <div className="flex items-center gap-2 text-primary">
+          <img src={Logo} className="w-[150px]"/>
+        </div>
+      </Link>
+      
+
+      {isResumeBuildPath ? (
+        <div className="flex flex-wrap items-center text-sm space-x-2">
+          <span className={isContactInfoPath ? "font-normal text-primary":"text-muted-foreground"}>
+            Contact Info
+          </span>
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span className={isExperiencePath ? "font-normal text-primary":"text-muted-foreground"}>
+            Work Experience
+          </span>
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span className={isEducationPath ? "font-normal text-primary":"text-muted-foreground"}>
+            Education
+          </span>
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span className={isSkillsPath ? "font-normal text-primary":"text-muted-foreground"}>
+            Skills
+          </span>
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span className={isSummaryPath ? "font-normal text-primary":"text-muted-foreground"}>
+            Summary
+          </span>
+        </div>
+      ) : (
+        <div className="flex items-center">
+          <button className="flex items-center px-4 py-2 text-sm font-medium text-white bg-[#07963b] rounded-md hover:bg-[#07963bce] focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <User className="w-5 h-5 mr-2" /> {/* User icon */}
+            Login
+          </button>
+        </div>
+      )}
+        <ModeToggle/>
+    </header>
+  );
+};
+
+export default Header;
