@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'
 import { ResumeInfoContext } from '@/context/ResumeInfoContext'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const ContactDetails = () => {
 
@@ -19,9 +20,12 @@ const ContactDetails = () => {
     setFormData({ ...formData, [name]: value });
     
   }
+  const navigate = useNavigate()
 
-  const onSave = () => {
+   const onSave = (e) => {
+    e.preventDefault()
     setResumeInfo({ ...resumeInfo, ...formData }); // Merge new data with existing data
+    navigate('/resumebuild/experience')
   }
 
  
@@ -39,25 +43,25 @@ const ContactDetails = () => {
 
               <div className='col-span-1'>
                 <label htmlFor="fullName" className='text-sm font-medium tracking-wider'>Full Name</label>
-                <Input required  onChange={handleChange} id="fullName" name="fullName" type='text' className=' mt-2' placeholder="Full Name" />
+                <Input required value={resumeInfo?.fullName} onChange={handleChange} id="fullName" name="fullName" type='text' className=' mt-2' placeholder="Full Name" />
               </div>
 
               <div className='col-span-1'>
               <label htmlFor="city" className='text-sm font-medium tracking-wider'>City</label>
-                <Input required onChange={handleChange} id="city" name="city" type='text' className='mt-2' placeholder="City" />
+                <Input required value={resumeInfo?.city} onChange={handleChange} id="city" name="city" type='text' className='mt-2' placeholder="City" />
               </div>
               <div className=' col-span-1'>
               <label htmlFor="email" className='text-sm font-medium tracking-wider'>Email</label>
-                <Input required onChange={handleChange} id="email" name="email" type='email' className='mt-2' placeholder="Email" />
+                <Input required value={resumeInfo?.email} onChange={handleChange} id="email" name="email" type='email' className='mt-2' placeholder="Email" />
               </div>
               <div className='col-span-1'>
               <label htmlFor="country" className='text-sm font-medium tracking-wider'>Country</label>
-                <Input required onChange={handleChange} id="country" name="country" type='text' className='mt-2' placeholder="Country" />
+                <Input required value={resumeInfo?.country} onChange={handleChange} id="country" name="country" type='text' className='mt-2' placeholder="Country" />
               </div>
 
               <div className='col-span-1'>
               <label htmlFor="phoneNumber" className='text-sm font-medium tracking-wider'>Phone Number</label>
-                <Input required onChange={handleChange} id="phoneNumber" name="phoneNumber" type='number' className='mt-2' placeholder="Phone Number" />
+                <Input required value={resumeInfo?.phoneNumber} onChange={handleChange} id="phoneNumber" name="phoneNumber" type='number' className='mt-2' placeholder="Phone Number" />
   
               </div>
 
@@ -65,7 +69,7 @@ const ContactDetails = () => {
           </div>
           <div className='flex justify-between'>
             <Button type="button" variant="link" size="lg" className="cursor-pointer"><ChevronLeft /> Back</Button>
-            <Button type="submit" size="lg" className="cursor-pointer" onClick={onSave}>Next: Work Experience <ChevronRight /></Button>
+            <Button onClick={onSave} size="lg" className="cursor-pointer">Next: Work Experience <ChevronRight /></Button>
           </div>
         </div>
     </div>
