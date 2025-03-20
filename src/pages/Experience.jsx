@@ -7,6 +7,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useContext, useEffect, useState } from 'react'
 import { Textarea } from '@/components/ui/textarea';
 import RichTextEditor from '@/components/RichTextEditor';
+import { useNavigate } from 'react-router-dom';
+import { Separator } from '@/components/ui/separator';
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -20,41 +22,37 @@ const formField = {
   startYear: "",
   endMonth: "",
   endYear: "",
-  description: "",
-  presentWork: ""
+  description: ""
 }
 
 const years = Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i);
 
 const Experience = () => {
   const {resumeInfo,setResumeInfo}=useContext(ResumeInfoContext);
-  const [presentWork, setPresentWork] = useState(false);
   const [experienceList, setExperienceList] = useState([formField])
+  const navigate = useNavigate()
      const onSave = () =>{
 
      }
-     /*
-     const handleChange = (index,e) => {
-        const newEntries = experienceList.slice()
-        const {name, value} = e.target
-        newEntries[index] [name] = value
-        setExperienceList(newEntries)
-     }*/
 
         const handleChange = (index, eOrValue, fieldName = null) => {
-          const newEntries = [...experienceList];
+          setExperienceList((prevList) => {
+              const newEntries = [...prevList]; // Create a new array (avoid mutating state directly)
       
-          if (typeof eOrValue === "object" && eOrValue.target) {
-              // Handling input fields
-              const { name, value } = eOrValue.target;
-              newEntries[index][name] = value;
-          } else {
-              // Handling Select dropdown
-              newEntries[index][fieldName] = eOrValue;
-          }
+              if (typeof eOrValue === "object" && eOrValue.target) {
+                  // Handle text input
+                  const { name, value } = eOrValue.target;
+                  newEntries[index] = { ...newEntries[index], [name]: value };
+              } else if (fieldName) {
+                  // Handle Select dropdowns
+                  newEntries[index] = { ...newEntries[index], [fieldName]: eOrValue };
+              }
       
-          setExperienceList(newEntries);
+              return newEntries;
+          });
       };
+
+    
 
       const handleRichTextEditor = (e,name,index) => {
         const newEntries = [...experienceList];
@@ -76,10 +74,16 @@ const Experience = () => {
        
      }
      const removeExperience = () => {
-      setExperienceList(experienceList.slice(0,-1))
+      if (experienceList.length>1) {
+        setExperienceList(experienceList.slice(0,-1))
+      }
      }
-     
 
+     const handleGoBack = () => {
+      navigate(-1); // Navigate back to the previous page
+    };
+    
+    
 
      return (
       <div className='min-w-full p-7'>
@@ -91,57 +95,56 @@ const Experience = () => {
         {experienceList.map((Item,index)=>(
            <div className='space-y-4' key={index}>
           
-          {/* Employer & Job Title */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+          {/* Employer & Job Title */}
             <div>
-              <label className="block text-sm font-medium">Job Title</label>
-              <Input onChange={(e)=>handleChange(index,e)} name="jobTitle" placeholder="e.g. Engineer" />
-            </div>
-            {/* Start Date */}
-            <div className="grid grid-cols-2 gap-2">
-              <div className="w-full">
-                <label className="block text-sm font-medium">Start date</label>
-                <Select onValueChange={(value) => handleChange(index, value,"startMonth")} name="startMonth">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {months.map((month) => (
-                      <SelectItem key={month} value={month}>{month}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div>
+                <label className="text-sm font-medium tracking-wider">Job Title</label>
+                <Input onChange={(e)=>handleChange(index,e)} name="jobTitle" placeholder="e.g. Engineer"  className="mt-2"/>
               </div>
               <div>
-                <label className="block text-sm font-medium">&nbsp;</label>
-                <Select onValueChange={(value) => handleChange(index, value, "startYear")} name="startYear">
-                  <SelectTrigger>
-                    <SelectValue placeholder="Year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((year) => (
-                      <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <label className="text-sm font-medium tracking-wider">Company</label>
+                <Input onChange={(e)=>handleChange(index,e)} name="company" placeholder="e.g. IBM"  className="mt-2"/>
               </div>
             </div>
-          </div>
-          
-    
-          {/* Start Date & End Date */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-              <label className="block text-sm font-medium">Company</label>
-              <Input onChange={(e)=>handleChange(index,e)} name="company" placeholder="e.g. IBM" />
-            </div>
-            
-    
-            {/* End Date */}
-            {!presentWork && (
+           
+           {/* Start date & End date */}
+            <div>
+            {/* Start Date */}
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-sm font-medium">End date</label>
+                  <p className='mb-2'><label className="text-sm font-medium tracking-wider mb-2">Start date</label></p>
+                  <Select onValueChange={(value) => handleChange(index, value,"startMonth")} name="startMonth">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {months.map((month) => (
+                        <SelectItem key={month} value={month}>{month}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <p className='mb-2'><label className="text-sm font-medium tracking-wider mb-2">&nbsp;</label></p>
+                  <Select onValueChange={(value) => handleChange(index, value, "startYear")} name="startYear">
+                    <SelectTrigger>
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {years.map((year) => (
+                        <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* End Date */}
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <p className='mb-2'><label className="text-sm font-medium tracking-wider">End date</label></p>
                   <Select onValueChange={(value) => handleChange(index, value, "endMonth")} name="endMonth">
                     <SelectTrigger>
                       <SelectValue placeholder="Month" />
@@ -154,7 +157,7 @@ const Experience = () => {
                   </Select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium">&nbsp;</label>
+                  <p className='mb-2'><label className="text-sm font-medium tracking-wider">&nbsp;</label></p>
                   <Select onValueChange={(value) => handleChange(index, value, "endYear")} name="endYear">
                     <SelectTrigger>
                       <SelectValue placeholder="Year" />
@@ -167,25 +170,26 @@ const Experience = () => {
                   </Select>
                 </div>
               </div>
-            )}
+            </div>
           </div>
     
           {/* Checkbox */}
-          <div className="flex items-center space-x-2">
-            <Checkbox onChange={(e)=>handleChange(Item,e)} name="presentWork" checked={presentWork} onCheckedChange={setPresentWork} />
+          {/* <div className="flex items-center space-x-2">
+            <Checkbox name="presentWork" checked={presentWork} onCheckedChange={setPresentWork}  onChange={(e)=>handleCheckChange(index,e)} />
             <label className="text-sm">I Presently work here</label>
-          </div>
+          </div> */}
          <RichTextEditor onRichTextEditorChange={(e)=>handleRichTextEditor(e, "description", index)}  />
         </div>
         ))}
+
 
         <div className='flex items-center gap-4'>
           <Button onClick={addMoreExperience}> Add More Experience</Button>
           <Button onClick={removeExperience}> Remove Experience</Button>
         </div>
         <div className='flex justify-between'>
-                    <Button type="button" variant="link" size="lg" className="cursor-pointer"><ChevronLeft /> Back</Button>
-                    <Button type="submit" size="lg" className="cursor-pointer" onClick={onSave}>Next: Work Experience <ChevronRight /></Button>
+                    <Button onClick={handleGoBack} type="button" variant="link" size="lg" className="cursor-pointer"><ChevronLeft /> Back</Button>
+                    <Button size="lg" className="cursor-pointer" onClick={onSave}>Next: Work Experience <ChevronRight /></Button>
                   </div>
       </div>
       </div>

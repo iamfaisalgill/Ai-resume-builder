@@ -19,11 +19,13 @@ const Header = () => {
       } p-4 bg-card shadow-md`}
     >
       {/* Left side - Logo */}
-      <Link to='/' className="flex-1">
+      <div className="flex-1">
+      <Link to='/'>
         <div className="flex items-center gap-2 text-primary">
           <img src={Logo} className="w-[150px]"/>
         </div>
       </Link>
+      </div>
       
 
       {isResumeBuildPath ? (

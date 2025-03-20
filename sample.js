@@ -17,8 +17,8 @@ let obj = {
     {
         institution: "",
         degree: "",
-        startYear: "",
-        endYear: ""
+        graduationMonth: "",
+        graduationYear: ""
     }
   ],
   skills: [],
