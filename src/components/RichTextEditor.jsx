@@ -27,8 +27,8 @@ export default function RichTextEditor({onRichTextEditorChange}) {
 
   return (
     <EditorProvider>
-      <Editor value={value} onChange={onChange}  >
-        <Toolbar>
+      <Editor value={value} onChange={onChange} className='min-h-56 max-h-56 overflow-auto' >
+        <Toolbar >
         <BtnUndo />
           <BtnRedo />
           <Separator />

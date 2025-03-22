@@ -31,13 +31,11 @@ const Experience = () => {
   const {resumeInfo,setResumeInfo}=useContext(ResumeInfoContext);
   const [experienceList, setExperienceList] = useState([formField])
   const navigate = useNavigate()
-     const onSave = () =>{
-
-     }
+  
 
         const handleChange = (index, eOrValue, fieldName = null) => {
           setExperienceList((prevList) => {
-              const newEntries = [...prevList]; // Create a new array (avoid mutating state directly)
+              const newEntries = [...prevList]; 
       
               if (typeof eOrValue === "object" && eOrValue.target) {
                   // Handle text input
@@ -63,7 +61,7 @@ const Experience = () => {
       
   
      useEffect(() => {
-       console.log(experienceList);
+       console.log({experience: experienceList});
       
      }, [experienceList])
      
@@ -83,11 +81,15 @@ const Experience = () => {
       navigate(-1); // Navigate back to the previous page
     };
     
-    
+    const onSave = (e) =>{
+      e.preventDefault()
+      setResumeInfo(prevState => ({ ...prevState, experience: [...experienceList] }));  
+       // navigate('/resumebuild/education'); // Navigate after saving data
+    }
 
      return (
       <div className='min-w-full p-7'>
-      <div className="mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg">
+      <form onSubmit={onSave} className="mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg">
         <div>
             <h2 className='text-2xl font-semibold'>Work Experience</h2>
             <p className='lead'>Let’s start with your most recent job.</p>
@@ -101,11 +103,11 @@ const Experience = () => {
             <div>
               <div>
                 <label className="text-sm font-medium tracking-wider">Job Title</label>
-                <Input onChange={(e)=>handleChange(index,e)} name="jobTitle" placeholder="e.g. Engineer"  className="mt-2"/>
+                <Input defaultValue={resumeInfo[index]?.experience.jobTitle} onChange={(e)=>handleChange(index,e)} name="jobTitle" placeholder="e.g. Engineer"  className="mt-2"/>
               </div>
               <div>
                 <label className="text-sm font-medium tracking-wider">Company</label>
-                <Input onChange={(e)=>handleChange(index,e)} name="company" placeholder="e.g. IBM"  className="mt-2"/>
+                <Input defaultValue={resumeInfo?.experience.company} onChange={(e)=>handleChange(index,e)} name="company" placeholder="e.g. IBM"  className="mt-2"/>
               </div>
             </div>
            
@@ -115,7 +117,7 @@ const Experience = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <p className='mb-2'><label className="text-sm font-medium tracking-wider mb-2">Start date</label></p>
-                  <Select onValueChange={(value) => handleChange(index, value,"startMonth")} name="startMonth">
+                  <Select defaultValue={resumeInfo?.experience.startMonth} onValueChange={(value) => handleChange(index, value,"startMonth")} name="startMonth">
                     <SelectTrigger>
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
@@ -128,7 +130,7 @@ const Experience = () => {
                 </div>
                 <div>
                   <p className='mb-2'><label className="text-sm font-medium tracking-wider mb-2">&nbsp;</label></p>
-                  <Select onValueChange={(value) => handleChange(index, value, "startYear")} name="startYear">
+                  <Select defaultValue={resumeInfo?.experience.startYear} onValueChange={(value) => handleChange(index, value, "startYear")} name="startYear">
                     <SelectTrigger>
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
@@ -145,7 +147,7 @@ const Experience = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div>
                   <p className='mb-2'><label className="text-sm font-medium tracking-wider">End date</label></p>
-                  <Select onValueChange={(value) => handleChange(index, value, "endMonth")} name="endMonth">
+                  <Select defaultValue={resumeInfo?.experience.endMonth} onValueChange={(value) => handleChange(index, value, "endMonth")} name="endMonth">
                     <SelectTrigger>
                       <SelectValue placeholder="Month" />
                     </SelectTrigger>
@@ -158,7 +160,7 @@ const Experience = () => {
                 </div>
                 <div>
                   <p className='mb-2'><label className="text-sm font-medium tracking-wider">&nbsp;</label></p>
-                  <Select onValueChange={(value) => handleChange(index, value, "endYear")} name="endYear">
+                  <Select defaultValue={resumeInfo?.experience.endYear} onValueChange={(value) => handleChange(index, value, "endYear")} name="endYear">
                     <SelectTrigger>
                       <SelectValue placeholder="Year" />
                     </SelectTrigger>
@@ -184,14 +186,14 @@ const Experience = () => {
 
 
         <div className='flex items-center gap-4'>
-          <Button onClick={addMoreExperience}> Add More Experience</Button>
-          <Button onClick={removeExperience}> Remove Experience</Button>
+          <Button type="button" onClick={addMoreExperience}> Add More Experience</Button>
+          <Button type="button" onClick={removeExperience}> Remove Experience</Button>
         </div>
         <div className='flex justify-between'>
                     <Button onClick={handleGoBack} type="button" variant="link" size="lg" className="cursor-pointer"><ChevronLeft /> Back</Button>
-                    <Button size="lg" className="cursor-pointer" onClick={onSave}>Next: Work Experience <ChevronRight /></Button>
+                    <Button type="submit" size="lg" className="cursor-pointer" >Next: Work Experience <ChevronRight /></Button>
                   </div>
-      </div>
+      </form>
       </div>
     );
   }
