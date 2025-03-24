@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <div>
     <Button>  
-      <Link to='/resumebuild/contact'>Start</Link>
+      <Link to='/resumebuild'>Start</Link>
     </Button>
     </div>
   )

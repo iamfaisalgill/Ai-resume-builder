@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ResumeInfoContext } from '@/context/ResumeInfoContext'
+import { ResumeInfoContext, useResume } from '@/context/ResumeInfoContext'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const ContactDetails = () => {
+const ContactDetails = ({setPageIndex}) => {
 
   const { resumeInfo ,setResumeInfo } = useContext(ResumeInfoContext);
   const [loading, setLoading] = useState(false)
@@ -34,16 +34,16 @@ const ContactDetails = () => {
         } else {
           reject(new Error("Failed to save data")); // Reject if formData is missing
         }
-      }, 3000);
+      }, 1000);
     })
       .then(data => {
         setResumeInfo(prevState => ({ ...prevState, ...data })); // Save data when promise is fulfilled
-        navigate('/resumebuild/experience'); // Navigate after saving data
       })
       .catch(error => {
         console.error(error.message); // Handle error (you can show a message to the user)
       })
       .finally(() => {
+        setPageIndex(2)
         setLoading(false); // Stop loading after operation completes
       });
   };
@@ -57,8 +57,7 @@ const ContactDetails = () => {
   
 
   return (
-    <div className='min-w-full p-7'>
-        <form onSubmit={onSave} className='mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg'>
+        <form onSubmit={onSave}>
           <div>
             <h2 className='text-2xl font-semibold'>How can employers get in touch with you?</h2>
             <p className='lead'>For your resume header, include (at minimum) your name and email so employers can contact you.</p>
@@ -99,7 +98,6 @@ const ContactDetails = () => {
             Next: Work Experience <ChevronRight /></Button>
           </div>
         </form>
-    </div>
   )
 }
 

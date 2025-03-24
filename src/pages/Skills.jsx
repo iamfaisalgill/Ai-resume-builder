@@ -5,8 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Loader2, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useResume } from "@/context/ResumeInfoContext";
 
 const Skills = () => {
+
+  const {resumeInfo} = useResume()
+  
 
   const [loading, setLoading] = useState(false)
   const [skills, setSkills] = useState([]);
@@ -46,7 +50,7 @@ const Skills = () => {
   return (
     <div className='min-w-full p-7'>
       <div className='mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg'>
-      <h2 className="text-2xl font-bold mb-4">Skills</h2>
+      <h2 className="text-2xl font-bold mb-4">Skills {resumeInfo?.city}</h2>
       <div className="flex gap-2 mb-4">
         <Input
           value={inputValue}

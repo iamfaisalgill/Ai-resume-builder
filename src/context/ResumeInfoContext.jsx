@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export const ResumeInfoContext = createContext();
 
@@ -6,7 +6,32 @@ export const ResumeInfoProvider = ({ children }) => {
     // Load state from localStorage on initial render
   const [resumeInfo, setResumeInfo] = useState(()=>{
     const savedData = localStorage.getItem('resumeInfo')
-    return savedData ? JSON.parse(savedData) : {}
+    return savedData ? JSON.parse(savedData) : {
+      fullName: "",
+      email: "",
+      city: "",
+      country: "",
+      phoneNumber: "",
+      experience: [
+        {
+          jobTitle: "",
+          company: "",
+          startDate: "",
+          endDate: "",
+          description: "",
+        },
+      ],
+      education: [
+        {
+          institution: "",
+          degree: "",
+          graduationMonth: "",
+          graduationYear: "",
+        },
+      ],
+      skills: [],
+      summary: "",
+    };
   });
 
     // Save state to localStorage whenever it changes
@@ -20,3 +45,7 @@ export const ResumeInfoProvider = ({ children }) => {
     </ResumeInfoContext.Provider>
   );
 };
+
+export function useResume() {
+  return useContext(ResumeInfoContext);
+}

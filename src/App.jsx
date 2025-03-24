@@ -12,6 +12,7 @@ import SelectTheme from './pages/SelectTheme'
 import DownloadFile from './pages/DownloadFile'
 import { ThemeProvider } from "@/components/theme-provider"
 import { ResumeInfoProvider } from './context/ResumeInfoContext'
+import ResumeBuild from './pages/ResumeBuild'
 
 function App() {
 
@@ -22,12 +23,8 @@ function App() {
           <Header/>
             <Routes>
               <Route path='/' element={<Home/>} />
-              <Route path='/resumebuild/contact' element={<ContactDetails/>} />
-              <Route path='/resumebuild/experience' element={<Experience/>} />
-              <Route path='/resumebuild/education' element={<Education/>} />
-              <Route path='/resumebuild/skills' element={<Skills/>} />
-              <Route path='/resumebuild/summary' element={<Summary/>} />
-              <Route path='/resumebuild/select-theme' element={<SelectTheme/>} />
+              <Route path='/resumebuild' element={<ResumeBuild/>} />
+              <Route path='/select-theme' element={<SelectTheme/>} />
               <Route path='/:selectedTheme/download' element={<DownloadFile/>} />
             </Routes>
           </ThemeProvider>
