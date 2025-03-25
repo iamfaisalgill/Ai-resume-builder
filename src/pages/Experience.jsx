@@ -9,12 +9,9 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ResumeInfoContext } from "@/context/ResumeInfoContext";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import RichTextEditor from "@/components/RichTextEditor";
-import { useNavigate } from "react-router-dom";
-import { Separator } from "@/components/ui/separator";
 
 const months = [
   "January",
@@ -46,11 +43,10 @@ const years = Array.from(
   (_, i) => new Date().getFullYear() - i
 );
 
-const Experience = () => {
+const Experience = ({setPageIndex}) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [experienceList, setExperienceList] = useState([formField]);
-  
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (index, eOrValue, fieldName = null) => {
     setExperienceList((prevList) => {
@@ -69,36 +65,53 @@ const Experience = () => {
     });
   };
 
-  const handleRichTextEditor = (e, name, index) => {
-    const newEntries = [...experienceList];
-    newEntries[index][name] = e.target.value;
-    setExperienceList(newEntries);
-  };
-
-  useEffect(() => {
-    console.log({ experience: experienceList });
-  }, [experienceList]);
-
   const addMoreExperience = () => {
     setExperienceList([...experienceList, formField]);
+    setResumeInfo((prevInfo) => {
+      const newExperience = [...prevInfo.experience];
+      if (newExperience.length > 0) {
+        newExperience.push(formField);
+      }
+      return { ...prevInfo, experience: newExperience };
+    });
   };
   const removeExperience = () => {
-    if (experienceList.length > 1) {
-      setExperienceList(experienceList.slice(0, -1));
-    }
+    setResumeInfo((prevInfo) => {
+      const expInfo = [...prevInfo.experience]; 
+      if (expInfo.length > 1) {
+        expInfo.pop();
+      }
+      return { ...prevInfo, experience: expInfo }; // Return updated state
+    });
   };
+  
 
   const handleGoBack = () => {
-    navigate(-1); // Navigate back to the previous page
+    setPageIndex(1)
   };
 
   const onSave = (e) => {
     e.preventDefault();
-    setResumeInfo((prevState) => ({
-      ...prevState,
-      experience: [...experienceList],
-    }));
-    // navigate('/resumebuild/education'); // Navigate after saving data
+    setLoading(true);
+    
+    // Wrap the setTimeout in a Promise
+    new Promise((resolve) => {
+      setTimeout(() => {
+        setResumeInfo((prevState) => ({
+          ...prevState,
+          experience: [...experienceList],
+        }));
+        resolve(); // Resolve the promise when the operation is complete
+      }, 1000);
+    })
+    .then(() => {
+      setLoading(false);
+      setPageIndex(3); // Move to the next page
+    })
+    .catch((error) => {
+      console.error('Error during save:', error);
+      setLoading(false);
+    });
   };
 
   return (
@@ -107,7 +120,7 @@ const Experience = () => {
         <h2 className="text-2xl font-semibold">Work Experience</h2>
         <p className="lead">Let’s start with your most recent job.</p>
       </div>
-      {experienceList.map((Item, index) => (
+      {resumeInfo.experience.map((Item, index) => (
         <div className="space-y-4" key={index}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Employer & Job Title */}
@@ -117,8 +130,9 @@ const Experience = () => {
                   Job Title
                 </label>
                 <Input
-                  defaultValue={resumeInfo.experience[index]?.jobTitle}
+                  defaultValue={resumeInfo.experience[index].jobTitle}
                   onChange={(e) => handleChange(index, e)}
+                  required
                   name="jobTitle"
                   placeholder="e.g. Engineer"
                   className="mt-2"
@@ -129,8 +143,9 @@ const Experience = () => {
                   Company
                 </label>
                 <Input
-                  defaultValue={resumeInfo.experience[index]?.company}
+                  defaultValue={resumeInfo.experience[index].company}
                   onChange={(e) => handleChange(index, e)}
+                  required
                   name="company"
                   placeholder="e.g. IBM"
                   className="mt-2"
@@ -149,7 +164,7 @@ const Experience = () => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index]?.startMonth}
+                    defaultValue={resumeInfo.experience[index].startMonth}
                     onValueChange={(value) =>
                       handleChange(index, value, "startMonth")
                     }
@@ -174,7 +189,7 @@ const Experience = () => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index]?.startYear}
+                    defaultValue={resumeInfo.experience[index].startYear}
                     onValueChange={(value) =>
                       handleChange(index, value, "startYear")
                     }
@@ -203,7 +218,7 @@ const Experience = () => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index]?.endMonth}
+                    defaultValue={resumeInfo.experience[index].endMonth}
                     onValueChange={(value) =>
                       handleChange(index, value, "endMonth")
                     }
@@ -228,7 +243,7 @@ const Experience = () => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index]?.endYear}
+                    defaultValue={resumeInfo.experience[index].endYear}
                     onValueChange={(value) =>
                       handleChange(index, value, "endYear")
                     }
@@ -255,21 +270,33 @@ const Experience = () => {
             <Checkbox name="presentWork" checked={presentWork} onCheckedChange={setPresentWork}  onChange={(e)=>handleCheckChange(index,e)} />
             <label className="text-sm">I Presently work here</label>
           </div> */}
-          <RichTextEditor
+
+          <div>
+          <label className="text-sm font-medium tracking-wider">
+                 Description
+                 </label>
+            <Textarea defaultValue={resumeInfo.experience[index].description}
+                  onChange={(e) => handleChange(index, e)}
+                  name="description"
+                  placeholder="Enter description"
+                  className='mt-2'
+                  id="description"
+                  />
+            
+          </div>
+          {/* <RichTextEditor
             onRichTextEditorChange={(e) =>
               handleRichTextEditor(e, "description", index)
             }
-          />
+          /> */}
         </div>
       ))}
 
       <div className="flex items-center gap-4">
         <Button type="button" onClick={addMoreExperience}>
-          {" "}
           Add More Experience
         </Button>
         <Button type="button" onClick={removeExperience}>
-          {" "}
           Remove Experience
         </Button>
       </div>
@@ -283,8 +310,9 @@ const Experience = () => {
         >
           <ChevronLeft /> Back
         </Button>
-        <Button type="submit" size="lg" className="cursor-pointer">
-          Next: Work Experience <ChevronRight />
+        <Button disabled={loading} type="submit" size="lg" className="cursor-pointer">
+        {loading && <Loader2 className="animate-spin" /> }
+          Next: Education <ChevronRight />
         </Button>
       </div>
     </form>

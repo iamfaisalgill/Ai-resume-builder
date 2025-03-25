@@ -20,6 +20,7 @@ export const ResumeInfoProvider = ({ children }) => {
           endDate: "",
           description: "",
         },
+        
       ],
       education: [
         {
