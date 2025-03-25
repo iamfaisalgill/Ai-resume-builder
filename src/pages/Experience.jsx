@@ -45,7 +45,9 @@ const years = Array.from(
 
 const Experience = ({setPageIndex}) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
-  const [experienceList, setExperienceList] = useState([formField]);
+  const [experienceList, setExperienceList] = useState(
+    resumeInfo.experience.length > 0 ? resumeInfo.experience : [formField]
+  );
   const [loading, setLoading] = useState(false)
 
   const handleChange = (index, eOrValue, fieldName = null) => {
@@ -90,29 +92,26 @@ const Experience = ({setPageIndex}) => {
     setPageIndex(1)
   };
 
-  const onSave = (e) => {
+  const onSave = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    // Wrap the setTimeout in a Promise
-    new Promise((resolve) => {
-      setTimeout(() => {
-        setResumeInfo((prevState) => ({
-          ...prevState,
-          experience: [...experienceList],
-        }));
-        resolve(); // Resolve the promise when the operation is complete
-      }, 1000);
-    })
-    .then(() => {
-      setLoading(false);
-      setPageIndex(3); // Move to the next page
-    })
-    .catch((error) => {
-      console.error('Error during save:', error);
-      setLoading(false);
-    });
+  
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  
+    setResumeInfo(prev => ({
+      ...prev,
+      experience: [...experienceList], // Use current form state
+    }));
+  
+    setLoading(false);
+    setPageIndex(3); // Navigate after saving
   };
+
+  useEffect(() => {
+    if (resumeInfo.experience.length > 0) {
+      setExperienceList(resumeInfo.experience);
+    }
+  }, [resumeInfo.experience]);
 
   return (
     <form onSubmit={onSave} className="space-y-9">
@@ -130,9 +129,8 @@ const Experience = ({setPageIndex}) => {
                   Job Title
                 </label>
                 <Input
-                  defaultValue={resumeInfo.experience[index].jobTitle}
+                  value={experienceList[index]?.jobTitle || ""}  // Controlled
                   onChange={(e) => handleChange(index, e)}
-                  required
                   name="jobTitle"
                   placeholder="e.g. Engineer"
                   className="mt-2"
