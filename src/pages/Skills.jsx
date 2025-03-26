@@ -4,19 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Loader2, Trash } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useResume } from "@/context/ResumeInfoContext";
 
-const Skills = () => {
+const Skills = ({setPageIndex}) => {
 
-  const {resumeInfo} = useResume()
+  const {resumeInfo, setResumeInfo} = useResume()
   
 
   const [loading, setLoading] = useState(false)
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(
+    resumeInfo.skills.length>0? resumeInfo.skills : []
+  );
   const [inputValue, setInputValue] = useState("");
 
-  const navigate = useNavigate()
 
   const addSkill = () => {
     if (inputValue.trim() !== "" && !skills.includes(inputValue)) {
@@ -43,22 +43,38 @@ const Skills = () => {
   }
 
   const handleGoBack = () => {
-    navigate('/resumebuild/summary')
+    setPageIndex(prev=>prev-1)
+  }
+
+  const onSave = async (e) =>{
+    e.preventDefault()
+    setLoading(true)
+
+    await new Promise(resolve=>setTimeout(resolve, 1000))
+
+    setResumeInfo((prev)=>({
+      ...prev,
+      skills: skills
+    }))
+    setLoading(false)
+    setPageIndex(prev=>prev+1)
   }
   
 
   return (
-    <div className='min-w-full p-7'>
-      <div className='mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg'>
-      <h2 className="text-2xl font-bold mb-4">Skills {resumeInfo?.city}</h2>
-      <div className="flex gap-2 mb-4">
+    <div className='space-y-9'>
+      <div>
+        <h2 className="text-2xl font-semibold">Skills</h2>
+        <p className="lead">Add a few skills to show employers you’re good in your field.</p>
+      </div>
+      <div className="flex gap-2 mb-4 text-lg">
         <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
           placeholder="Enter a skill"
+          className='!text-lg'
         />
-        <Button onClick={addSkill} className='h-auto' >Add Skill</Button>
+        <Button onClick={addSkill} type="button" className='h-auto !text-lg' >Add Skill</Button>
       </div>
       <Card>
         <CardContent className="p-4 flex flex-wrap gap-2">
@@ -81,11 +97,10 @@ const Skills = () => {
       </Card>
       <div className='flex justify-between'>
             <Button onClick={handleGoBack} type="button" variant="link" size="lg" className="cursor-pointer"><ChevronLeft /> Back</Button>
-            <Button disabled={loading} size="lg" className="cursor-pointer">
+            <Button onClick={onSave} disabled={loading} type="submit" size="lg" className="cursor-pointer">
             {loading && <Loader2 className="animate-spin" /> }
             Next: Summary <ChevronRight /></Button>
           </div>
-      </div>
     </div>
   )
 }
