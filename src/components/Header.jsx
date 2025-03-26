@@ -20,11 +20,14 @@ const Header = () => {
     >
       {/* Left side - Logo */}
       <div className="flex-1">
-      <Link to='/'>
-        <div className="flex items-center gap-2 text-primary">
-          <img src={Logo} className="w-[150px]"/>
-        </div>
-      </Link>
+
+      <div className="w-fit">
+        <Link to='/'>
+          <div className="flex items-center gap-2 text-primary">
+            <img src={Logo} className="w-[150px]"/>
+          </div>
+        </Link>
+      </div>
       </div>
       
 

@@ -5,7 +5,7 @@ import Education from "./Education";
 import Skills from "./Skills";
 
 const ResumeBuild = () => {
-  const [pageIndex, setPageIndex] = useState(1);
+  const [pageIndex, setPageIndex] = useState(3);
   return (
     <div className="min-w-full p-7">
       <div className="mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg">
