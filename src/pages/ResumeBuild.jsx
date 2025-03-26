@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import ContactDetails from "./ContactDetails";
 import Experience from "./Experience";
 import Education from "./Education";
 import Skills from "./Skills";
 
-const ResumeBuild = () => {
-  const [pageIndex, setPageIndex] = useState(3);
+const ResumeBuild = ({pageIndex, setPageIndex}) => {
   return (
     <div className="min-w-full p-7">
       <div className="mt-8 space-y-9 p-6 max-w-[980px] mx-auto bg-card rounded-lg">

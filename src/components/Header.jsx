@@ -4,13 +4,13 @@ import { Link, useMatch } from "react-router-dom";
 import { ModeToggle } from "./mode-toggle";
 import Logo from '/logo.svg'
 
-const Header = () => {
-  const isResumeBuildPath = useMatch("/resumebuild/*");
-  const isContactInfoPath = useMatch("/resumebuild/contact");
-  const isExperiencePath = useMatch("/resumebuild/experience");
-  const isEducationPath = useMatch("/resumebuild/education");
-  const isSkillsPath = useMatch("/resumebuild/skills");
-  const isSummaryPath = useMatch("/resumebuild/summary");
+const Header = ({pageIndex, setPageIndex}) => {
+  const isResumeBuildPath = useMatch("/resumebuild");
+  const isContactInfoPath = pageIndex == 1;
+  const isExperiencePath = pageIndex == 2;
+  const isEducationPath = pageIndex == 3;
+  const isSkillsPath = pageIndex == 4;
+  const isSummaryPath = pageIndex == 5;
 
   return (
     <header
