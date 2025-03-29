@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useResume } from "@/context/ResumeInfoContext";
 import { Check, ChevronLeft, ChevronRight, Loader2, RefreshCcw } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const aiGeneratedText = [
   "Accomplished Backend Developer at Netflix, adept at designing scalable architectures and enhancing application security through encryption protocols. Proficient in CI/CD pipeline configuration and mentoring teams on best practices. Strong debugging skills complement expertise in programming languages, driving efficient project delivery and robust system performance.",
@@ -14,6 +15,7 @@ const Summary = ({ setPageIndex }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [textareaValue, setTextareaValue] = useState("");
   const [isUsingAI, setIsUsingAI] = useState(false);
+  const {resumeInfo, setResumeInfo} = useResume()
 
   const useThis = () => {
     setTextareaValue(aiGeneratedText[currentIndex]);
@@ -38,15 +40,28 @@ const Summary = ({ setPageIndex }) => {
     setCurrentIndex((prev) => (prev + 1) % aiGeneratedText.length);
   };
 
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setTextareaValue(value);
+    setIsUsingAI(false);
+  }
+
+  useEffect(()=>{
+    console.log(textareaValue);
+    
+  }, [textareaValue])
+  
+
   const onSave = () => {
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
+      setResumeInfo(prevInfo=>({...prevInfo, summary: textareaValue}))
       setLoading(false);
-      setPageIndex((prev) => prev + 1);
+      // setPageIndex((prev) => prev + 1);
     }, 1000);
   };
-
+  
   return (
     <div className="space-y-">
       <div>
@@ -65,10 +80,8 @@ const Summary = ({ setPageIndex }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Textarea
               value={textareaValue}
-              onChange={(e) => {
-                setTextareaValue(e.target.value);
-                setIsUsingAI(false);
-              }}
+              onChange={handleChange}
+              name="summary"
               placeholder="Write a short summary telling more about yourself, your strengths and experience."
               className="!text-[16px] resize-none min-h-64"
             />
@@ -110,7 +123,7 @@ const Summary = ({ setPageIndex }) => {
                     </Button>
                   </div>
                   <Button onClick={useThis}>
-                    <Check className="mr-2 h-4 w-4" /> Use This
+                    <Check className="h-4 w-4" /> Use This
                   </Button>
                 </div>
               </div>
@@ -136,12 +149,11 @@ const Summary = ({ setPageIndex }) => {
           size="lg"
           className="cursor-pointer"
         >
-          {loading ? (
+          {loading && (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <ChevronRight className="mr-2 h-4 w-4" />
-          )}
-          Save & Next
+          ) 
+          }
+          Save & Next  <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
     </div>
