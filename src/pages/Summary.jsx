@@ -11,11 +11,11 @@ const aiGeneratedText = [
 ];
 
 const Summary = ({ setPageIndex }) => {
+  const {resumeInfo, setResumeInfo} = useResume()
   const [loading, setLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [textareaValue, setTextareaValue] = useState("");
+  const [textareaValue, setTextareaValue] = useState("" || resumeInfo.summary);
   const [isUsingAI, setIsUsingAI] = useState(false);
-  const {resumeInfo, setResumeInfo} = useResume()
 
   const useThis = () => {
     setTextareaValue(aiGeneratedText[currentIndex]);
@@ -45,11 +45,6 @@ const Summary = ({ setPageIndex }) => {
     setTextareaValue(value);
     setIsUsingAI(false);
   }
-
-  useEffect(()=>{
-    console.log(textareaValue);
-    
-  }, [textareaValue])
   
 
   const onSave = () => {
