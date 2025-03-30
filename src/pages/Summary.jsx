@@ -1,14 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useResume } from "@/context/ResumeInfoContext";
-import { Check, ChevronLeft, ChevronRight, Loader2, RefreshCcw } from "lucide-react";
+import { generateResumeSummaries } from "@/services/geminiService";
+import { Brain, Check, ChevronLeft, ChevronRight, Loader2, RefreshCcw } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-const aiGeneratedText = [
-  "Accomplished Backend Developer at Netflix, adept at designing scalable architectures and enhancing application security through encryption protocols. Proficient in CI/CD pipeline configuration and mentoring teams on best practices. Strong debugging skills complement expertise in programming languages, driving efficient project delivery and robust system performance.",
-  "Dynamic Backend Developer at Devsinc with a proven track record in optimizing database performance and implementing robust APIs. Skilled in cloud computing and fostering teamwork, I excel in agile environments, driving project success through effective communication and problem-solving. Passionate about delivering high-quality solutions that enhance user experience and system efficiency.",
-  "Results-driven Backend Developer at Devsinc with expertise in performance optimization and API implementation. Demonstrated strong problem-solving abilities while enhancing application efficiency and participating in agile processes. Proficient in cloud computing and skilled in fostering teamwork to achieve project goals. Committed to delivering high-quality solutions in fast-paced environments.",
-];
 
 const Summary = ({ setPageIndex }) => {
   const {resumeInfo, setResumeInfo} = useResume()
@@ -16,6 +12,7 @@ const Summary = ({ setPageIndex }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [textareaValue, setTextareaValue] = useState("" || resumeInfo.summary);
   const [isUsingAI, setIsUsingAI] = useState(false);
+  const [aiGeneratedText, setAiGeneratedText] = useState(resumeInfo.aiGeneratedSummaries || [])
 
   const useThis = () => {
     setTextareaValue(aiGeneratedText[currentIndex]);
@@ -56,6 +53,18 @@ const Summary = ({ setPageIndex }) => {
       // setPageIndex((prev) => prev + 1);
     }, 1000);
   };
+
+  const handleGenerate = async ()=>{
+    try {
+     const results = await generateResumeSummaries(resumeInfo);
+      console.log(results);
+      setResumeInfo(prev=>({...prev, aiGeneratedSummaries: results}))
+      setAiGeneratedText(results)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   
   return (
     <div className="space-y-">
@@ -83,16 +92,16 @@ const Summary = ({ setPageIndex }) => {
           
           <div className="flex justify-center items-center bg-card min-h-64">
             <div className="min-h-64 relative p-[1px] rounded-lg bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 w-full">
-              <div className="p-4 bg-card rounded-lg h-full">
+              <div className="flex flex-col p-4 bg-card rounded-lg h-full min-h-80">
                 <div className="flex items-center">
                   <h3 className="text-lg font-bold bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 bg-clip-text text-transparent">
                     AI Generated Summary
                   </h3>
                 </div>
-                <p className="mt-6 min-h-32">{aiGeneratedText[currentIndex]}</p>
-                <div className="flex justify-between mt-6">
-                  <Button variant="outline" onClick={regenerateText}>
-                    <RefreshCcw className="mr-2 h-4 w-4" /> Regenerate
+                <p className="my-6 flex-1 min-h-44 max-h-48 overflow-y-auto">{aiGeneratedText[currentIndex]}</p>
+                <div className=" flex justify-between">
+                  <Button variant="outline" onClick={handleGenerate}>
+                  <Brain /> Generate
                   </Button>
                   <div className="flex items-center gap-2">
                     <Button

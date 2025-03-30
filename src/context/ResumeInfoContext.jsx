@@ -32,6 +32,7 @@ export const ResumeInfoProvider = ({ children }) => {
       ],
       skills: [],
       summary: "",
+      aiGeneratedSummaries: []
     };
   });
 
