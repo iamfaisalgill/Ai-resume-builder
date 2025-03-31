@@ -50,16 +50,18 @@ const Skills = ({setPageIndex}) => {
   const onSave = async (e) =>{
     e.preventDefault()
     setLoading(true)
+
+    //await new Promise(resolve=>setTimeout(resolve, 1000))
    
     setResumeInfo((prev)=>({
       ...prev,
       skills: skills
     }))
-    if (resumeInfo.aiGeneratedSummaries.length == 0) {
+    /*if (resumeInfo.aiGeneratedSummaries.length == 0) {
       const results = await generateResumeSummaries(resumeInfo);
       setResumeInfo(prev=>({...prev, aiGeneratedSummaries: results}))
     }
-    await new Promise(resolve=>setTimeout(resolve, 1000))
+    await new Promise(resolve=>setTimeout(resolve, 1000))*/
     setLoading(false)
     setPageIndex(prev=>prev+1)
   }

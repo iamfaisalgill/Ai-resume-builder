@@ -1,18 +1,32 @@
+import LoaderComponent from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useResume } from "@/context/ResumeInfoContext";
 import { generateResumeSummaries } from "@/services/geminiService";
-import { Brain, Check, ChevronLeft, ChevronRight, Loader2, RefreshCcw } from "lucide-react";
+import {
+  Brain,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Info,
+  Loader2,
+  RefreshCcw,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const Summary = ({ setPageIndex }) => {
-  const {resumeInfo, setResumeInfo} = useResume()
+  const { resumeInfo, setResumeInfo } = useResume();
   const [loading, setLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [textareaValue, setTextareaValue] = useState("" || resumeInfo.summary);
   const [isUsingAI, setIsUsingAI] = useState(false);
-  const [aiGeneratedText, setAiGeneratedText] = useState(resumeInfo.aiGeneratedSummaries || [])
+  const [aiGeneratedText, setAiGeneratedText] = useState(
+    resumeInfo.aiGeneratedSummaries || []
+  );
+  const [loader, setLoader] = useState(false)
+  const navigate = useNavigate()
 
   const useThis = () => {
     setTextareaValue(aiGeneratedText[currentIndex]);
@@ -28,7 +42,9 @@ const Summary = ({ setPageIndex }) => {
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev < aiGeneratedText.length - 1 ? prev + 1 : prev));
+    setCurrentIndex((prev) =>
+      prev < aiGeneratedText.length - 1 ? prev + 1 : prev
+    );
   };
 
   const regenerateText = () => {
@@ -38,34 +54,39 @@ const Summary = ({ setPageIndex }) => {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target
+    const { name, value } = e.target;
     setTextareaValue(value);
     setIsUsingAI(false);
-  }
-  
+  };
 
   const onSave = () => {
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
-      setResumeInfo(prevInfo=>({...prevInfo, summary: textareaValue}))
+      setResumeInfo((prevInfo) => ({ ...prevInfo, summary: textareaValue }));
       setLoading(false);
-      // setPageIndex((prev) => prev + 1);
+      navigate('/select-theme')
     }, 1000);
   };
 
-  const handleGenerate = async ()=>{
+  const handleGenerate = async () => {
     try {
-     const results = await generateResumeSummaries(resumeInfo);
-      console.log(results);
-      setResumeInfo(prev=>({...prev, aiGeneratedSummaries: results}))
-      setAiGeneratedText(results)
+      setLoader(true)
+      const results = await generateResumeSummaries(resumeInfo);
+      setResumeInfo((prev) => ({ ...prev, aiGeneratedSummaries: results }));
+      setAiGeneratedText(results);
+      setLoader(false)
     } catch (error) {
       console.log(error);
-      
     }
-  }
-  
+  };
+
+  useEffect(()=>{
+    if (resumeInfo.aiGeneratedSummaries.length==0) {
+      handleGenerate()  
+    }
+  }, [])
+
   return (
     <div className="space-y-">
       <div>
@@ -77,19 +98,19 @@ const Summary = ({ setPageIndex }) => {
       </div>
       <div className="mt-9">
         {isUsingAI && (
-              <p className="text-sm text-muted-foreground my-2">
-                Using AI-generated summary #{currentIndex + 1}
-              </p>
-            )}
+          <p className="text-sm text-muted-foreground my-2">
+            Using AI-generated summary #{currentIndex + 1}
+          </p>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Textarea
-              value={textareaValue}
-              onChange={handleChange}
-              name="summary"
-              placeholder="Write a short summary telling more about yourself, your strengths and experience."
-              className="!text-[16px] resize-none min-h-64"
-            />
-          
+          <Textarea
+            value={textareaValue}
+            onChange={handleChange}
+            name="summary"
+            placeholder="Write a short summary telling more about yourself, your strengths and experience."
+            className="!text-[16px] resize-none min-h-64"
+          />
+
           <div className="flex justify-center items-center bg-card min-h-64">
             <div className="min-h-64 relative p-[1px] rounded-lg bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 w-full">
               <div className="flex flex-col p-4 bg-card rounded-lg h-full min-h-80">
@@ -97,11 +118,28 @@ const Summary = ({ setPageIndex }) => {
                   <h3 className="text-lg font-bold bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 bg-clip-text text-transparent">
                     AI Generated Summary
                   </h3>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="ml-1.5 size-4 self-center text-green-500" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-lg text-sm shadow font-medium">
+                        <p>Our <span className="text-primary">AI Builder</span> can generate your <span className="text-primary">Professional Summary</span> text based on your work history and skills. You can regenerate up to 3 personalized summaries.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
-                <p className="my-6 flex-1 min-h-44 max-h-48 overflow-y-auto">{aiGeneratedText[currentIndex]}</p>
+                <div className={loader? "flex items-center justify-center mb-6 mt-3 flex-1 min-h-44 max-h-48" : "mb-6 mt-3 flex-1 min-h-44 max-h-48 overflow-y-auto"}>
+                {
+                  loader?<LoaderComponent/> : aiGeneratedText[currentIndex]
+                }
+                   
+                {/* { aiGeneratedText[currentIndex]} */}
+                </div>
                 <div className=" flex justify-between">
-                  <Button variant="outline" onClick={handleGenerate}>
-                  <Brain /> Generate
+                  <Button disabled={loader} variant="outline" onClick={handleGenerate}>
+                    <Brain /> Regenerate
                   </Button>
                   <div className="flex items-center gap-2">
                     <Button
@@ -109,7 +147,7 @@ const Summary = ({ setPageIndex }) => {
                       variant="outline"
                       className="size-7 !p-2 rounded-full cursor-pointer"
                       onClick={handlePrevious}
-                      disabled={currentIndex === 0}
+                      disabled={currentIndex === 0 || loader}
                     >
                       <ChevronLeft />
                     </Button>
@@ -121,7 +159,7 @@ const Summary = ({ setPageIndex }) => {
                       variant="outline"
                       className="size-7 !p-2 rounded-full cursor-pointer"
                       onClick={handleNext}
-                      disabled={currentIndex === aiGeneratedText.length - 1}
+                      disabled={currentIndex === aiGeneratedText.length - 1 || loader}
                     >
                       <ChevronRight />
                     </Button>
@@ -134,7 +172,6 @@ const Summary = ({ setPageIndex }) => {
             </div>
           </div>
         </div>
-  
       </div>
       <div className="mt-9 flex justify-between">
         <Button
@@ -153,11 +190,8 @@ const Summary = ({ setPageIndex }) => {
           size="lg"
           className="cursor-pointer"
         >
-          {loading && (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) 
-          }
-          Save & Next  <ChevronRight className="h-4 w-4" />
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Save & Next <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
     </div>
