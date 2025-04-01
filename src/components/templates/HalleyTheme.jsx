@@ -1,7 +1,7 @@
 import React from "react";
 
 // template name: Halley
-const Template1 = () => {
+const HalleyTheme = () => {
   return (
     <div className="mx-auto bg-white max-w-4xl">
       <div className="flex">
@@ -141,4 +141,4 @@ const Template1 = () => {
   );
 };
 
-export default Template1;
+export default HalleyTheme;

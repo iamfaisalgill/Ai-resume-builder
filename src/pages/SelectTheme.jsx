@@ -25,7 +25,7 @@ export default function SelectTheme() {
   },[selectedTemplate])
 
   const handleSave = ()=>{
-    //working on it
+    navigate(`/theme-${selectedTemplate.toLowerCase()}/download`)
   }
   return (
     <div className="min-w-full p-7">

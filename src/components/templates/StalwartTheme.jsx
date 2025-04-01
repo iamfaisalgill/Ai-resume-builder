@@ -1,7 +1,7 @@
 import React from "react";
 
 // Template name: stalwart
-const Template3 = () => {
+const StalwartTheme = () => {
   return (
     <div className="bg-white text-black p-8 max-w-4xl mx-auto font-sans">
       <h1 className="text-3xl font-bold">JASON CARTER</h1>
@@ -112,4 +112,4 @@ const Template3 = () => {
   );
 };
 
-export default Template3;
+export default StalwartTheme;

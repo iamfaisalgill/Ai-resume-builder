@@ -1,6 +1,7 @@
 import React from "react";
 
-const Template2 = () => {
+// Template name: iconic
+const IconicTheme = () => {
   return (
     <div className="text-white max-w-4xl mx-auto">
       <div className="bg-[#1E3A5F] p-6 flex justify-between">
@@ -165,4 +166,4 @@ const Template2 = () => {
   );
 };
 
-export default Template2;
+export default IconicTheme;
