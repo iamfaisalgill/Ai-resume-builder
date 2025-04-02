@@ -43,7 +43,7 @@ export default function SelectTheme() {
                 <CardContent className="flex flex-col items-center justify-center p-0 h-full text-center">
                   <img src={template.src} alt="" className="rounded-md" />
                 </CardContent>
-                {selectedTemplate === template.id && (
+                {selectedTemplate === template.name && (
                   <div className="flex items-center justify-center rounded-full absolute top-2 right-2 text-white bg-gray-800 size-7">
                   <Check size={20}  />
                   </div>
