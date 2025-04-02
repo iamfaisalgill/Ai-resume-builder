@@ -6,6 +6,7 @@ import iconic_template from '../assets/iconic.png'
 import stalwart_template from '../assets/stalwart.png'
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useResume } from "@/context/ResumeInfoContext";
 
 
 const templates = [
@@ -17,7 +18,27 @@ const templates = [
 
 export default function SelectTheme() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const {resumeInfo} = useResume()
   const navigate = useNavigate()
+  
+  useEffect(()=>{
+    function isValueEmpty(value) {
+      if (value === "" || value === null || value === undefined) {
+        return true;
+      }
+      if (Array.isArray(value)) {
+        return value.length === 0 || value.every(isValueEmpty);
+      }
+      if (typeof value === "object" && value !== null) {
+        return Object.keys(value).length === 0 || Object.values(value).every(isValueEmpty);
+      }
+      return false;
+    }
+
+    if (isValueEmpty(resumeInfo)) {
+      navigate('/resumebuild')
+    }
+  },[])
   
   useEffect(()=>{
     console.log(selectedTemplate);
