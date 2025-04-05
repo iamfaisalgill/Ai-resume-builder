@@ -20,7 +20,6 @@ export const ResumeInfoProvider = ({ children }) => {
           endDate: "",
           description: "",
         },
-        
       ],
       education: [
         {
@@ -28,6 +27,32 @@ export const ResumeInfoProvider = ({ children }) => {
           degree: "",
           graduationMonth: "",
           graduationYear: "",
+        },
+      ],
+      projects: [
+        {
+          title: "",
+          description: "",
+          url: "",
+        },
+      ],
+      certifications: [
+        {
+          name: "",
+          organization: "",
+          credentialId: "",
+          issueMonth: "",
+          issueYear: "",
+          expirationDate: "",
+          credentialUrl: "",
+        },
+      ],
+      languages: [
+        {
+          language: "",
+          proficiency: "",
+          certification: "",
+          yearsOfExperience: "",
         },
       ],
       skills: [],
