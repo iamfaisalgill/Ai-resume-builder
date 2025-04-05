@@ -51,7 +51,7 @@ const Skills = ({setPageIndex}) => {
     e.preventDefault()
     setLoading(true)
 
-    //await new Promise(resolve=>setTimeout(resolve, 1000))
+    await new Promise(resolve=>setTimeout(resolve, 1000))
    
     setResumeInfo((prev)=>({
       ...prev,
