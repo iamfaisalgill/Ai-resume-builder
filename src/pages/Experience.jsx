@@ -129,7 +129,7 @@ const Experience = ({setPageIndex}) => {
                   Job Title
                 </label>
                 <Input
-                  value={experienceList[index]?.jobTitle || ""}  // Controlled
+                  defaultValue={resumeInfo.experience[index].jobTitle} 
                   onChange={(e) => handleChange(index, e)}
                   name="jobTitle"
                   placeholder="e.g. Engineer"

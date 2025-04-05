@@ -79,6 +79,7 @@ const Skills = ({setPageIndex}) => {
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter a skill"
           className='!text-lg'
+          onKeyDown={handleKeyDown}
         />
         <Button onClick={addSkill} type="button" className='h-auto !text-lg' >Add Skill</Button>
       </div>
