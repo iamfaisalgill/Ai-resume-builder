@@ -85,7 +85,7 @@ const ContactDetails = ({setPageIndex}) => {
 
               <div className='col-span-1'>
               <label htmlFor="phoneNumber" className='text-sm font-medium tracking-wider'>Phone Number</label>
-                <Input required defaultValue={resumeInfo?.phoneNumber} onChange={handleChange} id="phoneNumber" name="phoneNumber" type='number' className='mt-2' placeholder="Phone Number" />
+                <Input required defaultValue={resumeInfo?.phoneNumber} onChange={handleChange} id="phoneNumber" name="phoneNumber" type='text' className='mt-2' placeholder="Phone Number" />
   
               </div>
 
