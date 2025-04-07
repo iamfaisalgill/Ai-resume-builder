@@ -40,11 +40,8 @@ export const ResumeInfoProvider = ({ children }) => {
         {
           name: "",
           organization: "",
-          credentialId: "",
           issueMonth: "",
           issueYear: "",
-          expirationDate: "",
-          credentialUrl: "",
         },
       ],
       languages: [

@@ -26,8 +26,9 @@ const formField = {
 const Languages = () => {
   const { resumeInfo, setResumeInfo } = useResume();
   const [languageList, setLanguageList] = useState(
-    resumeInfo.languages ? resumeInfo.languages : [formField]
+    resumeInfo.languages.length>0 ? resumeInfo.languages : [formField]
   );
+  const [loading, setLoading] = useState(false)
 
   const addMore = () => {
     setLanguageList([...languageList, formField]);
@@ -64,9 +65,13 @@ const Languages = () => {
     });
   };
 
-  const onSave = (e) => {
+  const onSave = async (e) => {
     e.preventDefault();
+    setLoading(true)
+    await new Promise(resolve=>setTimeout(resolve, 1000))
+
     setResumeInfo((prev) => ({ ...prev, languages: languageList }));
+    setLoading(false)
   };
 
   return (

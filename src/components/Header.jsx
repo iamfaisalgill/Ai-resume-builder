@@ -60,6 +60,25 @@ const Header = ({pageIndex, setPageIndex}) => {
           <span className={isSummaryPath ? "font-normal text-primary":"text-muted-foreground"}>
             Summary
           </span>
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span class="text-muted-foreground">
+            Certifications
+          </span>
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span class="text-muted-foreground">
+            Projects
+          </span> 
+          <span className="text-gray-400">
+            <ChevronRight className="size-3" />
+          </span>
+          <span class="text-muted-foreground">
+            Language
+          </span>
+         
         </div>
       ) : (
         <div className="flex items-center">
