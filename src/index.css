@@ -134,10 +134,13 @@
     padding: 0 !important;
     height: auto !important;
   }
-  #no-print {
+  .no-print {
     display: none !important;
   }
-  #print-area {
+  .print-area {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
