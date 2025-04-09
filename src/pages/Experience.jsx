@@ -46,7 +46,7 @@ const years = Array.from(
 const Experience = ({setPageIndex}) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [experienceList, setExperienceList] = useState(
-    resumeInfo.experience.length > 0 ? resumeInfo.experience : [formField]
+    resumeInfo.experience?.length? resumeInfo.experience : [formField]
   );
   const [loading, setLoading] = useState(false)
 
@@ -68,23 +68,15 @@ const Experience = ({setPageIndex}) => {
   };
 
   const addMoreExperience = () => {
-    setExperienceList([...experienceList, formField]);
-    setResumeInfo((prevInfo) => {
-      const newExperience = [...prevInfo.experience];
-      if (newExperience.length > 0) {
-        newExperience.push(formField);
-      }
-      return { ...prevInfo, experience: newExperience };
-    });
+    const newList = [...experienceList, formField]
+    setExperienceList(newList)
+    setResumeInfo(prev=>({...prev, experience: newList}))
   };
   const removeExperience = () => {
-    setResumeInfo((prevInfo) => {
-      const expInfo = [...prevInfo.experience]; 
-      if (expInfo.length > 1) {
-        expInfo.pop();
-      }
-      return { ...prevInfo, experience: expInfo }; // Return updated state
-    });
+    if(experienceList.length <=1) return
+    const newList = experienceList.slice(0,-1)
+    setExperienceList(newList)
+    setResumeInfo(prev=>({...prev, experience: newList}))
   };
   
 
@@ -107,11 +99,6 @@ const Experience = ({setPageIndex}) => {
     setPageIndex(3); // Navigate after saving
   };
 
-  useEffect(() => {
-    if (resumeInfo.experience.length > 0) {
-      setExperienceList(resumeInfo.experience);
-    }
-  }, [resumeInfo.experience]);
 
   return (
     <form onSubmit={onSave} className="space-y-9">
@@ -119,7 +106,7 @@ const Experience = ({setPageIndex}) => {
         <h2 className="text-2xl font-semibold">Work Experience</h2>
         <p className="lead">Let’s start with your most recent job.</p>
       </div>
-      {resumeInfo.experience.map((Item, index) => (
+      {experienceList.map((item, index) => (
         <div className="space-y-4" key={index}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Employer & Job Title */}
@@ -129,7 +116,7 @@ const Experience = ({setPageIndex}) => {
                   Job Title
                 </label>
                 <Input
-                  defaultValue={resumeInfo.experience[index].jobTitle} 
+                  defaultValue={item.jobTitle} 
                   onChange={(e) => handleChange(index, e)}
                   name="jobTitle"
                   placeholder="e.g. Engineer"
@@ -141,7 +128,7 @@ const Experience = ({setPageIndex}) => {
                   Company
                 </label>
                 <Input
-                  defaultValue={resumeInfo.experience[index].company}
+                  defaultValue={item.company}
                   onChange={(e) => handleChange(index, e)}
                   required
                   name="company"
@@ -162,7 +149,7 @@ const Experience = ({setPageIndex}) => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index].startMonth}
+                    defaultValue={item.startMonth}
                     onValueChange={(value) =>
                       handleChange(index, value, "startMonth")
                     }
@@ -187,7 +174,7 @@ const Experience = ({setPageIndex}) => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index].startYear}
+                    defaultValue={item.startYear}
                     onValueChange={(value) =>
                       handleChange(index, value, "startYear")
                     }
@@ -216,7 +203,7 @@ const Experience = ({setPageIndex}) => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index].endMonth}
+                    defaultValue={item.endMonth}
                     onValueChange={(value) =>
                       handleChange(index, value, "endMonth")
                     }
@@ -241,7 +228,7 @@ const Experience = ({setPageIndex}) => {
                     </label>
                   </p>
                   <Select
-                    defaultValue={resumeInfo.experience[index].endYear}
+                    defaultValue={item.endYear}
                     onValueChange={(value) =>
                       handleChange(index, value, "endYear")
                     }
@@ -273,7 +260,7 @@ const Experience = ({setPageIndex}) => {
           <label className="text-sm font-medium tracking-wider">
                  Description
                  </label>
-            <Textarea defaultValue={resumeInfo.experience[index].description}
+            <Textarea defaultValue={item.description}
                   onChange={(e) => handleChange(index, e)}
                   name="description"
                   placeholder="Enter description"
