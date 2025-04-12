@@ -1,10 +1,36 @@
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Palette, Pencil, Plus } from "lucide-react"
 import Logo from '/logo.svg'
+import clsx from "clsx"
+import { useState } from "react"
+import ContactInfoDialog from "./dialogs/ContactInfoDialog"
 
+const sections = [
+  "Contact information",
+  "Experience",
+  "Skills",
+  "Language",
+  "Education",
+  "Professional Summary",
+]
 
 export default function ResumeSidebar() {
+  const [activeDialog, setActiveDialog] = useState(null)
+
+  const closeDialog = () => setActiveDialog(null)
+
   return (
     <div className="w-64 bg-card border-r h-screen flex flex-col fixed top-0 left-0 no-print">
       <div className="w-full p-7 flex items-center gap-2 text-primary border-b">
@@ -25,24 +51,121 @@ export default function ResumeSidebar() {
         </Button>
       </div>
       <ScrollArea className="h-48 flex-1">
-          <div className="space-y-2 text-sm divide-y">
-              <SidebarItem label="Contact information" onClick={()=>console.log('Contact information')} />
-              <SidebarItem label="Experience" onClick={()=>console.log('Experience')} />
-              <SidebarItem label="Skills" />
-              <SidebarItem label="Language" />
-              <SidebarItem label="Education" />
-              <SidebarItem label="Professional Summary" />
-          </div>
+        <div className="space-y-2 text-sm divide-y">
+          {sections.map((label) => (
+            <SidebarItem
+              key={label}
+              label={label}
+              active={activeDialog === label}
+              onClick={() => setActiveDialog(label)}
+            />
+          ))}
+        </div>
       </ScrollArea>
+
+      {/* Dialogs for each section */}
+      {activeDialog === "Contact information" && (
+        <ContactInfoDialog isOpen={true} onClose={closeDialog} />
+      )}
+      {activeDialog === "Experience" && (
+        <ExperienceDialog isOpen={true} onClose={closeDialog} />
+      )}
+      {activeDialog === "Skills" && (
+        <SkillsDialog isOpen={true} onClose={closeDialog} />
+      )}
+      {/* Add more dialogs for other sections as needed */}
     </div>
   )
 }
 
-function SidebarItem({ label }) {
+function SidebarItem({
+  label,
+  active,
+  onClick,
+}) {
   return (
-    <div className="flex items-center justify-between px-4 py-2 hover:bg-accent cursor-pointer">
+    <div
+      className={clsx(
+        "flex items-center justify-between px-2 py-2 rounded-md cursor-pointer",
+        active ? "bg-accent font-medium" : "hover:bg-accent"
+      )}
+      onClick={onClick}
+    >
       <span>{label}</span>
-      <button className="text-xs text-muted-foreground hover:text-primary"><Pencil size={15}/></button>
+      <button className="text-xs text-muted-foreground hover:text-primary">
+        <Pencil size={15} />
+      </button>
     </div>
   )
 }
+
+// Dialog components for each section
+
+
+function ExperienceDialog({ isOpen, onClose }) {
+
+  
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[600px]">
+        <DialogHeader>
+          <DialogTitle>Experience</DialogTitle>
+          <DialogDescription>
+            Add or edit your work experience.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="job-title" className="text-right">
+              Job Title
+            </Label>
+            <Input id="job-title" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="company" className="text-right">
+              Company
+            </Label>
+            <Input id="company" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="duration" className="text-right">
+              Duration
+            </Label>
+            <Input id="duration" className="col-span-3" />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save experience</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function SkillsDialog({ isOpen, onClose }) {
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Skills</DialogTitle>
+          <DialogDescription>
+            Add or edit your skills.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="skills" className="text-right">
+              Skills
+            </Label>
+            <Input id="skills" className="col-span-3" />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit">Save skills</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+// Add similar dialog components for other sections (Language, Education, Professional Summary)
