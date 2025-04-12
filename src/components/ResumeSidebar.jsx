@@ -16,6 +16,8 @@ import Logo from '/logo.svg'
 import clsx from "clsx"
 import { useState } from "react"
 import ContactInfoDialog from "./dialogs/ContactInfoDialog"
+import ExperienceDialog from "./dialogs/ExperienceDialog"
+import SkillsDialog from "./dialogs/SkillsDialog"
 
 const sections = [
   "Contact information",
@@ -98,74 +100,3 @@ function SidebarItem({
     </div>
   )
 }
-
-// Dialog components for each section
-
-
-function ExperienceDialog({ isOpen, onClose }) {
-
-  
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>Experience</DialogTitle>
-          <DialogDescription>
-            Add or edit your work experience.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="job-title" className="text-right">
-              Job Title
-            </Label>
-            <Input id="job-title" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="company" className="text-right">
-              Company
-            </Label>
-            <Input id="company" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="duration" className="text-right">
-              Duration
-            </Label>
-            <Input id="duration" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save experience</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-function SkillsDialog({ isOpen, onClose }) {
-  return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Skills</DialogTitle>
-          <DialogDescription>
-            Add or edit your skills.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="skills" className="text-right">
-              Skills
-            </Label>
-            <Input id="skills" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save skills</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-// Add similar dialog components for other sections (Language, Education, Professional Summary)
