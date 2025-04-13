@@ -8,6 +8,7 @@ import DownloadFile from './pages/[selectedTheme]/download/DownloadFile'
 import { ThemeProvider } from "@/components/theme-provider"
 import { ResumeInfoProvider } from './context/ResumeInfoContext'
 import ResumeBuild from './pages/ResumeBuild'
+import { Toaster } from './components/ui/sonner'
 
 function App() {
   const [pageIndex, setPageIndex] = useState(1);
@@ -21,6 +22,7 @@ function App() {
               <Route path='/select-theme' element={<><Header pageIndex={pageIndex} setPageIndex={setPageIndex} /><SelectTheme/></>} />
               <Route path='/:selectedTheme/download' element={<DownloadFile/>} />
             </Routes>
+            <Toaster />
           </ThemeProvider>
         </ResumeInfoProvider>
     </>
