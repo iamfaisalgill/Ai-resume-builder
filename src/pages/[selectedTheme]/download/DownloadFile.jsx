@@ -23,7 +23,7 @@ const DownloadFile = () => {
     <div>
     <ResumeSidebar/>
       <div className="ml-64  print:ml-0">
-      <div className="bg-card p-6 flex items-center justify-between no-print">
+      <div className="bg-card border-b p-6 flex items-center justify-between no-print">
         <div className=" flex items-center">
           <h3 className="text-xl font-bold">Your resume is ready!</h3>
           <div className="h-10 border-r mx-4"></div>

@@ -5,7 +5,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,9 +23,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner"
 import { useResume } from "@/context/ResumeInfoContext";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, TrashIcon } from "lucide-react";
 import { Textarea } from "../ui/textarea";
+import { useEffect, useState } from "react";
 
 const months = [
   "January",
@@ -60,6 +61,56 @@ const years = Array.from(
 
 export default function ExperienceDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
+  const [experienceList, setExperienceList] = useState([...resumeInfo.experience]);
+  const [openItem, setOpenItem] = useState(null);
+
+  const addMore = () => {
+    const newIndex = experienceList.length + 1;
+    setExperienceList([...experienceList, formField]);
+    setOpenItem(`item-${newIndex}`); // Set the new item as open
+  };
+
+  const handleChange = (index, eOrValue, fieldName = null) => {
+    setExperienceList(prevList => {
+      const newEntries = [...prevList]
+      if (typeof eOrValue === 'object' && eOrValue.target) {
+        const { name, value } = eOrValue.target
+        newEntries[index] = { ...newEntries[index], [name]: value }
+      } else if (fieldName) {
+        // Handle Select dropdowns
+        newEntries[index] = { ...newEntries[index], [fieldName]: eOrValue };
+      }
+
+      return newEntries;
+    })
+  }
+
+  const handleSave = () => {
+    setResumeInfo(prev => ({
+      ...prev,
+      experience: [...experienceList],
+    }));
+    toast.success(
+      <div className="flex items-center gap-2">
+        <span>Details Updated</span>
+      </div>,
+      {
+        style: {
+          background: "#f0fdf4", // Light green background
+          border: "1px solid #bbf7d0", // Light green border
+          color: "#166534", // Dark green text
+        },
+        duration: 2000,
+      }
+    );
+  }
+
+
+  useEffect(() => {
+    console.log(experienceList);
+  }, [experienceList])
+
+
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -71,153 +122,180 @@ export default function ExperienceDialog({ isOpen, onClose }) {
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-[400px]">
+
           <div className="space-y-4">
-            <Accordion type="single" collapsible className="w-full space-y-4">
-              <AccordionItem value="item-1" className='p-3 AccordionItem'>
-                <AccordionTrigger className="AccordionTrigger">
-                  <div>
-                    <h4 className="font-semibold">
-                      Backend Developer at Netflix
-                    </h4>
-                    <p className="text-muted-foreground font-normal">
-                      January 2025
-                    </p>
+            <Accordion type="single" collapsible className="w-full" value={openItem}
+              onValueChange={setOpenItem}>
+              {experienceList.map((item, index) => (
+                <AccordionItem value={`item-${index + 1}`} key={index} className='pr-4 py-2 border-0 AccordionItem'>
+                  <div className="flex items-center accordion-item-inner">
+                    <AccordionTrigger className="AccordionTrigger items-center">
+                      <div className="">
+                        <h4 className="font-semibold">
+                          Backend Developer at Netflix
+                        </h4>
+                        <p className="text-muted-foreground font-normal">
+                          January 2025
+                        </p>
+                      </div>
+                    </AccordionTrigger>
+                    <TrashIcon/>
                   </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="mt-3 space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Employer & Job Title */}
-                      <div>
-                        <div>
-                          <label className="text-sm font-medium tracking-wider">
-                            Job Title
-                          </label>
-                          <Input placeholder="e.g. Engineer" className="mt-2" />
+                  <AccordionContent className='pb-0'>
+                    <div className="mt-3 space-y-4">
+                      <div className="grid grid-cols-1 gap-4">
+                        {/* Employer & Job Title */}
+                        <div className=" space-y-3">
+                          <div>
+                            <Label>
+                              Job Title
+                            </Label>
+                            <Input defaultValue={item.jobTitle}
+                              onChange={(e) => handleChange(index, e)}
+                              name="jobTitle" placeholder="e.g. Engineer" className="mt-2" />
+                          </div>
+                          <div>
+                            <Label>
+                              Company
+                            </Label>
+                            <Input defaultValue={item.company}
+                              onChange={(e) => handleChange(index, e)}
+                              name="company" placeholder="e.g. IBM" className="mt-2" />
+                          </div>
                         </div>
-                        <div>
-                          <label className="text-sm font-medium tracking-wider">
-                            Company
-                          </label>
-                          <Input placeholder="e.g. IBM" className="mt-2" />
+
+                        {/* Start date & End date */}
+                        <div className=" space-y-3">
+                          {/* Start Date */}
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <p className="mb-2">
+                                <Label>
+                                  Start date
+                                </Label>
+                              </p>
+                              <Select defaultValue={item.startMonth}
+                                onValueChange={(value) =>
+                                  handleChange(index, value, "startMonth")
+                                }
+                                name="startMonth">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Month" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {months.map((month) => (
+                                    <SelectItem key={month} value={month}>
+                                      {month}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <p className="mb-2">
+                                <Label>
+                                  &nbsp;
+                                </Label>
+                              </p>
+                              <Select defaultValue={item.startYear}
+                                onValueChange={(value) =>
+                                  handleChange(index, value, "startYear")
+                                } name="startYear">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Year" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {years.map((year) => (
+                                    <SelectItem
+                                      key={year}
+                                      value={year.toString()}
+                                    >
+                                      {year}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+
+                          {/* End Date */}
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <p className="mb-2">
+                                <Label>
+                                  End date
+                                </Label>
+                              </p>
+                              <Select defaultValue={item.endMonth}
+                                onValueChange={(value) =>
+                                  handleChange(index, value, "endMonth")
+                                } name="endMonth">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Month" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {months.map((month) => (
+                                    <SelectItem key={month} value={month}>
+                                      {month}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <p className="mb-2">
+                                <Label>
+                                  &nbsp;
+                                </Label>
+                              </p>
+                              <Select defaultValue={item.endYear}
+                                onValueChange={(value) =>
+                                  handleChange(index, value, "endYear")
+                                } name="endYear">
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Year" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {years.map((year) => (
+                                    <SelectItem
+                                      key={year}
+                                      value={year.toString()}
+                                    >
+                                      {year}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Start date & End date */}
                       <div>
-                        {/* Start Date */}
-                        <div className="grid grid-cols-2 gap-2">
-                          <div>
-                            <p className="mb-2">
-                              <label className="text-sm font-medium tracking-wider mb-2">
-                                Start date
-                              </label>
-                            </p>
-                            <Select name="startMonth">
-                              <SelectTrigger>
-                                <SelectValue placeholder="Month" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {months.map((month) => (
-                                  <SelectItem key={month} value={month}>
-                                    {month}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <p className="mb-2">
-                              <label className="text-sm font-medium tracking-wider mb-2">
-                                &nbsp;
-                              </label>
-                            </p>
-                            <Select name="startYear">
-                              <SelectTrigger>
-                                <SelectValue placeholder="Year" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {years.map((year) => (
-                                  <SelectItem
-                                    key={year}
-                                    value={year.toString()}
-                                  >
-                                    {year}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-
-                        {/* End Date */}
-                        <div className="grid grid-cols-2 gap-2">
-                          <div>
-                            <p className="mb-2">
-                              <label className="text-sm font-medium tracking-wider">
-                                End date
-                              </label>
-                            </p>
-                            <Select name="endMonth">
-                              <SelectTrigger>
-                                <SelectValue placeholder="Month" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {months.map((month) => (
-                                  <SelectItem key={month} value={month}>
-                                    {month}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div>
-                            <p className="mb-2">
-                              <label className="text-sm font-medium tracking-wider">
-                                &nbsp;
-                              </label>
-                            </p>
-                            <Select name="endYear">
-                              <SelectTrigger>
-                                <SelectValue placeholder="Year" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {years.map((year) => (
-                                  <SelectItem
-                                    key={year}
-                                    value={year.toString()}
-                                  >
-                                    {year}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
+                        <Label>
+                          Description (Optional)
+                        </Label>
+                        <Textarea defaultValue={item.description}
+                          onChange={(e) => handleChange(index, e)}
+                          name="description"
+                          placeholder="Add tasks you performed at this job to fill in this section"
+                          className="mt-2"
+                          id="description"
+                        />
                       </div>
                     </div>
-
-                    <div>
-                      <label className="text-sm font-medium tracking-wider">
-                        Description (Optional)
-                      </label>
-                      <Textarea
-                        placeholder="Enter description"
-                        className="mt-2"
-                        id="description"
-                      />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
             </Accordion>
-            <Button variant={"outline"}>
+            <Button variant={"outline"} onClick={addMore} >
               <PlusCircle /> Add another position
             </Button>
           </div>
+
         </ScrollArea>
         <DialogFooter>
-          <Button type="submit">Save experience</Button>
+          <Button onClick={handleSave}>Save experience</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
