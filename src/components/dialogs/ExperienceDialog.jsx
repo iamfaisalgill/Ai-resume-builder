@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -28,6 +29,7 @@ import { useResume } from "@/context/ResumeInfoContext";
 import { PlusCircle, TrashIcon } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 
 const months = [
   "January",
@@ -63,11 +65,13 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
   const [experienceList, setExperienceList] = useState([...resumeInfo.experience]);
   const [openItem, setOpenItem] = useState(null);
+  const [isEditing, setIsEditing] = useState(true)
 
   const addMore = () => {
     const newIndex = experienceList.length + 1;
     setExperienceList([...experienceList, formField]);
     setOpenItem(`item-${newIndex}`); // Set the new item as open
+    setIsEditing(false)
   };
 
   const handleChange = (index, eOrValue, fieldName = null) => {
@@ -83,6 +87,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
 
       return newEntries;
     })
+    setIsEditing(false)
   }
 
   const handleSave = () => {
@@ -103,43 +108,45 @@ export default function ExperienceDialog({ isOpen, onClose }) {
         duration: 2000,
       }
     );
+    setIsEditing(true)
   }
 
-
-  useEffect(() => {
-    console.log(experienceList);
-  }, [experienceList])
-
+  const deleteThis = (index) => {
+    confirm("Are you sure you want to delete this?")
+    setExperienceList(prevList => prevList.filter((_, i) => i !== index));
+    setIsEditing(false)
+  }
+  
 
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[700px] sm:min-w-[700px] sm:min-h-[550px]">
-        <DialogHeader className='border-b pb-3'>
+      <DialogContent className="sm:max-w-[700px] sm:min-w-[700px] sm:min-h-[550px] p-0">
+        <DialogHeader className='border-b px-6 pt-6 pb-3'>
           <DialogTitle>Experience</DialogTitle>
           <DialogDescription>
             Add or edit your work experience.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[400px]">
+        <ScrollArea className="h-[400px] pl-6 ">
 
           <div className="space-y-4">
             <Accordion type="single" collapsible className="w-full" value={openItem}
               onValueChange={setOpenItem}>
               {experienceList.map((item, index) => (
                 <AccordionItem value={`item-${index + 1}`} key={index} className='pr-4 py-2 border-0 AccordionItem'>
-                  <div className="flex items-center accordion-item-inner">
+                  <div className="flex items-center gap-2 accordion-item-inner">
                     <AccordionTrigger className="AccordionTrigger items-center">
-                      <div className="">
+                      <div className={clsx(item.jobTitle?"visible": "invisible")}>
                         <h4 className="font-semibold">
-                          Backend Developer at Netflix
+                          {item.jobTitle} at {item.company}
                         </h4>
                         <p className="text-muted-foreground font-normal">
-                          January 2025
+                          {item.startMonth} {item.startYear} {item.endMonth && "-"} {item.endMonth} {item.endYear}
                         </p>
                       </div>
                     </AccordionTrigger>
-                    <TrashIcon/>
+                    <button onClick={()=>deleteThis(index)} className="cursor-pointer text-foreground hover:text-primary"><TrashIcon size={20}/></button>
                   </div>
                   <AccordionContent className='pb-0'>
                     <div className="mt-3 space-y-4">
@@ -294,8 +301,13 @@ export default function ExperienceDialog({ isOpen, onClose }) {
           </div>
 
         </ScrollArea>
-        <DialogFooter>
-          <Button onClick={handleSave}>Save experience</Button>
+        <DialogFooter className='px-6 pb-6'>
+        <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Cancle
+            </Button>
+          </DialogClose>
+          <Button onClick={handleSave} disabled={isEditing}>Save experience</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
