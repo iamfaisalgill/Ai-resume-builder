@@ -64,15 +64,25 @@ const years = Array.from(
 export default function ExperienceDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
   const [experienceList, setExperienceList] = useState([...resumeInfo.experience]);
-  const [openItem, setOpenItem] = useState(null);
+  const [openItem, setOpenItem] = useState("");
   const [isEditing, setIsEditing] = useState(true)
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
 
+
+  // TODO: prevent empty values from saving
   const addMore = () => {
     const newIndex = experienceList.length + 1;
     setExperienceList([...experienceList, formField]);
     setOpenItem(`item-${newIndex}`); // Set the new item as open
-    setIsEditing(false)
   };
+  
+  useEffect(()=>{
+    if (openItem==="") {
+      setIsAccordionOpen(false)
+    }else{
+      setIsAccordionOpen(true)
+    }
+  },[openItem])
 
   const handleChange = (index, eOrValue, fieldName = null) => {
     setExperienceList(prevList => {
@@ -117,185 +127,185 @@ export default function ExperienceDialog({ isOpen, onClose }) {
     setIsEditing(false)
   }
   
-
+  //TODO: disable the accordion-items that are not opened
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[700px] sm:min-w-[700px] sm:min-h-[550px] p-0">
+      <DialogContent className="sm:max-w-[700px] sm:min-w-[700px] sm:min-h-[550px] p-0 gap-0">
         <DialogHeader className='border-b px-6 pt-6 pb-3'>
           <DialogTitle>Experience</DialogTitle>
           <DialogDescription>
             Add or edit your work experience.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[400px] pl-6 ">
+        <ScrollArea className="h-[450px] pl-6 py-6">
 
           <div className="space-y-4">
             <Accordion type="single" collapsible className="w-full" value={openItem}
               onValueChange={setOpenItem}>
               {experienceList.map((item, index) => (
-                <AccordionItem value={`item-${index + 1}`} key={index} className='pr-4 py-2 border-0 AccordionItem'>
-                  <div className="flex items-center gap-2 accordion-item-inner">
-                    <AccordionTrigger className="AccordionTrigger items-center">
-                      <div className={clsx(item.jobTitle?"visible": "invisible")}>
-                        <h4 className="font-semibold">
-                          {item.jobTitle} at {item.company}
-                        </h4>
-                        <p className="text-muted-foreground font-normal">
-                          {item.startMonth} {item.startYear} {item.endMonth && "-"} {item.endMonth} {item.endYear}
-                        </p>
-                      </div>
-                    </AccordionTrigger>
-                    <button onClick={()=>deleteThis(index)} className="cursor-pointer text-foreground hover:text-primary"><TrashIcon size={20}/></button>
-                  </div>
-                  <AccordionContent className='pb-0'>
-                    <div className="mt-3 space-y-4">
-                      <div className="grid grid-cols-1 gap-4">
-                        {/* Employer & Job Title */}
-                        <div className=" space-y-3">
-                          <div>
-                            <Label>
-                              Job Title
-                            </Label>
-                            <Input defaultValue={item.jobTitle}
-                              onChange={(e) => handleChange(index, e)}
-                              name="jobTitle" placeholder="e.g. Engineer" className="mt-2" />
+                <div className="flex gap-2 space-y-3" key={index}>
+                  <AccordionItem value={`item-${index + 1}`} className='flex-1 border-0 AccordionItem rounded-lg'>
+                      <AccordionTrigger className="AccordionTrigger px-5 items-center">
+                        <div className={clsx(item.jobTitle?"visible": "invisible")}>
+                          <h4 className="font-semibold">
+                            {item.jobTitle} {item.company&&"at"} {item.company}
+                          </h4>
+                          <p className="text-muted-foreground font-normal">
+                            {item.startMonth} {item.startYear} {item.endMonth && "-"} {item.endMonth} {item.endYear}
+                          </p>
+                        </div>
+                      </AccordionTrigger>
+                    <AccordionContent className='p-5 border-0 outline-0'>
+                      <div className="mt-3 space-y-4">
+                        <div className="grid grid-cols-1 gap-4">
+                          {/* Employer & Job Title */}
+                          <div className=" space-y-3">
+                            <div>
+                              <Label>
+                                Job Title
+                              </Label>
+                              <Input defaultValue={item.jobTitle}
+                                onChange={(e) => handleChange(index, e)}
+                                name="jobTitle" placeholder="e.g. Engineer" className="mt-2 bg-card" />
+                            </div>
+                            <div>
+                              <Label>
+                                Company
+                              </Label>
+                              <Input defaultValue={item.company}
+                                onChange={(e) => handleChange(index, e)}
+                                name="company" placeholder="e.g. IBM" className="mt-2 bg-card" />
+                            </div>
                           </div>
-                          <div>
-                            <Label>
-                              Company
-                            </Label>
-                            <Input defaultValue={item.company}
-                              onChange={(e) => handleChange(index, e)}
-                              name="company" placeholder="e.g. IBM" className="mt-2" />
+  
+                          {/* Start date & End date */}
+                          <div className=" space-y-3">
+                            {/* Start Date */}
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <p className="mb-2">
+                                  <Label>
+                                    Start date
+                                  </Label>
+                                </p>
+                                <Select defaultValue={item.startMonth}
+                                  onValueChange={(value) =>
+                                    handleChange(index, value, "startMonth")
+                                  }
+                                  name="startMonth">
+                                  <SelectTrigger className='bg-card'>
+                                    <SelectValue placeholder="Month" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {months.map((month) => (
+                                      <SelectItem key={month} value={month}>
+                                        {month}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div>
+                                <p className="mb-2">
+                                  <Label>
+                                    &nbsp;
+                                  </Label>
+                                </p>
+                                <Select defaultValue={item.startYear}
+                                  onValueChange={(value) =>
+                                    handleChange(index, value, "startYear")
+                                  } name="startYear">
+                                  <SelectTrigger className='bg-card'>
+                                    <SelectValue placeholder="Year" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {years.map((year) => (
+                                      <SelectItem
+                                        key={year}
+                                        value={year.toString()}
+                                      >
+                                        {year}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
+  
+                            {/* End Date */}
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <p className="mb-2">
+                                  <Label>
+                                    End date
+                                  </Label>
+                                </p>
+                                <Select defaultValue={item.endMonth}
+                                  onValueChange={(value) =>
+                                    handleChange(index, value, "endMonth")
+                                  } name="endMonth">
+                                  <SelectTrigger className='bg-card'>
+                                    <SelectValue placeholder="Month" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {months.map((month) => (
+                                      <SelectItem key={month} value={month}>
+                                        {month}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div>
+                                <p className="mb-2">
+                                  <Label>
+                                    &nbsp;
+                                  </Label>
+                                </p>
+                                <Select defaultValue={item.endYear}
+                                  onValueChange={(value) =>
+                                    handleChange(index, value, "endYear")
+                                  } name="endYear">
+                                  <SelectTrigger className='bg-card'>
+                                    <SelectValue placeholder="Year" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {years.map((year) => (
+                                      <SelectItem
+                                        key={year}
+                                        value={year.toString()}
+                                      >
+                                        {year}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </div>
                           </div>
                         </div>
-
-                        {/* Start date & End date */}
-                        <div className=" space-y-3">
-                          {/* Start Date */}
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <p className="mb-2">
-                                <Label>
-                                  Start date
-                                </Label>
-                              </p>
-                              <Select defaultValue={item.startMonth}
-                                onValueChange={(value) =>
-                                  handleChange(index, value, "startMonth")
-                                }
-                                name="startMonth">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Month" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {months.map((month) => (
-                                    <SelectItem key={month} value={month}>
-                                      {month}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div>
-                              <p className="mb-2">
-                                <Label>
-                                  &nbsp;
-                                </Label>
-                              </p>
-                              <Select defaultValue={item.startYear}
-                                onValueChange={(value) =>
-                                  handleChange(index, value, "startYear")
-                                } name="startYear">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Year" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {years.map((year) => (
-                                    <SelectItem
-                                      key={year}
-                                      value={year.toString()}
-                                    >
-                                      {year}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
-
-                          {/* End Date */}
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <p className="mb-2">
-                                <Label>
-                                  End date
-                                </Label>
-                              </p>
-                              <Select defaultValue={item.endMonth}
-                                onValueChange={(value) =>
-                                  handleChange(index, value, "endMonth")
-                                } name="endMonth">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Month" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {months.map((month) => (
-                                    <SelectItem key={month} value={month}>
-                                      {month}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div>
-                              <p className="mb-2">
-                                <Label>
-                                  &nbsp;
-                                </Label>
-                              </p>
-                              <Select defaultValue={item.endYear}
-                                onValueChange={(value) =>
-                                  handleChange(index, value, "endYear")
-                                } name="endYear">
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Year" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {years.map((year) => (
-                                    <SelectItem
-                                      key={year}
-                                      value={year.toString()}
-                                    >
-                                      {year}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
+  
+                        <div>
+                          <Label>
+                            Description (Optional)
+                          </Label>
+                          <Textarea defaultValue={item.description}
+                            onChange={(e) => handleChange(index, e)}
+                            name="description"
+                            placeholder="Add tasks you performed at this job to fill in this section"
+                            className="mt-2 bg-card"
+                            id="description"
+                          />
                         </div>
                       </div>
-
-                      <div>
-                        <Label>
-                          Description (Optional)
-                        </Label>
-                        <Textarea defaultValue={item.description}
-                          onChange={(e) => handleChange(index, e)}
-                          name="description"
-                          placeholder="Add tasks you performed at this job to fill in this section"
-                          className="mt-2"
-                          id="description"
-                        />
-                      </div>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                    </AccordionContent>
+                  </AccordionItem>
+                  <button onClick={()=>deleteThis(index)} className="self-start mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70"><TrashIcon size={20}/></button>
+                </div>
               ))}
             </Accordion>
-            <Button variant={"outline"} onClick={addMore} >
+            <Button variant={"outline"} onClick={addMore} disabled={isAccordionOpen}>
               <PlusCircle /> Add another position
             </Button>
           </div>
