@@ -24,6 +24,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { toast } from "sonner"
 import { useResume } from "@/context/ResumeInfoContext";
 import { PlusCircle, TrashIcon } from "lucide-react";
@@ -47,13 +58,14 @@ const months = [
 ];
 
 const formField = {
-  jobTitle: "",
-  company: "",
-  startMonth: "",
-  startYear: "",
-  endMonth: "",
-  endYear: "",
-  description: "",
+  jobTitle: '',
+  company: '',
+  startMonth: '',
+  startYear: '',
+  endMonth: '',
+  endYear: '',
+  description: '',
+  isNew: true // Add this flag
 };
 
 const years = Array.from(
@@ -69,35 +81,32 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
 
 
-  // TODO: prevent empty values from saving
   const addMore = () => {
     const newIndex = experienceList.length + 1;
-    setExperienceList([...experienceList, formField]);
-    setOpenItem(`item-${newIndex}`); // Set the new item as open
+    setExperienceList([...experienceList, { ...formField, isNew: true }]);
+    setOpenItem(`item-${newIndex}`);
   };
-  
-  useEffect(()=>{
-    if (openItem==="") {
+
+  useEffect(() => {
+    if (openItem === "") {
       setIsAccordionOpen(false)
-    }else{
+    } else {
       setIsAccordionOpen(true)
     }
-  },[openItem])
+  }, [openItem])
 
   const handleChange = (index, eOrValue, fieldName = null) => {
     setExperienceList(prevList => {
-      const newEntries = [...prevList]
+      const newEntries = [...prevList];
       if (typeof eOrValue === 'object' && eOrValue.target) {
-        const { name, value } = eOrValue.target
-        newEntries[index] = { ...newEntries[index], [name]: value }
+        const { name, value } = eOrValue.target;
+        newEntries[index] = { ...newEntries[index], [name]: value, isNew: false };
       } else if (fieldName) {
-        // Handle Select dropdowns
-        newEntries[index] = { ...newEntries[index], [fieldName]: eOrValue };
+        newEntries[index] = { ...newEntries[index], [fieldName]: eOrValue, isNew: false };
       }
-
       return newEntries;
-    })
-    setIsEditing(false)
+    });
+    setIsEditing(false);
   }
 
   const handleSave = () => {
@@ -122,12 +131,28 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   }
 
   const deleteThis = (index) => {
-    confirm("Are you sure you want to delete this?")
-    setExperienceList(prevList => prevList.filter((_, i) => i !== index));
-    setIsEditing(false)
-  }
+    const newList = experienceList.filter((_, i) => i !== index);
+    
+    // Handle openItem state
+    if (openItem === `item-${index + 1}`) {
+      // If we're deleting the currently open item, close it
+      setOpenItem("");
+    } else if (openItem) {
+      // If we're deleting an item before the open one, adjust the openItem index
+      const openIndex = parseInt(openItem.split('-')[1]);
+      if (index < openIndex - 1) {
+        setOpenItem(`item-${openIndex - 1}`);
+      }
+    }
   
-  //TODO: disable the accordion-items that are not opened
+    setExperienceList(newList);
+    setResumeInfo(prev => ({
+      ...prev,
+      experience: newList,
+    }));
+    setIsEditing(false);
+  }
+
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -141,21 +166,39 @@ export default function ExperienceDialog({ isOpen, onClose }) {
         <ScrollArea className="h-[450px] pl-6 py-6">
 
           <div className="space-y-4">
-            <Accordion type="single" collapsible className="w-full" value={openItem}
-              onValueChange={setOpenItem}>
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="w-full" 
+            value={openItem}
+            onValueChange={(value) => {
+              // If collapsing an item (value is empty) and it's a new empty item
+              if (!value && openItem) {
+                const index = parseInt(openItem.split('-')[1]) - 1;
+                const item = experienceList[index];
+                
+                // Check if the item is empty (new and not modified)
+                if (item.isNew && !item.jobTitle && !item.company) {
+                  deleteThis(index); // Remove the empty item
+                  return;
+                }
+              }
+              setOpenItem(value);
+            }}
+          >
               {experienceList.map((item, index) => (
                 <div className="flex gap-2 space-y-3" key={index}>
                   <AccordionItem value={`item-${index + 1}`} className='flex-1 border-0 AccordionItem rounded-lg'>
-                      <AccordionTrigger className="AccordionTrigger px-5 items-center">
-                        <div className={clsx(item.jobTitle?"visible": "invisible")}>
-                          <h4 className="font-semibold">
-                            {item.jobTitle} {item.company&&"at"} {item.company}
-                          </h4>
-                          <p className="text-muted-foreground font-normal">
-                            {item.startMonth} {item.startYear} {item.endMonth && "-"} {item.endMonth} {item.endYear}
-                          </p>
-                        </div>
-                      </AccordionTrigger>
+                    <AccordionTrigger className="AccordionTrigger px-5 items-center">
+                      <div className={clsx(item.jobTitle ? "visible" : "invisible")}>
+                        <h4 className="font-semibold">
+                          {item.jobTitle} {item.company && "at"} {item.company}
+                        </h4>
+                        <p className="text-muted-foreground font-normal">
+                          {item.startMonth} {item.startYear} {(!item.endMonth) && (item.startMonth && item.startYear)?"- current": ""} {item.endMonth && "-"} {item.endMonth} {item.endYear}
+                        </p>
+                      </div>
+                    </AccordionTrigger>
                     <AccordionContent className='p-5 border-0 outline-0'>
                       <div className="mt-3 space-y-4">
                         <div className="grid grid-cols-1 gap-4">
@@ -178,7 +221,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                 name="company" placeholder="e.g. IBM" className="mt-2 bg-card" />
                             </div>
                           </div>
-  
+
                           {/* Start date & End date */}
                           <div className=" space-y-3">
                             {/* Start Date */}
@@ -232,7 +275,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                 </Select>
                               </div>
                             </div>
-  
+
                             {/* End Date */}
                             <div className="grid grid-cols-2 gap-2">
                               <div>
@@ -285,7 +328,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                             </div>
                           </div>
                         </div>
-  
+
                         <div>
                           <Label>
                             Description (Optional)
@@ -301,7 +344,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                       </div>
                     </AccordionContent>
                   </AccordionItem>
-                  <button onClick={()=>deleteThis(index)} className="self-start mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70"><TrashIcon size={20}/></button>
+                  <button className="self-start mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70" onClick={() => deleteThis(index)}><TrashIcon size={20} /></button>
                 </div>
               ))}
             </Accordion>
@@ -312,7 +355,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
 
         </ScrollArea>
         <DialogFooter className='px-6 pb-6'>
-        <DialogClose asChild>
+          <DialogClose asChild>
             <Button type="button" variant="secondary">
               Cancle
             </Button>

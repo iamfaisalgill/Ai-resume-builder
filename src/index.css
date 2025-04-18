@@ -177,11 +177,11 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .AccordionTrigger[data-state="open"] {
-  @apply !border-primary
+  @apply !border-0
 }
 
 .AccordionItem[data-state="open"] {
-  @apply bg-background
+  @apply bg-accent
 }
 
 .accordion-item-inner > h3 {
