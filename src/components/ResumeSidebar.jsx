@@ -19,6 +19,7 @@ import ContactInfoDialog from "./dialogs/ContactInfoDialog"
 import ExperienceDialog from "./dialogs/ExperienceDialog"
 import SkillsDialog from "./dialogs/SkillsDialog"
 import SummaryDialog from "./dialogs/SummaryDialog"
+import EducationDialog from "./dialogs/EducationDialog"
 
 const sections = [
   "Contact information",
@@ -78,6 +79,9 @@ export default function ResumeSidebar() {
       )}
       {activeDialog === "Professional Summary" && (
         <SummaryDialog isOpen={true} onClose={closeDialog}/>
+      )}
+      {activeDialog === "Education" && (
+        <EducationDialog isOpen={true} onClose={closeDialog}/>
       )}
       {/* Add more dialogs for other sections as needed */}
     </div>

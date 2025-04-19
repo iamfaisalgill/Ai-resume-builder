@@ -27,6 +27,7 @@ export const ResumeInfoProvider = ({ children }) => {
           degree: "",
           graduationMonth: "",
           graduationYear: "",
+          fieldOfStudy: ""
         },
       ],
       projects: [
