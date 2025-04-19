@@ -357,10 +357,10 @@ export default function ExperienceDialog({ isOpen, onClose }) {
         <DialogFooter className='px-6 pb-6'>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
-              Cancle
+              Close
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={isEditing}>Save experience</Button>
+          <Button onClick={handleSave} disabled={isEditing}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
