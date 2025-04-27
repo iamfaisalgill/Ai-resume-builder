@@ -1,29 +1,37 @@
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import segeo from '../assets/fonts/segoeuithis.ttf';
+import segeo_bold from '../assets/fonts/segoeuithibd.ttf';
 
 Font.register({
-  family: 'Roboto',
-  src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
+  family: 'Segeo',
+  src: segeo,
+});
+Font.register({
+  family: 'Segeo-Bold',
+  src: segeo_bold,
 });
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    padding: 20,
-    fontFamily: 'Helvetica',
+    padding: 15,
+    fontFamily: 'Segeo',
   },
   name: {
     fontSize: 18, // reduced from 20
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
     textTransform: 'uppercase',
     marginBottom: 4,
   },
   contactInfo: {
-    fontSize: 8, // reduced from 9
+    fontSize: 9, // reduced from 9
     color: '#666666',
     marginBottom: 12,
   },
   sectionHeader: {
     fontSize: 11, // reduced from 12
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
     backgroundColor: '#EEEEEE',
     padding: 5,
@@ -52,10 +60,12 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     fontSize: 9, // reduced from 10
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
   },
   jobDate: {
     fontSize: 9, // reduced from 10
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
   },
   companyInfo: {
@@ -77,10 +87,12 @@ const styles = StyleSheet.create({
   },
   educationTitle: {
     fontSize: 9, // reduced from 10
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
   },
   educationDate: {
     fontSize: 9, // reduced from 10
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
   },
   educationSchool: {
@@ -99,6 +111,7 @@ const styles = StyleSheet.create({
   },
   projectTitle: {
     fontSize: 9, // reduced from 10
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
     marginBottom: 2,
   },
@@ -114,6 +127,7 @@ const styles = StyleSheet.create({
   languageTitle: {
     width: '33%',
     fontSize: 9, // reduced from 10
+    fontFamily: 'Segeo-Bold',
     fontWeight: 'bold',
     marginTop: 8,
     marginBottom: 2,

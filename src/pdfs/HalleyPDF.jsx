@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 11, // reduced from 12
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Georgia-Bold',
     fontWeight: 'bold',
     color: '#5F6A8A',
     marginBottom: 10,
@@ -85,13 +85,13 @@ const styles = StyleSheet.create({
     lineHeight: 1.4
   },
   rightText: {
-    fontSize: 8, // reduced from 9
+    fontSize: 9, // reduced from 9
     marginBottom: 4,
     lineHeight: 1.4
   },
   rightTitle: {
     fontSize: 11, // reduced from 12
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Georgia-Bold',
     fontWeight: 'bold',
     marginBottom: 8,
     marginTop: 15,
