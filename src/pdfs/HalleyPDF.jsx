@@ -213,6 +213,7 @@ const HalleyPDF = ({resumeInfo}) => {
         <Text style={styles.rightText}>{resumeInfo.city}, {resumeInfo.country}</Text>
         <Text style={styles.rightText}>{resumeInfo.phoneNumber}</Text>
         <Text style={styles.rightText}>{resumeInfo.email}</Text>
+        <Text style={styles.rightText}>{resumeInfo.linkedIn}</Text>
 
         <Text style={styles.rightTitle}>TECHNICAL SKILLS</Text>
         {resumeInfo.skills.map((skill, index) => (

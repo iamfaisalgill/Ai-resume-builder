@@ -21,11 +21,13 @@ function ContactInfoDialog({ isOpen, onClose }) {
   const [isEditing, setIsEditing] = useState(true)
 
   const [formData, setFormData] = useState({
-    fullName: resumeInfo.fullName || '',
+    firstName: resumeInfo.firstName || '',
+    lastName: resumeInfo.lastName || '',
     email: resumeInfo.email || "",
     city: resumeInfo.city || "",
     country: resumeInfo.country|| "",
     phoneNumber: resumeInfo.phoneNumber||"",
+    linkedIn: resumeInfo.linkedIn|| ''
   })
 
   const handleChange = (e) => {
@@ -66,8 +68,13 @@ function ContactInfoDialog({ isOpen, onClose }) {
         <div className="grid grid-cols-2 gap-4 text-foreground">
               
           <div className='col-span-1'>
-            <Label htmlFor="fullName">Full Name</Label>
-            <Input required onChange={e=>handleChange(e)} defaultValue={resumeInfo.fullName} id="fullName" name="fullName" type='text' className=' mt-2' placeholder="Full Name" />
+            <Label htmlFor="firstName">First Name</Label>
+            <Input required onChange={e=>handleChange(e)} defaultValue={resumeInfo.firstName} id="firstName" name="firstName" type='text' className=' mt-2' placeholder="e.g. Json" />
+          </div>
+
+          <div className='col-span-1'>
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input required onChange={e=>handleChange(e)} defaultValue={resumeInfo.lastName} id="lastName" name="lastName" type='text' className=' mt-2' placeholder="e.g. Carter" />
           </div>
 
           <div className='col-span-1'>
@@ -84,9 +91,13 @@ function ContactInfoDialog({ isOpen, onClose }) {
           </div>
 
           <div className='col-span-1'>
-          <label htmlFor="phoneNumber" className='text-sm font-medium tracking-wider'>Phone Number</label>
+          <Label htmlFor="country">Phone Number</Label>
             <Input required onChange={e=>handleChange(e)} defaultValue={resumeInfo.phoneNumber} id="phoneNumber" name="phoneNumber" type='text' className='mt-2' placeholder="Phone Number" />
+          </div>
 
+          <div className='col-span-1'>
+          <Label htmlFor="linkedIn">LinkedIn</Label>
+            <Input required onChange={e=>handleChange(e)} defaultValue={resumeInfo.linkedIn} id="linkedIn" name="linkedIn" type='text' className='mt-2' placeholder="e.g. linkedin.com/in/jasoncarter" />
           </div>
 
         </div>

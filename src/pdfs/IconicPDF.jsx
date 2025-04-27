@@ -122,11 +122,12 @@ const IconicPDF = ({resumeInfo}) => {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.name}>{resumeInfo.fullName}</Text>
+            <Text style={styles.name}>{resumeInfo.firstName} {resumeInfo.lastName}</Text>
           </View>
           <View>
             <Text style={styles.contactInfo}>{resumeInfo.phoneNumber}</Text>
             <Text style={styles.contactInfo}>{resumeInfo.email}</Text>
+            <Text style={styles.contactInfo}>{resumeInfo.linkedIn}</Text>
             <Text style={styles.contactInfo}>{resumeInfo.city}, {resumeInfo.country}</Text>
           </View>
         </View>

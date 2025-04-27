@@ -126,7 +126,7 @@ const StalwartPDF = ({resumeInfo}) => (
       {/* Header */}
       <Text style={styles.name}>{resumeInfo.fullName}</Text>
       <Text style={styles.contactInfo}>
-        {resumeInfo.city}, {resumeInfo.country} • {resumeInfo.phoneNumber} • {resumeInfo.email}
+        {resumeInfo.city}, {resumeInfo.country} • {resumeInfo.phoneNumber} • {resumeInfo.email} • {resumeInfo.linkedIn}
       </Text>
 
       {/* Professional Summary */}

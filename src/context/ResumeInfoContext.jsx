@@ -13,6 +13,7 @@ export const ResumeInfoProvider = ({ children }) => {
       "city": "Seattle",
       "country": "United States",
       "phoneNumber": "+1 (555) 123-4567",
+      "linkedIn": "linkedin.com/in/emilyjohnson",
       "experience": [
         {
           "jobTitle": "Senior Software Engineer",
