@@ -36,7 +36,7 @@ export default function ResumeSidebar() {
   const closeDialog = () => setActiveDialog(null)
 
   return (
-    <div className="w-64 bg-card border-r h-screen flex flex-col fixed top-0 left-0 no-print">
+    <div className="w-64 max-md:hidden bg-card border-r h-screen flex flex-col fixed top-0 left-0 no-print">
       <div className="w-full p-7 flex items-center gap-2 text-primary border-b">
         <img src={Logo} className="w-[150px]"/>
       </div>

@@ -1,4 +1,9 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+
+Font.register({
+  family: 'Roboto',
+  src: 'http://fonts.gstatic.com/s/roboto/v16/zN7GBFwfMP4uA6AR0HCoLQ.ttf',
+});
 
 // Create styles
 const styles = StyleSheet.create({
@@ -9,6 +14,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: 'bold',
+    textTransform: 'uppercase',
     marginBottom: 4,
   },
   contactInfo: {
@@ -113,133 +119,48 @@ const styles = StyleSheet.create({
   },
 });
 
-const dummyData = {
-  firstName: 'JASON',
-  lastName: 'CARTER',
-  initials: 'JC',
-  summary: 'Senior Full Stack Developer with 8+ years of experience building scalable web applications. Specialized in JavaScript frameworks and cloud architecture. Proven leader in agile development environments with a passion for mentoring junior developers and implementing CI/CD pipelines. Strong focus on performance optimization and security best practices. ',
-  address: 'San Francisco, CA USA',
-  phone: '+1 (555) 123-4567',
-  email: 'jason.carter@example.com',
-  linkedin: 'linkedin.com/in/jasoncarter',
-  github: 'github.com/jasoncarter',
-  experience: [
-    {
-      company: 'Tech Innovations Inc.',
-      location: 'San Francisco, CA',
-      position: 'Senior Full Stack Developer',
-      startDate: '2018',
-      endDate: 'Present',
-      responsibilities: [
-        'Led a team of 5 developers to build a SaaS platform with React and Node.js',
-        'Implemented CI/CD pipeline reducing deployment time by 40%',
-        'Optimized database queries improving application performance by 30%'
-      ]
-    },
-    {
-      company: 'Digital Solutions LLC',
-      location: 'New York, NY',
-      position: 'Frontend Developer',
-      startDate: '2015',
-      endDate: '2018',
-      responsibilities: [
-        'Developed responsive web applications using React and Redux',
-        'Collaborated with UX team to implement design systems',
-        'Mentored junior developers on best practices'
-      ]
-    }
-  ],
-  projects: [
-    {
-      name: 'E-commerce Platform',
-      technologies: 'React, Node.js, MongoDB',
-      description: 'Built a full-featured online store with payment integration'
-    },
-    {
-      name: 'Task Management App',
-      technologies: 'React Native, Firebase',
-      description: 'Mobile app for team collaboration with real-time updates'
-    }
-  ],
-  education: [
-    {
-      degree: 'B.S. Computer Science',
-      institution: 'Stanford University',
-      year: '2015'
-    }
-  ],
-  languages: [
-    { language: 'English', proficiency: 'Native' },
-    { language: 'Spanish', proficiency: 'Intermediate' }
-  ],
-  skills: [
-    'JavaScript (ES6+)',
-    'React & React Native',
-    'Node.js',
-    'TypeScript',
-    'GraphQL',
-    'AWS',
-    'Docker',
-    'CI/CD Pipelines'
-  ],
-  certifications: [
-    'AWS Certified Developer',
-    'Google Cloud Professional'
-  ],
-  volunteer: [
-    {
-      organization: 'Code for America',
-      role: 'Mentor',
-      duration: '2019-Present'
-    }
-  ]
-};
 
-const StalwartPDF = () => (
+const StalwartPDF = ({resumeInfo}) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
-      <Text style={styles.name}>{dummyData.firstName} {dummyData.lastName}</Text>
+      <Text style={styles.name}>{resumeInfo.fullName}</Text>
       <Text style={styles.contactInfo}>
-        {dummyData.address} • {dummyData.phone} • {dummyData.email} • {dummyData.linkedin}
+        {resumeInfo.city}, {resumeInfo.country} • {resumeInfo.phoneNumber} • {resumeInfo.email}
       </Text>
 
       {/* Professional Summary */}
       <Text style={styles.sectionHeader}>PROFESSIONAL SUMMARY</Text>
-      <Text style={styles.sectionText}>{dummyData.summary}</Text>
+      <Text style={styles.sectionText}>{resumeInfo.summary}</Text>
 
       {/* Technical Skills */}
       <Text style={styles.sectionHeader}>TECHNICAL SKILLS</Text>
       <View style={styles.skillGrid}>
-        {dummyData.skills.map((skill, index) => (
+        {resumeInfo.skills.map((skill, index) => (
           <Text key={index} style={styles.skillItem}>• {skill}</Text>
         ))}
       </View>
 
       {/* Professional Experience */}
       <Text style={styles.sectionHeader}>PROFESSIONAL EXPERIENCE</Text>
-      {dummyData.experience.map((exp, index) => (
+      {resumeInfo.experience.map((exp, index) => (
         <View key={index}>
           <View style={styles.jobHeader}>
-            <Text style={styles.jobTitle}>{exp.position}</Text>
+            <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
             <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text>
           </View>
-          <Text style={styles.companyInfo}>{exp.company} | {exp.location}</Text>
-          <View style={styles.bulletList}>
-            {exp.responsibilities.map((resp, i) => (
-              <Text key={i} style={styles.bulletItem}>• {resp}</Text>
-            ))}
-          </View>
+          <Text style={styles.companyInfo}>{exp.company}</Text>
+          <Text style={styles.sectionText}>{exp.description}</Text>
         </View>
       ))}
 
       {/* Education */}
       <Text style={styles.sectionHeader}>EDUCATION</Text>
-      {dummyData.education.map((edu, index) => (
+      {resumeInfo.education.map((edu, index) => (
         <View key={index}>
           <View style={styles.educationItem}>
-            <Text style={styles.educationTitle}>{edu.degree}</Text>
-            <Text style={styles.educationDate}>{edu.year}</Text>
+            <Text style={styles.educationTitle}>{edu.degree} in {edu.fieldOfStudy}</Text>
+            <Text style={styles.educationDate}>{edu.graduationMonth} {edu.graduationYear}</Text>
           </View>
           <Text style={styles.educationSchool}>{edu.institution}</Text>
         </View>
@@ -247,27 +168,29 @@ const StalwartPDF = () => (
 
       {/* Certifications */}
       <Text style={styles.sectionHeader}>CERTIFICATIONS</Text>
-      <View style={styles.certGrid}>
-        {dummyData.certifications.map((cert, index) => (
-          <Text key={index} style={styles.certItem}>• {cert}</Text>
-        ))}
-      </View>
+        <View style={styles.certGrid}>
+      {resumeInfo.certifications.map((cert, index) => (
+          <Text key={index} style={styles.certItem}>• {cert.name}</Text>
+      ))}
+        </View>
 
       {/* Projects */}
       <Text style={styles.sectionHeader}>PROJECTS</Text>
-      {dummyData.projects.map((project, index) => (
+      {resumeInfo.projects.map((project, index) => (
         <View key={index}>
-          <Text style={styles.projectTitle}>{project.name}</Text>
-          <Text style={styles.projectDesc}>{project.technologies} - {project.description}</Text>
+          <Text style={styles.projectTitle}>{project.title}</Text>
+          <Text style={styles.projectDesc}>{project.description}</Text>
+          {/* {project.url && <Text style={styles.projectUrl}>URL: {project.url}</Text>} */}
         </View>
       ))}
 
       {/* Languages */}
       <Text style={styles.sectionHeader}>LANGUAGES</Text>
-      {dummyData.languages.map((lang, index) => (
+      {resumeInfo.languages.map((lang, index) => (
         <View key={index}>
-          <Text style={styles.languageTitle}>{lang.language}</Text>
-          <Text style={styles.languageLevel}>{lang.proficiency}</Text>
+          <Text style={styles.languageTitle}>{lang.language} ({lang.proficiency})</Text>
+          {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}
+          {lang.yearsOfExperience && <Text style={styles.languageExp}>Years of Experience: {lang.yearsOfExperience}</Text>}
         </View>
       ))}
     </Page>
