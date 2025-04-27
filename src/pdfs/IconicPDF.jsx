@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   name: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     textTransform: 'uppercase'
   },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     width: '30%',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#1E3A5F',
   },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   projectUrl: {
     fontSize: 10,
     marginTop: 5,
-    color: '#8e51ff'
+    color: '#5F6A8A'
   },
   educationItem: {
     marginBottom: 8,
@@ -98,12 +98,13 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
   },
   languageItem: {
-    width: '50%',
+    width: '33%',
     marginBottom: 5,
   },
   languageName: {
     fontSize: 10,
     fontWeight: 'bold',
+    marginBottom: 2
   },
   languageLevel: {
     fontSize: 10,
@@ -164,7 +165,7 @@ const IconicPDF = ({resumeInfo}) => {
             </View>
             <View style={styles.sectionContent}>
               {resumeInfo.experience.map((exp, index) => (
-                <View key={index} style={{ marginBottom: 15 }}>
+                <View key={index} style={{ marginBottom: 10 }}>
                   <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
                   <Text style={styles.jobDetails}>{exp.company}, {exp.startMonth} {exp.startYear} -  {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`} </Text>
                   <Text style={styles.bulletItem}>• {exp.description}</Text>

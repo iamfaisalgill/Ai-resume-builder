@@ -12,26 +12,26 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
   },
   name: {
-    fontSize: 20,
+    fontSize: 18, // reduced from 20
     fontWeight: 'bold',
     textTransform: 'uppercase',
     marginBottom: 4,
   },
   contactInfo: {
-    fontSize: 9,
+    fontSize: 8, // reduced from 9
     color: '#666666',
     marginBottom: 12,
   },
   sectionHeader: {
-    fontSize: 12, // Smaller than original
+    fontSize: 11, // reduced from 12
     fontWeight: 'bold',
     backgroundColor: '#EEEEEE',
-    padding: 5, // Less padding
-    marginBottom: 5, // Reduced spacing
-    marginTop: 8 // Space between sections
+    padding: 5,
+    marginBottom: 5,
+    marginTop: 8
   },
   sectionText: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 12,
     lineHeight: 1.4,
   },
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   skillItem: {
     width: '33%',
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 4,
   },
   jobHeader: {
@@ -51,19 +51,19 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   jobTitle: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
   },
   jobDate: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
   },
   companyInfo: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 4,
   },
   bulletList: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginLeft: 10,
     marginBottom: 12,
   },
@@ -76,15 +76,15 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   educationTitle: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
   },
   educationDate: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
   },
   educationSchool: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 8,
   },
   certGrid: {
@@ -94,26 +94,32 @@ const styles = StyleSheet.create({
   },
   certItem: {
     width: '50%',
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 4,
   },
   projectTitle: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
     marginBottom: 2,
   },
   projectDesc: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 8,
   },
+  languageGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 12,
+  },
   languageTitle: {
-    fontSize: 10,
+    width: '33%',
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
     marginTop: 8,
     marginBottom: 2,
   },
   languageLevel: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     color: '#666666',
     marginBottom: 4,
   },
@@ -124,7 +130,7 @@ const StalwartPDF = ({resumeInfo}) => (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
-      <Text style={styles.name}>{resumeInfo.fullName}</Text>
+      <Text style={styles.name}>{resumeInfo.firstName} {resumeInfo.lastName}</Text>
       <Text style={styles.contactInfo}>
         {resumeInfo.city}, {resumeInfo.country} • {resumeInfo.phoneNumber} • {resumeInfo.email} • {resumeInfo.linkedIn}
       </Text>
@@ -147,7 +153,8 @@ const StalwartPDF = ({resumeInfo}) => (
         <View key={index}>
           <View style={styles.jobHeader}>
             <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
-            <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text>
+            {/* <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text> */}
+            <Text style={styles.jobDate}>{exp.company}, {exp.startMonth} {exp.startYear} -  {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`} </Text>
           </View>
           <Text style={styles.companyInfo}>{exp.company}</Text>
           <Text style={styles.sectionText}>{exp.description}</Text>
@@ -170,7 +177,7 @@ const StalwartPDF = ({resumeInfo}) => (
       <Text style={styles.sectionHeader}>CERTIFICATIONS</Text>
         <View style={styles.certGrid}>
       {resumeInfo.certifications.map((cert, index) => (
-          <Text key={index} style={styles.certItem}>• {cert.name}</Text>
+          <Text key={index} style={styles.certItem}>{cert.name} ({cert.issueYear})</Text>
       ))}
         </View>
 
@@ -186,13 +193,13 @@ const StalwartPDF = ({resumeInfo}) => (
 
       {/* Languages */}
       <Text style={styles.sectionHeader}>LANGUAGES</Text>
+        {resumeInfo.languages && <View style={styles.languageGrid}>
       {resumeInfo.languages.map((lang, index) => (
-        <View key={index}>
-          <Text style={styles.languageTitle}>{lang.language} ({lang.proficiency})</Text>
-          {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}
-          {lang.yearsOfExperience && <Text style={styles.languageExp}>Years of Experience: {lang.yearsOfExperience}</Text>}
-        </View>
+          <Text key={index} style={styles.languageTitle}>{lang.language} ({lang.proficiency})</Text>
       ))}
+      {/* {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}
+          {lang.yearsOfExperience && <Text style={styles.languageExp}>Years of Experience: {lang.yearsOfExperience}</Text>} */}
+        </View>} 
     </Page>
   </Document>
 );

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   nameText: {
-    fontSize: 24,
+    fontSize: 22, // reduced from 24
     fontFamily: 'Georgia-Bold',
     fontWeight: 'heavy',
     color: '#5F6A8A',
@@ -53,14 +53,14 @@ const styles = StyleSheet.create({
   },
   nameInitials: {
     transform: 'rotate(-45deg)',
-    fontSize: 20,
+    fontSize: 18, // reduced from 20
     fontFamily: 'Georgia-Bold',
     fontWeight: 'bold',
     textTransform: "uppercase",
     color: '#5F6A8A',
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11, // reduced from 12
     fontFamily: 'Helvetica-Bold',
     fontWeight: 'bold',
     color: '#5F6A8A',
@@ -70,28 +70,27 @@ const styles = StyleSheet.create({
     paddingBottom: 3
   },
   text: {
-    fontSize: 10,
-    // marginBottom: 4,
+    fontSize: 9, // reduced from 10
     lineHeight: 1.4
   },
   boldText: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     fontWeight: 'bold',
     marginBottom: 5
   },
   listItem: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 5,
     marginLeft: 10,
     lineHeight: 1.4
   },
   rightText: {
-    fontSize: 9,
+    fontSize: 8, // reduced from 9
     marginBottom: 4,
     lineHeight: 1.4
   },
   rightTitle: {
-    fontSize: 12,
+    fontSize: 11, // reduced from 12
     fontFamily: 'Helvetica-Bold',
     fontWeight: 'bold',
     marginBottom: 8,
@@ -104,24 +103,24 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   jobTitle: {
-    fontSize: 11,
+    fontSize: 10, // reduced from 11
     fontWeight: 'bold'
   },
   jobDate: {
-    fontSize: 10
+    fontSize: 9 // reduced from 10
   },
   companyInfo: {
-    fontSize: 10,
+    fontSize: 9, // reduced from 10
     marginBottom: 5,
     fontStyle: 'italic'
   },
   projectTitle: {
-    fontSize: 11,
+    fontSize: 10, // reduced from 11
     fontWeight: 'bold',
     marginBottom: 3
   },
   projectUrl: {
-    fontSize: 9,
+    fontSize: 8, // reduced from 9
     color: '#5F6A8A',
     marginBottom: 8,
     textDecoration: 'none'
