@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   nameBoxContainer: {
     width: 40,
     height: 40,
-    border: '2 solid #5F6A8A',
+    border: '1.5 solid #5F6A8A',
     transform: 'rotate(45deg)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   nameBoxInner: {
     width: 40,
     height: 40,
-    border: '2 solid #5F6A8A',
+    border: '1.5 solid #5F6A8A',
     transform: 'rotate(-45deg)',
     position: 'absolute',
   },
