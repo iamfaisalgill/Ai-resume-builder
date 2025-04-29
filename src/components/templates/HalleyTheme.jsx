@@ -1,140 +1,129 @@
+import { useResume } from "@/context/ResumeInfoContext";
 import React from "react";
 
 // template name: Halley
 const HalleyTheme = () => {
+
+  const {resumeInfo} = useResume()
   return (
-    <div className="mx-auto bg-white max-w-4xl">
+    <div className="mx-auto bg-white max-w-4xl text-[10px] sm:text-sm md:text-base">
       <div className="flex">
-        <div className="w-3/4 p-10">
-          <div className="flex items-center space-x-4 text-[#5F6A8A]">
-            <div className="relative w-16 h-16 flex items-center justify-center border-2 border-[#5F6A8A] rotate-45">
-              <div className="absolute w-16 h-16 border-2 border-[#5F6A8A] -rotate-45"></div>
-              <span className="text-3xl font-serif font-bold -rotate-45">JC</span>
+        {/* Main Content (Left 3/4) */}
+        <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
+          {/* Name/Logo Section */}
+          <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 text-[#5F6A8A]">
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 flex items-center justify-center border-2 border-[#5F6A8A] rotate-45">
+              <div className="absolute w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 border-2 border-[#5F6A8A] -rotate-45"></div>
+              <span className="text-base sm:text-xl md:text-2xl lg:text-3xl font-serif font-bold -rotate-45">
+                {resumeInfo.firstName.charAt(0)}{resumeInfo.lastName.charAt(0)}
+              </span>
             </div>
             <div className="font-serif font-bold text-[#5F6A8A]">
-              <p className="text-4xl leading-none">JASON</p>
-              <p className="text-4xl leading-none">CARTER</p>
+              <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.firstName}</p>
+              <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.lastName}</p>
             </div>
           </div>
           
-          <div className="mt-6">
-            <h2 className="text-lg font-bold text-[#5F6A8A]">
+          {/* Professional Summary */}
+          <div className="mt-5 lg:mt-7">
+            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">
               PROFESSIONAL SUMMARY
             </h2>
-            <p className="text-gray-700 mt-2">
-              Senior Full Stack Developer with 8+ years of experience building scalable web applications. 
-              Specialized in JavaScript frameworks and cloud architecture. Proven leader in agile development 
-              environments with expertise in React, Node.js, and AWS. Passionate about creating efficient, 
-              maintainable code and mentoring junior developers.
+            <p className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
+              {resumeInfo.summary}
             </p>
           </div>
           
-          <div className="mt-6">
-            <h2 className="text-lg font-bold text-[#5F6A8A]">EXPERIENCE</h2>
+          {/* Experience */}
+          <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">EXPERIENCE</h2>
             
-            <div className="mb-4">
-              <p className="font-bold text-gray-900">TechNova Solutions | San Francisco, CA</p>
-              <p className="text-gray-700">June 2020 - Present</p>
-              <p className="text-gray-700">Senior Software Engineer</p>
-              <ul className="list-disc list-inside mt-2 text-gray-700">
-                <li>
-                  Led migration of legacy monolith to microservices architecture, improving scalability by 40%
-                </li>
-                <li>
-                  Implemented CI/CD pipeline reducing deployment time by 75%
-                </li>
-                <li>
-                  Developed reusable React component library adopted by 12+ teams
-                </li>
-                <li>
-                  Mentored 5 junior developers through code reviews and pair programming
-                </li>
-              </ul>
-            </div>
-            
-            <div className="mb-4">
-              <p className="font-bold text-gray-900">Digital Creations Inc | Austin, TX</p>
-              <p className="text-gray-700">March 2017 - May 2020</p>
-              <p className="text-gray-700">Full Stack Developer</p>
-              <ul className="list-disc list-inside mt-2 text-gray-700">
-                <li>
-                  Built RESTful APIs serving 10,000+ daily requests with 99.9% uptime
-                </li>
-                <li>
-                  Optimized database queries reducing page load times by 65%
-                </li>
-                <li>
-                  Implemented JWT authentication for enterprise application
-                </li>
-              </ul>
-            </div>
+            {resumeInfo.experience.map((exp, index) => (
+              <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
+              <p className="font-bold text-gray-900">{exp.jobTitle}</p>
+                <p className="text-gray-700">
+                  {exp.company} | {exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}
+                </p>
+                {exp.description && <p className="text-gray-700 mt-1">• {exp.description}</p>}
+              </div>
+            ))}
           </div>
           
-          <div className="mt-6">
-            <h2 className="text-lg font-bold text-[#5F6A8A]">PROJECTS</h2>
-            <div className="mb-4">
-              <p className="font-bold text-gray-900">E-commerce Platform</p>
-              <p className="text-gray-700">
-                React, Node.js, MongoDB • Full-featured online store with payment processing, 
-                inventory management, and analytics dashboard
+          {/* Projects */}
+          {resumeInfo.projects && <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">PROJECTS</h2>
+            {resumeInfo.projects.map((project, index) => (
+              <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
+                <p className="font-bold text-gray-900">{project.title}</p>
+                <p className="text-gray-700">{project.description}
+                </p>
+              </div>
+            ))}
+          </div>}
+          
+          {/* Education */}
+          <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">EDUCATION</h2>
+            {resumeInfo.education.map((edu, index) => (
+              <div key={index} className="mt-1 sm:mt-1.5 md:mt-2">
+                <p className="font-bold text-gray-900">
+                  {edu.degree} - {edu.fieldOfStudy}
+                </p>
+                <p className="text-gray-700">{edu.institution}</p>
+                {edu.graduationMonth && <p className="text-gray-500">{edu.graduationMonth} {edu.graduationYear}</p>}
+                {index < resumeInfo.education.length - 1 && (
+                  <div className="mt-1 sm:mt-1.5 md:mt-2"></div>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          {/* Languages */}
+          {resumeInfo.languages && <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">LANGUAGES</h2>
+            {resumeInfo.languages.map((lang, index) => (
+              <p key={index} className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
+                {lang.language} - {lang.proficiency}
               </p>
-            </div>
-            <div className="mb-4">
-              <p className="font-bold text-gray-900">Healthcare Analytics Dashboard</p>
-              <p className="text-gray-700">
-                D3.js, Express • Data visualization platform for hospital administrators
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-6">
-            <h2 className="text-lg font-bold text-[#5F6A8A]">EDUCATION</h2>
-            <p className="font-bold text-gray-900">Master of Science - Computer Science</p>
-            <p className="text-gray-700">2016</p>
-            <p className="text-gray-500">Stanford University</p>
-            
-            <p className="font-bold text-gray-900 mt-2">Bachelor of Science - Software Engineering</p>
-            <p className="text-gray-700">2014</p>
-            <p className="text-gray-500">University of Texas at Austin</p>
-          </div>
-          
-          <div className="mt-6">
-            <h2 className="text-lg font-bold text-[#5F6A8A]">LANGUAGES</h2>
-            <p className="text-gray-700">English - Native</p>
-            <p className="text-gray-700">Spanish - Professional Working</p>
-          </div>
+            ))}
+          </div>}
         </div>
         
-        <div className="w-1/4 bg-[#5F6A8A] text-white p-6">
-          <p className="text-sm">San Francisco, CA USA</p>
-          <p className="mt-4 text-sm">+1 (555) 123-4567</p>
-          <p className="mt-4 text-sm">jason.carter@example.com</p>
-          <p className="mt-4 text-sm">linkedin.com/in/jasoncarter</p>
-          <p className="mt-4 text-sm">github.com/jasoncarter</p>
+        {/* Sidebar (Right 1/4) */}
+        <div className="w-1/4 bg-[#5F6A8A] text-white text-[10px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
+        <p className="break-words">{resumeInfo.city}, {resumeInfo.country}</p>
+        <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.phoneNumber}</p>
+        <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.email}</p>
+        <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.linkedIn}</p>
+        {resumeInfo.github && (
+          <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
+        )}
 
-          <h2 className="mt-6 text-lg font-bold">TECHNICAL SKILLS</h2>
-          <ul className="mt-2 text-sm space-y-1">
-            <li>• React.js/Next.js</li>
-            <li>• Node.js/Express</li>
-            <li>• TypeScript</li>
-            <li>• AWS/Serverless</li>
-            <li>• Docker/Kubernetes</li>
-            <li>• GraphQL</li>
-            <li>• MongoDB/PostgreSQL</li>
-            <li>• Jest/Cypress</li>
-            <li>• CI/CD Pipelines</li>
+          <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold">TECHNICAL SKILLS</h2>
+          <ul className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
+            {resumeInfo.skills.map((skill, index) => (
+              <li key={index}>• {skill}</li>
+            ))}
           </ul>
 
-          <h2 className="mt-6 text-lg font-bold">CERTIFICATIONS</h2>
-          <ul className="mt-2 text-sm space-y-1">
-            <li>• AWS Certified (2022)</li>
-            <li>• Google Data Engineer (2021)</li>
-            <li>• Scrum Master (2020)</li>
-          </ul>
+          {resumeInfo.certifications && (
+            <>
+              <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold">CERTIFICATIONS</h2>
+              <ul className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
+                {resumeInfo.certifications.map((cert, index) => (
+                  <li key={index}>• {cert.name} ({cert.issueYear})</li>
+                ))}
+              </ul>
+            </>
+          )}
 
-          <h2 className="mt-6 text-lg font-bold">VOLUNTEER</h2>
-          <p className="mt-2 text-sm">Code for America</p>
-          <p className="text-sm">Open-source contributor (2018-Present)</p>
+          {resumeInfo.volunteer && (
+            <>
+              <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold">VOLUNTEER</h2>
+              <p className="mt-1 sm:mt-1.5 md:mt-2">{resumeInfo.volunteer.organization}</p>
+              <p>{resumeInfo.volunteer.role} ({resumeInfo.volunteer.duration})</p>
+            </>
+          )}
         </div>
       </div>
     </div>

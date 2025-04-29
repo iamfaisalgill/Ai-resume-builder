@@ -160,7 +160,7 @@ const HalleyPDF = ({resumeInfo}) => {
         </View>
 
         {/* Experience */}
-        <View style={{ marginTop: 15 }}>
+        {resumeInfo.experience && <View style={{ marginTop: 15 }}>
           <Text style={styles.sectionTitle}>EXPERIENCE</Text>
           {resumeInfo.experience.map((exp, index) => (
             <View key={index}>
@@ -172,10 +172,10 @@ const HalleyPDF = ({resumeInfo}) => {
               <Text style={styles.text}>{exp.description}</Text>
             </View>
           ))}
-        </View>
+        </View>}
 
         {/* Projects */}
-        <View style={{ marginTop: 15 }}>
+        {resumeInfo.projects && <View style={{ marginTop: 15 }}>
           <Text style={styles.sectionTitle}>PROJECTS</Text>
           {resumeInfo.projects.map((project, index) => (
             <View key={index}>
@@ -184,10 +184,10 @@ const HalleyPDF = ({resumeInfo}) => {
               {project.url && <Text style={styles.projectUrl}>{project.url}</Text>}
             </View>
           ))}
-        </View>
+        </View>}
 
         {/* Education */}
-        <View style={{ marginTop: 15 }}>
+        {resumeInfo.education&&<View style={{ marginTop: 15 }}>
           <Text style={styles.sectionTitle}>EDUCATION</Text>
           {resumeInfo.education.map((edu, index) => (
             <View key={index}>
@@ -196,15 +196,15 @@ const HalleyPDF = ({resumeInfo}) => {
               <Text style={styles.text}>{edu.graduationMonth} {edu.graduationYear}</Text>
             </View>
           ))}
-        </View>
+        </View>}
 
         {/* Languages */}
-        <View style={{ marginTop: 15 }}>
+        {resumeInfo.languages && <View style={{ marginTop: 15 }}>
           <Text style={styles.sectionTitle}>LANGUAGES</Text>
           {resumeInfo.languages.map((lang, index) => (
             <Text key={index} style={styles.text}>{lang.language} ({lang.proficiency})</Text>
           ))}
-        </View>
+        </View>}
       </View>
 
       {/* Right Column (Sidebar) */}
@@ -218,12 +218,16 @@ const HalleyPDF = ({resumeInfo}) => {
         {resumeInfo.skills.map((skill, index) => (
           <Text key={index} style={styles.rightText}>• {skill}</Text>
         ))}
-
-        <Text style={styles.rightTitle}>CERTIFICATIONS</Text>
-        {resumeInfo.certifications.map((cert, index) => (
-          <Text key={index} style={styles.rightText}>{cert.name} ({cert.issueYear})
-          </Text>
-        ))}
+        
+         {resumeInfo.certifications && 
+         <View>
+           <Text style={styles.rightTitle}>CERTIFICATIONS</Text>
+            {resumeInfo.certifications.map((cert, index) => (
+              <Text key={index} style={styles.rightText}>{cert.name} ({cert.issueYear})
+              </Text>
+            ))}
+         </View>
+          }
       </View>
     </Page>
   </Document>

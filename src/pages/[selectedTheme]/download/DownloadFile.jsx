@@ -97,7 +97,7 @@ const DownloadFile = () => {
         </div>
         <ModeToggle/>
       </div>
-          <div className="mt-5">
+          <div className="mt-5 p-4">
             {isHalley ? (
               <HalleyTheme />
             ) : isIconic ? (
