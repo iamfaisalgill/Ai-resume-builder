@@ -11,13 +11,13 @@ const ContactDetails = ({ setPageIndex }) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    firstName: resumeInfo.firstName || '',
-    lastName: resumeInfo.lastName || '',
-    email: resumeInfo.email || "",
-    city: resumeInfo.city || "",
-    country: resumeInfo.country || "",
-    phoneNumber: resumeInfo.phoneNumber || "",
-    linkedIn: resumeInfo.linkedIn || ''
+    firstName: resumeInfo.contactInfo.firstName || '',
+    lastName: resumeInfo.contactInfo.lastName || '',
+    email: resumeInfo.contactInfo.email || "",
+    city: resumeInfo.contactInfo.city || "",
+    country: resumeInfo.contactInfo.country || "",
+    phoneNumber: resumeInfo.contactInfo.phoneNumber || "",
+    linkedIn: resumeInfo.contactInfo.linkedIn || ''
   })
 
   const handleChange = (e) => {
@@ -41,7 +41,7 @@ const ContactDetails = ({ setPageIndex }) => {
       }, 1000);
     })
       .then(data => {
-        setResumeInfo(prevState => ({ ...prevState, ...data })); // Save data when promise is fulfilled
+        setResumeInfo(prevState => ({ ...prevState, contactInfo: data })); // Save data when promise is fulfilled
       })
       .catch(error => {
         console.error(error.message); // Handle error (you can show a message to the user)
@@ -71,37 +71,37 @@ const ContactDetails = ({ setPageIndex }) => {
 
           <div className='col-span-1'>
             <Label htmlFor="firstName">First Name</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.firstName} id="firstName" name="firstName" type='text' className=' mt-2' placeholder="e.g. Json" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.firstName} id="firstName" name="firstName" type='text' className=' mt-2' placeholder="e.g. Json" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="lastName">Last Name</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.lastName} id="lastName" name="lastName" type='text' className=' mt-2' placeholder="e.g. Carter" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.lastName} id="lastName" name="lastName" type='text' className=' mt-2' placeholder="e.g. Carter" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="city">City</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.city} id="city" name="city" type='text' className='mt-2' placeholder="City" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.city} id="city" name="city" type='text' className='mt-2' placeholder="City" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="country">Country</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.country} id="country" name="country" type='text' className='mt-2' placeholder="Country" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.country} id="country" name="country" type='text' className='mt-2' placeholder="Country" />
           </div>
 
           <div className=' col-span-1'>
             <Label required htmlFor="email">Email</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.email} id="email" name="email" type='email' className='mt-2' placeholder="Email" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.email} id="email" name="email" type='email' className='mt-2' placeholder="Email" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="country">Phone Number</Label>
-            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.phoneNumber} id="phoneNumber" name="phoneNumber" type='text' className='mt-2' placeholder="Phone Number" />
+            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.phoneNumber} id="phoneNumber" name="phoneNumber" type='text' className='mt-2' placeholder="Phone Number" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="linkedIn">LinkedIn</Label>
-            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.linkedIn} id="linkedIn" name="linkedIn" type='text' className='mt-2' placeholder="e.g. linkedin.com/in/jasoncarter" />
+            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo.linkedIn} id="linkedIn" name="linkedIn" type='text' className='mt-2' placeholder="e.g. linkedin.com/in/jasoncarter" />
           </div>
 
         </div>

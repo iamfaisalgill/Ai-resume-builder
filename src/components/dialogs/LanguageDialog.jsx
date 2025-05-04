@@ -47,7 +47,8 @@ export default function LanguageDialog({ isOpen, onClose, setSections }) {
   }, []);*/
 
   const addMore = () => {
-    setLanguageList([...languageList, { ...formField }]);
+    setLanguageList([...languageList, { language: "",
+  proficiency: "", }]);
     setIsEditing(false);
   };
 

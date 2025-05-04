@@ -18,12 +18,12 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
             <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 flex items-center justify-center border-2 border-[#305276] rotate-45">
               <div className="absolute w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 border-2 border-[#305276] -rotate-45"></div>
               <span className="uppercase text-base sm:text-xl md:text-2xl lg:text-3xl font-serif font-bold -rotate-45">
-                {resumeInfo.firstName.charAt(0)}{resumeInfo.lastName.charAt(0)}
+                {resumeInfo.contactInfo.firstName.charAt(0)}{resumeInfo.contactInfo.lastName.charAt(0)}
               </span>
             </div>
             <div className="font-serif font-bold text-[#305276]">
-              <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.firstName}</p>
-              <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.lastName}</p>
+              <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.contactInfo.firstName}</p>
+              <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.contactInfo.lastName}</p>
             </div>
             <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Contact information")}><Edit size={14}/> Edit</button></div>
           </div>
@@ -95,7 +95,7 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
           </div>}
           
           {/* Languages */}
-          {resumeInfo.languages.length>0 && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+          {resumeInfo.languages && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">  
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">LANGUAGES</h2>
             {resumeInfo.languages.map((lang, index) => (
               <p key={index} className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
@@ -109,11 +109,11 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
         {/* Sidebar (Right 1/4) */}
         <div className="w-1/4 bg-[#305276] text-white text-[10px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
         <div className="c-info relative">
-          <p className="break-words">{resumeInfo.city}, {resumeInfo.country}</p>
-          <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.phoneNumber}</p>
-          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.email}</p>
-          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.linkedIn}</p>
-          {resumeInfo.github && (
+          <p className="break-words">{resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country}</p>
+          <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.contactInfo.phoneNumber}</p>
+          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.contactInfo.email}</p>
+          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.contactInfo.linkedIn}</p>
+          {resumeInfo.contactInfo.github && (
             <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
           )}
           <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Contact information")}><Edit size={14}/> Edit</button></div>
