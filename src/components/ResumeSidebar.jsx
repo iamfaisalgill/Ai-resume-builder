@@ -1,20 +1,21 @@
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Palette, Pencil, Plus } from "lucide-react"
+import { Palette, Pencil, Plus, Trash2 } from "lucide-react"
 import Logo from '/logo.svg'
 import clsx from "clsx"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ContactInfoDialog from "./dialogs/ContactInfoDialog"
 import ExperienceDialog from "./dialogs/ExperienceDialog"
 import SkillsDialog from "./dialogs/SkillsDialog"
@@ -36,8 +37,7 @@ const sections = [
 export default function ResumeSidebar({activeDialog, setActiveDialog}) {
 
    const { resumeInfo, setResumeInfo } = useResume();
-
-  const [sections,setSections] = useState([
+   const [sections,setSections] = useState([
     "Contact information",
     "Professional Summary",
     "Experience",
@@ -45,6 +45,17 @@ export default function ResumeSidebar({activeDialog, setActiveDialog}) {
     "Education",
     "Language"
   ])
+
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [activeSec, setActiveSec] = useState("")
+
+  const confirmDelete = () => {
+    setSections(sections.filter((item) => item !== activeSec));
+    setActiveSec("");
+    setIsAlertDialogOpen(false);
+  }
+  
+  
 
   const closeDialog = () => setActiveDialog(null)
 
@@ -69,16 +80,37 @@ export default function ResumeSidebar({activeDialog, setActiveDialog}) {
       </div>
       <ScrollArea className="h-48 flex-1">
         <div className="space-y-2 text-sm divide-y">
-          {sections.map((label) => (
+          {sections.filter((label)=>label!=="").map((label) => (
             <SidebarItem
               key={label}
               label={label}
               active={activeDialog === label}
-              onClick={() => setActiveDialog(label)}
+              setActiveDialog={setActiveDialog}
+              activeSec={activeSec}
+              setActiveSec={setActiveSec}
+              setIsAlertDialogOpen={setIsAlertDialogOpen}
             />
           ))}
         </div>
       </ScrollArea>
+
+      {/* Alert Dialog */}
+      <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete "{activeSec}"?</AlertDialogTitle>
+            <AlertDialogDescription>
+            This can’t be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete}>
+              Yes, Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Dialogs for each section */}
       {activeDialog === "Contact information" && (
@@ -103,6 +135,7 @@ export default function ResumeSidebar({activeDialog, setActiveDialog}) {
         <MoreSectionsDialog isOpen={true} onClose={closeDialog} sections={sections} setSections={setSections} />
       )}
       {/* Add more dialogs for other sections as needed */}
+      
     </div>
   )
 }
@@ -111,7 +144,23 @@ function SidebarItem({
   label,
   active,
   onClick,
+  setActiveDialog,
+  setActiveSec,
+  activeSec,
+  setIsAlertDialogOpen
 }) {
+
+  const deleteItem = () => {
+    setActiveSec(label)
+    setIsAlertDialogOpen(true);
+  }
+
+  const editItem = () => {
+    setActiveDialog(label)
+    setActiveSec(label)
+  }
+
+
   return (
     <div
       className={clsx(
@@ -121,9 +170,14 @@ function SidebarItem({
       onClick={onClick}
     >
       <span>{label}</span>
-      <button className="text-xs text-muted-foreground hover:text-primary">
-        <Pencil size={15} />
-      </button>
+      <div className="space-x-1">
+        <button className="text-xs text-muted-foreground hover:text-primary" onClick={deleteItem}>
+          <Trash2 size={15} />
+        </button>
+        <button className="text-xs text-muted-foreground hover:text-primary" onClick={editItem}>
+          <Pencil size={15} />
+        </button>
+      </div>
     </div>
   )
 }

@@ -15,13 +15,27 @@ import { useEffect, useState } from "react"
 
 const MoreSectionsDialog = ({ isOpen, onClose, sections, setSections }) => {
 
-  const updatedSec = [...sections]
+const sec = [
+  "Contact information",
+  "Professional Summary",
+  "Experience",
+  "Skills",
+  "Education",
+  "Language"
+]
+
+const updatedSec = [
+  ...sections,
+  "Certifications",
+  "Projects",
+  "Volunteer Work"
+]
 
   const [checkbox, setCheckbox] = useState(false)
 
   useEffect(()=>{
     console.log(updatedSec);
-    console.log(updatedSec.filter((s, i)=>s!==sections[i]));
+    console.log(updatedSec.filter((s,i)=>s!==sections[i]));
     
   },[])
 

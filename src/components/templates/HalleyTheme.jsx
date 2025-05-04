@@ -2,7 +2,7 @@ import { useResume } from "@/context/ResumeInfoContext";
 import React from "react";
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Edit, Edit3 } from "lucide-react";
+import { Edit, Edit3, Trash2 } from "lucide-react";
 
 // template name: Halley
 const HalleyTheme = ({activeDialog, setActiveDialog}) => {
@@ -86,7 +86,12 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
                 )}
               </div>
             ))}
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Education")}><Edit size={14}/> Edit</button></div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+              <div className="flex gap-2 bg-gray-900">
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Education")}><Edit size={14}/> Edit</button>
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={()=>setActiveDialog("Education")}><Trash2 size={14}/> Delete</button>
+              </div>
+            </div>
           </div>}
           
           {/* Languages */}
