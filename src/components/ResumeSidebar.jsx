@@ -21,6 +21,8 @@ import SkillsDialog from "./dialogs/SkillsDialog"
 import SummaryDialog from "./dialogs/SummaryDialog"
 import EducationDialog from "./dialogs/EducationDialog"
 import LanguageDialog from "./dialogs/LanguageDialog"
+import MoreSectionsDialog from "./dialogs/MoreSectionsDialog"
+import { useResume } from "@/context/ResumeInfoContext"
 
 const sections = [
   "Contact information",
@@ -31,8 +33,18 @@ const sections = [
   "Professional Summary",
 ]
 
-export default function ResumeSidebar() {
-  const [activeDialog, setActiveDialog] = useState(null)
+export default function ResumeSidebar({activeDialog, setActiveDialog}) {
+
+   const { resumeInfo, setResumeInfo } = useResume();
+
+  const [sections,setSections] = useState([
+    "Contact information",
+    "Professional Summary",
+    "Experience",
+    "Skills",
+    "Education",
+    "Language"
+  ])
 
   const closeDialog = () => setActiveDialog(null)
 
@@ -50,7 +62,7 @@ export default function ResumeSidebar() {
       </div>
       <span className="py-2 px-4 font-bold border-y">Sections</span>
       <div className="my-4 px-4">
-        <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+        <Button variant="outline" className="w-full flex items-center justify-center gap-2" onClick={()=>setActiveDialog("More Sections")}>
           <Plus className="h-4 w-4" />
           Add new Sections
         </Button>
@@ -85,7 +97,10 @@ export default function ResumeSidebar() {
         <EducationDialog isOpen={true} onClose={closeDialog}/>
       )}
       {activeDialog === "Language" && (
-        <LanguageDialog isOpen={true} onClose={closeDialog}/>
+        <LanguageDialog isOpen={true} onClose={closeDialog} setSections={setSections}/>
+      )}
+      {activeDialog === "More Sections" && (
+        <MoreSectionsDialog isOpen={true} onClose={closeDialog} sections={sections} setSections={setSections} />
       )}
       {/* Add more dialogs for other sections as needed */}
     </div>

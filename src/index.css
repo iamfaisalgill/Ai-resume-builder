@@ -120,6 +120,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter';
   }
 }
 
@@ -195,4 +196,12 @@ input[type="number"]::-webkit-outer-spin-button {
 .react-pdf__Document{
   max-width: 100% !important;
   height: auto !important;
+}
+
+.c-info:hover{
+ @apply  outline-dashed outline-primary
+}
+
+.c-info:hover .edit{
+  @apply block
 }

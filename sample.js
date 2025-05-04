@@ -6,6 +6,19 @@ let obj = {
   "country": "United States",
   "phoneNumber": "+1 (555) 123-4567",
   "linkedIn": "linkedin.com/in/emilyjohnson",
+  "summary": "Results-driven software engineer with 7+ years of experience in full-stack development. Passionate about building scalable, efficient systems and mentoring junior developers. Strong problem-solving skills with expertise in cloud technologies and modern web frameworks.",
+  aiGeneratedSummaries: [],
+  "skills": [
+    "JavaScript",
+    "React",
+    "Node.js",
+    "Python",
+    "AWS",
+    "Docker",
+    "SQL",
+    "Agile Methodologies"
+  ],
+  
   "experience": [
     {
       "jobTitle": "Senior Software Engineer",
@@ -75,28 +88,13 @@ let obj = {
     {
       "language": "English",
       "proficiency": "Native",
-      "certification": "",
-      "yearsOfExperience": ""
     },
     {
       "language": "Spanish",
       "proficiency": "Intermediate",
-      "certification": "DELE B2",
-      "yearsOfExperience": "5"
     }
   ],
-  "skills": [
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Python",
-    "AWS",
-    "Docker",
-    "SQL",
-    "Agile Methodologies"
-  ],
-  "summary": "Results-driven software engineer with 7+ years of experience in full-stack development. Passionate about building scalable, efficient systems and mentoring junior developers. Strong problem-solving skills with expertise in cloud technologies and modern web frameworks.",
-  aiGeneratedSummaries: []
+  
 };
 
 let degrees = [

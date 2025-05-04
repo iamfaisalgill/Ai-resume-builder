@@ -1,8 +1,11 @@
 import { useResume } from "@/context/ResumeInfoContext";
 import React from "react";
+import { Button } from "../ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Edit, Edit3 } from "lucide-react";
 
 // template name: Halley
-const HalleyTheme = () => {
+const HalleyTheme = ({activeDialog, setActiveDialog}) => {
 
   const {resumeInfo} = useResume()
   return (
@@ -11,47 +14,53 @@ const HalleyTheme = () => {
         {/* Main Content (Left 3/4) */}
         <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
           {/* Name/Logo Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 text-[#5F6A8A]">
-            <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 flex items-center justify-center border-2 border-[#5F6A8A] rotate-45">
-              <div className="absolute w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 border-2 border-[#5F6A8A] -rotate-45"></div>
-              <span className="text-base sm:text-xl md:text-2xl lg:text-3xl font-serif font-bold -rotate-45">
+          <div className="c-info relative flex items-center space-x-2 sm:space-x-3 md:space-x-4 text-[#305276]">
+            <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 flex items-center justify-center border-2 border-[#305276] rotate-45">
+              <div className="absolute w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 border-2 border-[#305276] -rotate-45"></div>
+              <span className="uppercase text-base sm:text-xl md:text-2xl lg:text-3xl font-serif font-bold -rotate-45">
                 {resumeInfo.firstName.charAt(0)}{resumeInfo.lastName.charAt(0)}
               </span>
             </div>
-            <div className="font-serif font-bold text-[#5F6A8A]">
+            <div className="font-serif font-bold text-[#305276]">
               <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.firstName}</p>
               <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.lastName}</p>
             </div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Contact information")}><Edit size={14}/> Edit</button></div>
           </div>
-          
+
           {/* Professional Summary */}
-          <div className="mt-5 lg:mt-7">
-            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">
+          <div className="c-info relative mt-5 lg:mt-7 hover:outline-dashed outline-primary">
+            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">
               PROFESSIONAL SUMMARY
             </h2>
-            <p className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
+            {resumeInfo.summary && <p className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
               {resumeInfo.summary}
-            </p>
+            </p>}
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Professional Summary")}><Edit size={14}/> Edit</button></div>
           </div>
           
           {/* Experience */}
-          <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">EXPERIENCE</h2>
+          <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EXPERIENCE</h2>
             
             {resumeInfo.experience.map((exp, index) => (
               <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
-              <p className="font-bold text-gray-900">{exp.jobTitle}</p>
-                <p className="text-gray-700">
-                  {exp.company} | {exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}
+              <div className="flex justify-between">
+                <p className="font-bold text-gray-900">{exp.jobTitle}</p>
+                <p className=" text-gray-700">{exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}</p>
+              </div>
+                <p className="text-gray-700 italic">
+                  {exp.company}
                 </p>
                 {exp.description && <p className="text-gray-700 mt-1">• {exp.description}</p>}
               </div>
             ))}
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Experience")}><Edit size={14}/> Edit</button></div>
           </div>
           
           {/* Projects */}
-          {resumeInfo.projects && <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">PROJECTS</h2>
+          {resumeInfo.projects && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">PROJECTS</h2>
             {resumeInfo.projects.map((project, index) => (
               <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
                 <p className="font-bold text-gray-900">{project.title}</p>
@@ -59,11 +68,12 @@ const HalleyTheme = () => {
                 </p>
               </div>
             ))}
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Projects")}><Edit size={14}/> Edit</button></div>
           </div>}
           
           {/* Education */}
-          <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">EDUCATION</h2>
+          {resumeInfo.education.length>0 && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EDUCATION</h2>
             {resumeInfo.education.map((edu, index) => (
               <div key={index} className="mt-1 sm:mt-1.5 md:mt-2">
                 <p className="font-bold text-gray-900">
@@ -76,50 +86,59 @@ const HalleyTheme = () => {
                 )}
               </div>
             ))}
-          </div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Education")}><Edit size={14}/> Edit</button></div>
+          </div>}
           
           {/* Languages */}
-          {resumeInfo.languages && <div className="mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="text-[11px] sm:text-base md:text-lg font-bold text-[#5F6A8A] pb-1 border-b border-[#5F6A8A]">LANGUAGES</h2>
+          {resumeInfo.languages.length>0 && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">LANGUAGES</h2>
             {resumeInfo.languages.map((lang, index) => (
               <p key={index} className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
-                {lang.language} - {lang.proficiency}
+                {lang.language} ({lang.proficiency})
               </p>
             ))}
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Language")}><Edit size={14}/> Edit</button></div>
           </div>}
         </div>
         
         {/* Sidebar (Right 1/4) */}
-        <div className="w-1/4 bg-[#5F6A8A] text-white text-[10px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
-        <p className="break-words">{resumeInfo.city}, {resumeInfo.country}</p>
-        <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.phoneNumber}</p>
-        <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.email}</p>
-        <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.linkedIn}</p>
-        {resumeInfo.github && (
-          <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
-        )}
+        <div className="w-1/4 bg-[#305276] text-white text-[10px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
+        <div className="c-info relative">
+          <p className="break-words">{resumeInfo.city}, {resumeInfo.country}</p>
+          <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.phoneNumber}</p>
+          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.email}</p>
+          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.linkedIn}</p>
+          {resumeInfo.github && (
+            <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
+          )}
+          <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Contact information")}><Edit size={14}/> Edit</button></div>
+        </div>
 
-          <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold">TECHNICAL SKILLS</h2>
-          <ul className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
-            {resumeInfo.skills.map((skill, index) => (
-              <li key={index}>• {skill}</li>
-            ))}
-          </ul>
+          <div className="c-info relative">
+            <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold font-serif">SKILLS</h2>
+            <div className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
+              {resumeInfo.skills.map((skill, index) => (
+                <p key={index}>• {skill}</p>
+              ))}
+            </div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Skills")}><Edit size={14}/> Edit</button></div>
+          </div>
 
           {resumeInfo.certifications && (
-            <>
-              <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold">CERTIFICATIONS</h2>
+            <div className="c-info relative">
+              <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold font-serif">CERTIFICATIONS</h2>
               <ul className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
                 {resumeInfo.certifications.map((cert, index) => (
                   <li key={index}>• {cert.name} ({cert.issueYear})</li>
                 ))}
               </ul>
-            </>
+              <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Certifications")}><Edit size={14}/> Edit</button></div>
+            </div>
           )}
 
           {resumeInfo.volunteer && (
             <>
-              <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold">VOLUNTEER</h2>
+              <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold font-serif">VOLUNTEER</h2>
               <p className="mt-1 sm:mt-1.5 md:mt-2">{resumeInfo.volunteer.organization}</p>
               <p>{resumeInfo.volunteer.role} ({resumeInfo.volunteer.duration})</p>
             </>

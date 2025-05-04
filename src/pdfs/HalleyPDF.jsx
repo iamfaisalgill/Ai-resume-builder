@@ -1,5 +1,7 @@
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font, Link } from '@react-pdf/renderer';
 import georgia from '../assets/fonts/georgiab.ttf';
+import { useResume } from '../context/ResumeInfoContext.jsx';
+import { useEffect } from 'react';
 
 Font.register({
      family: 'Georgia-Bold',
@@ -16,10 +18,11 @@ const styles = StyleSheet.create({
   leftColumn: {
     width: '75%',
     padding: 20,
+    color: "#364153"
   },
   rightColumn: {
     width: '25%',
-    backgroundColor: '#5F6A8A',
+    backgroundColor: '#305276',
     color: 'white',
     padding: 10,
   },
@@ -32,13 +35,13 @@ const styles = StyleSheet.create({
     fontSize: 22, // reduced from 24
     fontFamily: 'Georgia-Bold',
     fontWeight: 'heavy',
-    color: '#5F6A8A',
+    color: '#305276',
     textTransform: 'uppercase'
   },
   nameBoxContainer: {
     width: 40,
     height: 40,
-    border: '1.5 solid #5F6A8A',
+    border: '1.5 solid #305276',
     transform: 'rotate(45deg)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -47,7 +50,7 @@ const styles = StyleSheet.create({
   nameBoxInner: {
     width: 40,
     height: 40,
-    border: '1.5 solid #5F6A8A',
+    border: '1.5 solid #305276',
     transform: 'rotate(-45deg)',
     position: 'absolute',
   },
@@ -57,16 +60,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Georgia-Bold',
     fontWeight: 'bold',
     textTransform: "uppercase",
-    color: '#5F6A8A',
+    color: '#305276',
   },
   sectionTitle: {
     fontSize: 11, // reduced from 12
     fontFamily: 'Georgia-Bold',
     fontWeight: 'bold',
-    color: '#5F6A8A',
+    color: '#305276',
     marginBottom: 10,
     textTransform: 'uppercase',
-    borderBottom: '1 solid #5F6A8A',
+    borderBottom: '1 solid #305276',
     paddingBottom: 3
   },
   text: {
@@ -76,7 +79,8 @@ const styles = StyleSheet.create({
   boldText: {
     fontSize: 9, // reduced from 10
     fontWeight: 'bold',
-    marginBottom: 5
+    marginBottom: 5,
+    color: "#101828"
   },
   listItem: {
     fontSize: 9, // reduced from 10
@@ -104,7 +108,8 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     fontSize: 10, // reduced from 11
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: "#101828"
   },
   jobDate: {
     fontSize: 9 // reduced from 10
@@ -117,11 +122,12 @@ const styles = StyleSheet.create({
   projectTitle: {
     fontSize: 10, // reduced from 11
     fontWeight: 'bold',
-    marginBottom: 3
+    marginBottom: 3,
+    color: "#101828"
   },
   projectUrl: {
     fontSize: 8, // reduced from 9
-    color: '#5F6A8A',
+    color: '#305276',
     marginBottom: 8,
     textDecoration: 'none'
   }
@@ -131,106 +137,134 @@ const styles = StyleSheet.create({
 // Create Document Component
 const HalleyPDF = ({resumeInfo}) => {
 
-  const fullName = `${resumeInfo.firstName} ${resumeInfo.lastName}`
+  // Defensive fallbacks
+  const firstName = resumeInfo.firstName || '';
+  const lastName = resumeInfo.lastName || '';
+  const fullName = `${firstName} ${lastName}`.trim();
+  const initials = fullName
+    .split(' ')
+    .filter(Boolean)
+    .map((name) => name[0])
+    .join('');
 
-  const initials = fullName.split(' ') // ["Emily", "Johnson"]
-  .map(name => name[0]).join('');
+  const skills = Array.isArray(resumeInfo.skills) ? resumeInfo.skills : [];
+  const experience = Array.isArray(resumeInfo.experience) ? resumeInfo.experience : [];
+  const education = Array.isArray(resumeInfo.education) ? resumeInfo.education : [];
+  const projects = Array.isArray(resumeInfo.projects) ? resumeInfo.projects : [];
+  const languages = Array.isArray(resumeInfo.languages) ? resumeInfo.languages : [];
+  const certifications = Array.isArray(resumeInfo.certifications) ? resumeInfo.certifications : [];
+
   return (
     <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Left Column (Main Content) */}
-      <View style={styles.leftColumn}>
-        {/* Name Section */}
-        <View style={styles.nameContainer}>
-          <View style={styles.nameBoxContainer}>
-            <View style={styles.nameBoxInner} />
-            <Text style={styles.nameInitials}>{initials}</Text>
+      <Page size="A4" style={styles.page}>
+        {/* Left Column (Main Content) */}
+        <View style={styles.leftColumn}>
+          {/* Name Section */}
+          <View style={styles.nameContainer}>
+            <View style={styles.nameBoxContainer}>
+              <View style={styles.nameBoxInner} />
+              <Text style={styles.nameInitials}>{initials}</Text>
+            </View>
+            <View>
+              <Text style={styles.nameText}>{firstName}</Text>
+              <Text style={styles.nameText}>{lastName}</Text>
+            </View>
           </View>
-          {/* <Text style={styles.nameText}>{resumeInfo.fullName}</Text> */}
-          <View>
-            <Text style={styles.nameText}>{resumeInfo.firstName}</Text>
-            <Text style={styles.nameText}>{resumeInfo.lastName}</Text>
-          </View>
+
+          {/* Professional Summary */}
+          {resumeInfo.summary && (
+            <View>
+              <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
+              <Text style={styles.text}>{resumeInfo.summary}</Text>
+            </View>
+          )}
+
+          {/* Experience */}
+          {experience.length > 0 && (
+            <View style={{ marginTop: 15 }}>
+              <Text style={styles.sectionTitle}>EXPERIENCE</Text>
+              {experience.map((exp, index) => (
+                <View key={index}>
+                  <View style={styles.jobHeader}>
+                    <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
+                    <Text style={styles.jobDate}>{exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}</Text>
+                  </View>
+                  <Text style={styles.companyInfo}>{exp.company}</Text>
+                  <Text style={styles.text}>{exp.description}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Projects */}
+          {projects.length > 0 && (
+            <View style={{ marginTop: 15 }}>
+              <Text style={styles.sectionTitle}>PROJECTS</Text>
+              {projects.map((project, index) => (
+                <View key={index}>
+                  <Text style={styles.projectTitle}>{project.title}</Text>
+                  <Text style={styles.text}>{project.description}</Text>
+                  {project.url && <Text style={styles.projectUrl}>{project.url}</Text>}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Education */}
+          {education.length > 0 && (
+            <View style={{ marginTop: 15 }}>
+              <Text style={styles.sectionTitle}>EDUCATION</Text>
+              {education.map((edu, index) => (
+                <View key={index}>
+                  <Text style={styles.boldText}>{edu.degree} in {edu.fieldOfStudy}</Text>
+                  <Text style={styles.text}>{edu.institution}</Text>
+                  <Text style={styles.text}>{edu.graduationMonth} {edu.graduationYear}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+
+          {/* Languages */}
+          {languages.length > 0 && (
+            <View style={{ marginTop: 15 }}>
+              <Text style={styles.sectionTitle}>LANGUAGES</Text>
+              {languages.map((lang, index) => (
+                <Text key={index} style={styles.text}>{lang.language} ({lang.proficiency})</Text>
+              ))}
+            </View>
+          )}
         </View>
 
-        {/* Professional Summary */}
-        <View>
-          <Text style={styles.sectionTitle}>PROFESSIONAL SUMMARY</Text>
-          <Text style={styles.text}>{resumeInfo.summary}</Text>
+        {/* Right Column (Sidebar) */}
+        <View style={styles.rightColumn}>
+          {resumeInfo.city && resumeInfo.country && (
+            <Text style={styles.rightText}>{resumeInfo.city}, {resumeInfo.country}</Text>
+          )}
+          {resumeInfo.phoneNumber && <Text style={styles.rightText}>{resumeInfo.phoneNumber}</Text>}
+          {resumeInfo.email && <Text style={styles.rightText}>{resumeInfo.email}</Text>}
+          {resumeInfo.linkedIn && <Text style={styles.rightText}>{resumeInfo.linkedIn}</Text>}
+
+          {skills.length > 0 && (
+            <>
+              <Text style={styles.rightTitle}>SKILLS</Text>
+              {skills.map((skill, index) => (
+                <Text key={index} style={styles.rightText}>• {skill}</Text>
+              ))}
+            </>
+          )}
+
+          {certifications.length > 0 && (
+            <View>
+              <Text style={styles.rightTitle}>CERTIFICATIONS</Text>
+              {certifications.map((cert, index) => (
+                <Text key={index} style={styles.rightText}>{cert.name} ({cert.issueYear})</Text>
+              ))}
+            </View>
+          )}
         </View>
-
-        {/* Experience */}
-        {resumeInfo.experience && <View style={{ marginTop: 15 }}>
-          <Text style={styles.sectionTitle}>EXPERIENCE</Text>
-          {resumeInfo.experience.map((exp, index) => (
-            <View key={index}>
-              <View style={styles.jobHeader}>
-                <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
-                <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text>
-              </View>
-              <Text style={styles.companyInfo}>{exp.company}</Text>
-              <Text style={styles.text}>{exp.description}</Text>
-            </View>
-          ))}
-        </View>}
-
-        {/* Projects */}
-        {resumeInfo.projects && <View style={{ marginTop: 15 }}>
-          <Text style={styles.sectionTitle}>PROJECTS</Text>
-          {resumeInfo.projects.map((project, index) => (
-            <View key={index}>
-              <Text style={styles.projectTitle}>{project.title}</Text>
-              <Text style={styles.text}>{project.description}</Text>
-              {project.url && <Text style={styles.projectUrl}>{project.url}</Text>}
-            </View>
-          ))}
-        </View>}
-
-        {/* Education */}
-        {resumeInfo.education&&<View style={{ marginTop: 15 }}>
-          <Text style={styles.sectionTitle}>EDUCATION</Text>
-          {resumeInfo.education.map((edu, index) => (
-            <View key={index}>
-              <Text style={styles.boldText}>{edu.degree} in {edu.fieldOfStudy}</Text>
-              <Text style={styles.text}>{edu.institution}</Text>
-              <Text style={styles.text}>{edu.graduationMonth} {edu.graduationYear}</Text>
-            </View>
-          ))}
-        </View>}
-
-        {/* Languages */}
-        {resumeInfo.languages && <View style={{ marginTop: 15 }}>
-          <Text style={styles.sectionTitle}>LANGUAGES</Text>
-          {resumeInfo.languages.map((lang, index) => (
-            <Text key={index} style={styles.text}>{lang.language} ({lang.proficiency})</Text>
-          ))}
-        </View>}
-      </View>
-
-      {/* Right Column (Sidebar) */}
-      <View style={styles.rightColumn}>
-        <Text style={styles.rightText}>{resumeInfo.city}, {resumeInfo.country}</Text>
-        <Text style={styles.rightText}>{resumeInfo.phoneNumber}</Text>
-        <Text style={styles.rightText}>{resumeInfo.email}</Text>
-        <Text style={styles.rightText}>{resumeInfo.linkedIn}</Text>
-
-        <Text style={styles.rightTitle}>TECHNICAL SKILLS</Text>
-        {resumeInfo.skills.map((skill, index) => (
-          <Text key={index} style={styles.rightText}>• {skill}</Text>
-        ))}
-        
-         {resumeInfo.certifications && 
-         <View>
-           <Text style={styles.rightTitle}>CERTIFICATIONS</Text>
-            {resumeInfo.certifications.map((cert, index) => (
-              <Text key={index} style={styles.rightText}>{cert.name} ({cert.issueYear})
-              </Text>
-            ))}
-         </View>
-          }
-      </View>
-    </Page>
-  </Document>
-)};
+      </Page>
+    </Document>
+  );
+};
 
 export default HalleyPDF
