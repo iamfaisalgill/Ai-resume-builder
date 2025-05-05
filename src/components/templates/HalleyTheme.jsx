@@ -72,7 +72,7 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
           </div>}
           
           {/* Education */}
-          {resumeInfo.education.length>0 && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+          {resumeInfo.education && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EDUCATION</h2>
             {resumeInfo.education.map((edu, index) => (
               <div key={index} className="mt-1 sm:mt-1.5 md:mt-2">
@@ -99,7 +99,7 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">LANGUAGES</h2>
             {resumeInfo.languages.map((lang, index) => (
               <p key={index} className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
-                {lang.language} ({lang.proficiency})
+                {lang.language } {lang.proficiency?`(${lang.proficiency})`: ""}
               </p>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Language")}><Edit size={14}/> Edit</button></div>

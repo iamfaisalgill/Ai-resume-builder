@@ -74,7 +74,9 @@ const formField = {
 const EducationDialog = ({ isOpen, onClose }) => {
 
   const { resumeInfo, setResumeInfo } = useResume();
-  const [EducationList, setEducationList] = useState([...resumeInfo.education]);
+  const [EducationList, setEducationList] = useState(
+    resumeInfo?.education?.length ? [...resumeInfo.education] : []
+  );
   const [openItem, setOpenItem] = useState("");
   const [isEditing, setIsEditing] = useState(true)
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)

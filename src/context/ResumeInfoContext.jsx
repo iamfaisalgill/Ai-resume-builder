@@ -8,65 +8,105 @@ export const ResumeInfoProvider = ({ children }) => {
     const savedData = localStorage.getItem('resumeInfo')
     return savedData ? JSON.parse(savedData) : {
       "contactInfo": {
-      "firstName": "Emily",
-      "lastName": "Johnson",
-      "email": "emily.johnson@example.com",
-      "city": "Seattle",
-      "country": "United States",
-      "phoneNumber": "+1 (555) 123-4567",
-      "linkedIn": "linkedin.com/in/emilyjohnson",
-    },
-    "summary": "Results-driven software engineer with 7+ years of experience in full-stack development. Passionate about building scalable, efficient systems and mentoring junior developers. Strong problem-solving skills with expertise in cloud technologies and modern web frameworks.",
-    aiGeneratedSummaries: [],
+        "firstName": "Michael",
+        "lastName": "Chen",
+        "email": "michael.chen@example.com",
+        "city": "Toronto",
+        "country": "Canada",
+        "phoneNumber": "+1 (416) 987-6543",
+        "linkedIn": "linkedin.com/in/michaelchen",
+      },
+      "summary": "Innovative data scientist with 5+ years of experience in machine learning and big data analytics. Specialized in developing predictive models and data-driven solutions for business challenges. Strong communicator with proven ability to translate complex technical concepts for non-technical stakeholders.",
+      aiGeneratedSummaries: [],
       "skills": [
-        "JavaScript",
-        "React",
-        "Node.js",
         "Python",
-        "AWS",
-        "Docker",
+        "TensorFlow",
+        "PyTorch",
         "SQL",
-        "Agile Methodologies"
+        "Big Data",
+        "Data Visualization",
+        "Cloud Computing",
+        "Statistical Modeling"
       ],
       
       "experience": [
         {
-          "jobTitle": "Senior Software Engineer",
-          "company": "TechSolutions Inc.",
-          "startYear": "2018",
-          "startMonth": "June",
+          "jobTitle": "Lead Data Scientist",
+          "company": "DataInsights Corp.",
+          "startYear": "2019",
+          "startMonth": "April",
           "endYear": "",
           "endMonth": "",
           "present": true,
-          "description": "Lead development team building scalable web applications using React and Node.js. Implemented CI/CD pipelines reducing deployment time by 40%."
+          "description": "Lead a team developing machine learning models for customer behavior prediction. Implemented new algorithms that improved prediction accuracy by 35%."
         },
         {
-          "jobTitle": "Software Developer",
-          "company": "Digital Innovations LLC",
-          "startYear": "2015",
-          "startMonth": "August",
-          "endYear": "2018",
-          "endMonth": "May",
+          "jobTitle": "Data Analyst",
+          "company": "Analytics Pro",
+          "startYear": "2017",
+          "startMonth": "January",
+          "endYear": "2019",
+          "endMonth": "March",
           "present": false,
-          "description": "Developed and maintained e-commerce platforms. Optimized database queries improving system performance by 25%."
+          "description": "Performed data mining and analysis for client projects. Created automated reporting systems that reduced manual work by 60%."
         }
       ],
       "education": [
         {
-          "institution": "University of Washington",
+          "institution": "University of Toronto",
           "degree": "Master of Science",
-          "graduationMonth": "May",
-          "graduationYear": "2015",
-          "fieldOfStudy": "Computer Science"
+          "graduationMonth": "November",
+          "graduationYear": "2016",
+          "fieldOfStudy": "Data Science"
         },
         {
-          "institution": "Stanford University",
+          "institution": "McGill University",
           "degree": "Bachelor of Science",
-          "graduationMonth": "June",
-          "graduationYear": "2013",
-          "fieldOfStudy": "Software Engineering"
+          "graduationMonth": "May",
+          "graduationYear": "2014",
+          "fieldOfStudy": "Statistics"
         }
       ],
+      "projects": [
+        {
+          "title": "Sentiment Analysis Tool",
+          "description": "Built a natural language processing system to analyze customer feedback sentiment across multiple channels.",
+          "url": "github.com/michaelc/sentiment-analysis"
+        },
+        {
+          "title": "Fraud Detection System",
+          "description": "Developed a machine learning model to identify fraudulent transactions with 92% accuracy.",
+          "url": "github.com/michaelc/fraud-detection"
+        }
+      ],
+      "certifications": [
+        {
+          "name": "TensorFlow Developer Certificate",
+          "organization": "Google",
+          "issueMonth": "September",
+          "issueYear": "2021"
+        },
+        {
+          "name": "Microsoft Certified: Azure Data Scientist",
+          "organization": "Microsoft",
+          "issueMonth": "July",
+          "issueYear": "2020"
+        }
+      ],
+      "languages": [
+        {
+          "language": "English",
+          "proficiency": "Native",
+        },
+        {
+          "language": "Mandarin",
+          "proficiency": "Fluent",
+        },
+        {
+          "language": "French",
+          "proficiency": "Intermediate",
+        }
+      ]
     }
   });
 

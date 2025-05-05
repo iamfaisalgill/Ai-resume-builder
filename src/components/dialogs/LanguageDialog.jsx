@@ -27,7 +27,7 @@ const formField = {
   proficiency: "",
 };
 
-export default function LanguageDialog({ isOpen, onClose, setSections }) {
+export default function LanguageDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
 
   // Initialize safely
@@ -95,11 +95,7 @@ export default function LanguageDialog({ isOpen, onClose, setSections }) {
   };
 
   const deleteSec = () => {
-    setSections(prev=>prev.filter((l) => l !== "Language"))
-    setResumeInfo((prev) => ({
-      ...prev,
-      languages: [],
-    }))
+    alert("Hello kitty")
   }
   
 

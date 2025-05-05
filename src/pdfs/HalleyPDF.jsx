@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
 const HalleyPDF = ({resumeInfo}) => {
 
   // Defensive fallbacks
-  const firstName = resumeInfo.firstName || '';
-  const lastName = resumeInfo.lastName || '';
+  const firstName = resumeInfo.contactInfo.firstName || '';
+  const lastName = resumeInfo.contactInfo.lastName || '';
   const fullName = `${firstName} ${lastName}`.trim();
   const initials = fullName
     .split(' ')
@@ -237,12 +237,12 @@ const HalleyPDF = ({resumeInfo}) => {
 
         {/* Right Column (Sidebar) */}
         <View style={styles.rightColumn}>
-          {resumeInfo.city && resumeInfo.country && (
-            <Text style={styles.rightText}>{resumeInfo.city}, {resumeInfo.country}</Text>
+          {resumeInfo.contactInfo.city && resumeInfo.contactInfo.country && (
+            <Text style={styles.rightText}>{resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country}</Text>
           )}
-          {resumeInfo.phoneNumber && <Text style={styles.rightText}>{resumeInfo.phoneNumber}</Text>}
-          {resumeInfo.email && <Text style={styles.rightText}>{resumeInfo.email}</Text>}
-          {resumeInfo.linkedIn && <Text style={styles.rightText}>{resumeInfo.linkedIn}</Text>}
+          {resumeInfo.contactInfo.phoneNumber && <Text style={styles.rightText}>{resumeInfo.contactInfo.phoneNumber}</Text>}
+          {resumeInfo.contactInfo.email && <Text style={styles.rightText}>{resumeInfo.contactInfo.email}</Text>}
+          {resumeInfo.contactInfo.linkedIn && <Text style={styles.rightText}>{resumeInfo.contactInfo.linkedIn}</Text>}
 
           {skills.length > 0 && (
             <>
