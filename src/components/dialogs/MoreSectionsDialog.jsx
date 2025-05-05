@@ -59,43 +59,49 @@ const MoreSectionsDialog = ({ isOpen, onClose, activeDialog, setActiveDialog }) 
   };
 
   const handleContinue = () => {
-    // First update resumeInfo based on selection
-    const updatedResumeInfo = { ...resumeInfo };
-    
-    if (selectedValue === "summary") {
-      updatedResumeInfo.summary = "";
-    } 
-    else if (selectedValue === "experience") {
-      updatedResumeInfo.experience = [formFields.exp];
+    if (selectedValue === "Professional Summary") {
+      setResumeInfo(prev => ({
+        ...prev,
+        summary: ""
+      }))
     }
-    else if (selectedValue === "education") {
-      updatedResumeInfo.education = [];
+    else if (selectedValue === "Experience") {
+      setResumeInfo(prev => ({
+        ...prev,
+        experience: [formFields.exp]
+      }))
     }
-    else if (selectedValue === "skills") {
-      updatedResumeInfo.skills = [];
+    else if (selectedValue === "Education") {
+      setResumeInfo(prev => ({
+        ...prev,
+        education: []
+      }))
     }
-    else if (selectedValue === "languages") {
-      updatedResumeInfo.languages = [formFields.lang];
+    else if (selectedValue === "Skills") {
+      setResumeInfo(prev => ({
+        ...prev,
+        skills: []
+      }))
     }
-    else if (selectedValue === "certifications") {
-      updatedResumeInfo.certifications = [formFields.cert];
+    else if (selectedValue === "Languages") {
+      setResumeInfo(prev => ({
+        ...prev,
+        languages: [formFields.lang]
+      }))
     }
-    else if (selectedValue === "projects") {
-      updatedResumeInfo.projects = [formFields.projects];
+    else if (selectedValue === "Certifications") {
+      setResumeInfo(prev => ({
+        ...prev,
+        certifications: [formFields.cert]
+      }))
     }
-  
-    setResumeInfo(updatedResumeInfo);
-    
-    // Then update activeDialog and close
-    setActiveDialog(selectedValue);
-    onClose();
-    
-    // If you need to log the new value, use a useEffect in the parent component
-    // or use the callback form of setActiveDialog:
-    setActiveDialog(prev => {
-      console.log("New activeDialog:", selectedValue);
-      return selectedValue;
-    });
+    else if (selectedValue === "Projects") {
+      setResumeInfo(prev => ({
+        ...prev,
+        projects: [formFields.projects]
+      }))
+    }
+    onClose()
   }
 
 
