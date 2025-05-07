@@ -5,9 +5,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Edit, Edit3, Trash2 } from "lucide-react";
 
 // template name: Halley
-const HalleyTheme = ({activeDialog, setActiveDialog}) => {
+const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) => {
 
-  const {resumeInfo} = useResume()
+  const { resumeInfo, setResumeInfo } = useResume()
+
   return (
     <div className="mx-auto bg-white max-w-4xl text-[10px] sm:text-sm md:text-base">
       <div className="flex">
@@ -25,39 +26,53 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
               <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.contactInfo.firstName}</p>
               <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.contactInfo.lastName}</p>
             </div>
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Contact information")}><Edit size={14}/> Edit</button></div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+                <div className="flex gap-2 bg-gray-900">
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}><Edit size={14} /> Edit</button>
+                </div>
+              </div>
           </div>
 
           {/* Professional Summary */}
-          <div className="c-info relative mt-5 lg:mt-7 hover:outline-dashed outline-primary">
+          {(resumeInfo.summary || resumeInfo.summary === "") && <div className="c-info relative mt-5 lg:mt-7 hover:outline-dashed outline-primary">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">
               PROFESSIONAL SUMMARY
             </h2>
             {resumeInfo.summary && <p className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
               {resumeInfo.summary}
             </p>}
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Professional Summary")}><Edit size={14}/> Edit</button></div>
-          </div>
-          
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+                <div className="flex gap-2 bg-gray-900">
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Professional Summary")}><Edit size={14} /> Edit</button>
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Professional Summary")}><Trash2 size={14} /> Delete</button>
+                </div>
+              </div>
+          </div>}
+
           {/* Experience */}
-          <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
+          {resumeInfo.experience && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EXPERIENCE</h2>
-            
+
             {resumeInfo.experience.map((exp, index) => (
               <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
-              <div className="flex justify-between">
-                <p className="font-bold text-gray-900">{exp.jobTitle}</p>
-                <p className=" text-gray-700">{exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}</p>
-              </div>
+                <div className="flex justify-between">
+                  <p className="font-bold text-gray-900">{exp.jobTitle}</p>
+                  <p className=" text-gray-700">{exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}</p>
+                </div>
                 <p className="text-gray-700 italic">
                   {exp.company}
                 </p>
                 {exp.description && <p className="text-gray-700 mt-1">• {exp.description}</p>}
               </div>
             ))}
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Experience")}><Edit size={14}/> Edit</button></div>
-          </div>
-          
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+                <div className="flex gap-2 bg-gray-900">
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Experience")}><Edit size={14} /> Edit</button>
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Experience")}><Trash2 size={14} /> Delete</button>
+                </div>
+              </div>
+          </div>}
+
           {/* Projects */}
           {resumeInfo.projects && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">PROJECTS</h2>
@@ -68,9 +83,14 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
                 </p>
               </div>
             ))}
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Projects")}><Edit size={14}/> Edit</button></div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+                <div className="flex gap-2 bg-gray-900">
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Projects")}><Edit size={14} /> Edit</button>
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Projects")}><Trash2 size={14} /> Delete</button>
+                </div>
+              </div>
           </div>}
-          
+
           {/* Education */}
           {resumeInfo.education && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EDUCATION</h2>
@@ -88,36 +108,45 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
               <div className="flex gap-2 bg-gray-900">
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Education")}><Edit size={14}/> Edit</button>
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={()=>setActiveDialog("Education")}><Trash2 size={14}/> Delete</button>
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Education")}><Edit size={14} /> Edit</button>
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Education")}><Trash2 size={14} /> Delete</button>
               </div>
             </div>
           </div>}
-          
+
           {/* Languages */}
-          {resumeInfo.languages && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">  
+          {resumeInfo.languages && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">LANGUAGES</h2>
             {resumeInfo.languages.map((lang, index) => (
               <p key={index} className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
-                {lang.language } {lang.proficiency?`(${lang.proficiency})`: ""}
+                {lang.language} {lang.proficiency ? `(${lang.proficiency})` : ""}
               </p>
             ))}
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Language")}><Edit size={14}/> Edit</button></div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+              <div className="flex gap-2 bg-gray-900">
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Language")}><Edit size={14} /> Edit</button>
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Language")}><Trash2 size={14} /> Delete</button>
+              </div>
+            </div>
           </div>}
         </div>
-        
+
         {/* Sidebar (Right 1/4) */}
         <div className="w-1/4 bg-[#305276] text-white text-[10px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
-        <div className="c-info relative">
-          <p className="break-words">{resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country}</p>
-          <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.contactInfo.phoneNumber}</p>
-          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.contactInfo.email}</p>
-          <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.contactInfo.linkedIn}</p>
-          {resumeInfo.contactInfo.github && (
-            <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
-          )}
-          <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Contact information")}><Edit size={14}/> Edit</button></div>
-        </div>
+          <div className="c-info relative">
+            <p className="break-words">{resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country}</p>
+            <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.contactInfo.phoneNumber}</p>
+            <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.contactInfo.email}</p>
+            <p className="mt-1 sm:mt-2 md:mt-3 max-md:break-all">{resumeInfo.contactInfo.linkedIn}</p>
+            {resumeInfo.contactInfo.github && (
+              <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
+            )}
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+                <div className="flex gap-2 bg-gray-900">
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}><Edit size={14} /> Edit</button>
+                </div>
+              </div>
+          </div>
 
           <div className="c-info relative">
             <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold font-serif">SKILLS</h2>
@@ -126,7 +155,12 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
                 <p key={index}>• {skill}</p>
               ))}
             </div>
-            <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Skills")}><Edit size={14}/> Edit</button></div>
+            <div className="edit hidden absolute -right-1 -top-1 p-1">
+              <div className="flex gap-2 bg-gray-900">
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Skills")}><Edit size={14} /> Edit</button>
+                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Skills")}><Trash2 size={14} /> Delete</button>
+              </div>
+            </div>
           </div>
 
           {resumeInfo.certifications && (
@@ -137,7 +171,12 @@ const HalleyTheme = ({activeDialog, setActiveDialog}) => {
                   <li key={index}>• {cert.name} ({cert.issueYear})</li>
                 ))}
               </ul>
-              <div className="edit hidden absolute -right-1 -top-1 p-1 bg-gray-900"><button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={()=>setActiveDialog("Certifications")}><Edit size={14}/> Edit</button></div>
+              <div className="edit hidden absolute -right-1 -top-1 p-1">
+                <div className="flex gap-2 bg-gray-900">
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Certifications")}><Edit size={14} /> Edit</button>
+                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Certifications")}><Trash2 size={14} /> Delete</button>
+                </div>
+              </div>
             </div>
           )}
 

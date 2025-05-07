@@ -31,6 +31,18 @@ const DownloadFile = () => {
   const isStalwart = useMatch("/theme-stalwart/download");
   const isHalley = useMatch("/theme-halley/download");
   const [activeDialog, setActiveDialog] = useState(null)
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
+  const [activeSec, setActiveSec] = useState("")
+
+  const deleteItem = (label) => {
+    setActiveSec(label)
+    setIsAlertDialogOpen(true);
+  }
+
+  const editItem = (label) => {
+    setActiveDialog(label)
+    setActiveSec(label)
+  }
 
 
   const getPdfComponent = () => {
@@ -115,7 +127,7 @@ const DownloadFile = () => {
   } ----> previous method   */
   return (
     <>
-    <ResumeSidebar activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
+    <ResumeSidebar activeDialog={activeDialog} setActiveDialog={setActiveDialog} activeSec={activeSec} setActiveSec={setActiveSec} isAlertDialogOpen={isAlertDialogOpen} setIsAlertDialogOpen={setIsAlertDialogOpen} editItem={editItem} deleteItem={deleteItem} />
       <div className="md:ml-64">
       <div className="bg-card border-b p-6 flex items-center justify-between">
         <div className=" flex items-center">
@@ -134,7 +146,7 @@ const DownloadFile = () => {
       </div>
           <div className="mt-5 p-4">
             {isHalley ? (
-              <HalleyTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
+              <HalleyTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} editItem={editItem} deleteItem={deleteItem} />
             ) : isIconic ? (
               <IconicTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
             ) : isStalwart ? (

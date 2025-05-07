@@ -10,9 +10,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Palette, Pencil, Plus, Trash2 } from "lucide-react"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+
+import { Ellipsis, MoreHorizontal, Palette, Pencil, PencilLine, Plus, Trash2 } from "lucide-react"
 import Logo from '/logo.svg'
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -26,13 +26,10 @@ import MoreSectionsDialog from "./dialogs/MoreSectionsDialog"
 import { useResume } from "@/context/ResumeInfoContext"
 
 
-export default function ResumeSidebar({ activeDialog, setActiveDialog }) {
+export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec, setActiveSec, isAlertDialogOpen, setIsAlertDialogOpen, deleteItem, editItem }) {
 
   const { resumeInfo, setResumeInfo } = useResume();
-
-  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
-  const [activeSec, setActiveSec] = useState("")
-
+  
   const confirmDelete = () => {
     setActiveSec("");
     setResumeInfo(prevInfo => {
@@ -40,38 +37,29 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog }) {
       if (activeSec === "Professional Summary") {
         delete newInfo.summary
       }
-       else if (activeSec === "Experience") {
+      else if (activeSec === "Experience") {
         delete newInfo.experience
       }
-       else if (activeSec === "Education") {
+      else if (activeSec === "Education") {
         delete newInfo.education
       }
-       else if (activeSec === "Skills") {
+      else if (activeSec === "Skills") {
         delete newInfo.skills
       }
       else if (activeSec === "Language") {
         delete newInfo.languages
       }
-       else if (activeSec === "Certifications") {
+      else if (activeSec === "Certifications") {
         delete newInfo.certifications
       }
-       else if (activeSec === "Projects") {
+      else if (activeSec === "Projects") {
         delete newInfo.projects
       };
       return newInfo;
     })
     setIsAlertDialogOpen(false);
   }
-
-  const deleteItem = (label) => {
-    setActiveSec(label)
-    setIsAlertDialogOpen(true);
-  }
-
-  const editItem = (label) => {
-    setActiveDialog(label)
-    setActiveSec(label)
-  }
+  
 
   const closeDialog = () => setActiveDialog(null)
 
@@ -99,145 +87,265 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog }) {
           {/* Contact information */}
           <div
             className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Contact information" ? "bg-accent font-medium" : "hover:bg-accent"
+              "flex items-center justify-between px-4 py-2 cursor-pointer",
+              activeDialog === "Contact information" ? "bg-accent font-medium" : "hover:bg-accent/40"
             )}
           >
             <span>Contact information</span>
-            <div className="space-x-1">
-
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}>
-                <Pencil size={15} />
-              </button>
-            </div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                  <Ellipsis size={16} />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-40 p-1" align="start">
+                <button
+                  className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                  onClick={() => editItem("Contact information")}
+                >
+                  <PencilLine size={16} /> Edit
+                </button>
+                <button
+                  className="w-full flex items-center gap-2 p-2 text-sm rounded-sm text-destructive opacity-50"
+                  disabled={true}
+                >
+                  <Trash2 size={16} /> Delete
+                </button>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Summary */}
-          {resumeInfo.summary && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Professional Summary" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Professional Summary</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Professional Summary")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Professional Summary")}>
-                <Pencil size={15} />
-              </button>
+          {(resumeInfo.summary || resumeInfo.summary === "") && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Professional Summary" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Professional Summary</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Professional Summary")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Professional Summary")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
+          ) }
+          
 
           {/* Skills */}
-          {resumeInfo.skills && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Skills" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Skills</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Skills")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Skills")}>
-                <Pencil size={15} />
-              </button>
+          {resumeInfo.skills && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Skills" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Skills</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Skills")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Skills")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
+          )}
 
           {/* Experience */}
-          {resumeInfo.experience && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Experience" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Experience</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Experience")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Experience")}>
-                <Pencil size={15} />
-              </button>
+          {resumeInfo.experience && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Experience" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Experience</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Experience")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Experience")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
+          )}
 
           {/* Education */}
-          {resumeInfo.education && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Education" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Education</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Education")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Education")}>
-                <Pencil size={15} />
-              </button>
+          {resumeInfo.education && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Education" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Education</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Education")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Education")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
+          )}
 
           {/* Language */}
-          {resumeInfo.languages && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Language" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Language</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Language")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Language")}>
-                <Pencil size={15} />
-              </button>
+          {resumeInfo.languages && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Language" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Language</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Language")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Language")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
+          )}
 
           {/* Projects */}
-          {resumeInfo.projects && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Projects" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Projects</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Projects")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Projects")}>
-                <Pencil size={15} />
-              </button>
+          {resumeInfo.projects && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Projects" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Projects</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Projects")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Projects")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
+          )}
 
           {/* Certifications */}
-          {resumeInfo.certifications && (<div
-            className={clsx(
-              "flex items-center justify-between px-4 py-3",
-              activeDialog === "Certifications" ? "bg-accent font-medium" : "hover:bg-accent"
-            )}
-          >
-            <span>Certifications</span>
-            <div className="space-x-1">
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => deleteItem("Certifications")}>
-                <Trash2 size={15} />
-              </button>
-              <button className="text-xs text-muted-foreground cursor-pointer hover:text-primary" onClick={() => editItem("Certifications")}>
-                <Pencil size={15} />
-              </button>
+          {resumeInfo.certifications && (
+            <div
+              className={clsx(
+                "flex items-center justify-between px-4 py-3",
+                activeDialog === "Certifications" ? "bg-accent font-medium" : "hover:bg-accent/40"
+              )}
+            >
+              <span>Certifications</span>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="hover:bg-accent dark:hover:bg-background p-1 rounded-md">
+                    <Ellipsis size={16} />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-40 p-1" align="start">
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm"
+                    onClick={() => editItem("Certifications")}
+                  >
+                    <PencilLine size={16} /> Edit
+                  </button>
+                  <button
+                    className="w-full flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-sm text-destructive"
+                    onClick={() => deleteItem("Certifications")}
+                  >
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>)}
-
+          )}
         </div>
       </ScrollArea>
 
@@ -279,7 +387,7 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog }) {
         <LanguageDialog isOpen={true} onClose={closeDialog} />
       )}
       {activeDialog === "More Sections" && (
-        <MoreSectionsDialog isOpen={true} onClose={closeDialog} activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
+        <MoreSectionsDialog isOpen={true} onClose={closeDialog} />
       )}
       {/* Add more dialogs for other sections as needed */}
 

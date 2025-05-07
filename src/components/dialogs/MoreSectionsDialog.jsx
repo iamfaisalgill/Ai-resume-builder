@@ -12,6 +12,7 @@ import { Label } from "../ui/label"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { useEffect, useState } from "react"
 import { useResume } from "@/context/ResumeInfoContext"
+import { toast } from "sonner"
 
 
 const formFields = {
@@ -47,23 +48,24 @@ const formFields = {
   }
 }
 
-const MoreSectionsDialog = ({ isOpen, onClose, activeDialog, setActiveDialog }) => {
+const MoreSectionsDialog = ({ isOpen, onClose }) => {
 
   const { resumeInfo, setResumeInfo } = useResume();
   const [selectedValue, setSelectedValue] = useState("");
-  const [dataExist, setDataExist] = useState(false)
 
   const handleValueChange = (value) => {
     setSelectedValue(value);
-    console.log("Selected radio value:", value);
   };
 
+
   const handleContinue = () => {
+
     if (selectedValue === "Professional Summary") {
       setResumeInfo(prev => ({
         ...prev,
         summary: ""
       }))
+
     }
     else if (selectedValue === "Experience") {
       setResumeInfo(prev => ({
@@ -101,118 +103,129 @@ const MoreSectionsDialog = ({ isOpen, onClose, activeDialog, setActiveDialog }) 
         projects: [formFields.projects]
       }))
     }
-    onClose()
+    toast.success(`${selectedValue} Added`, {
+      style: {
+        background: "#f0fdf4",
+        border: "1px solid #bbf7d0",
+        color: "#166534",
+      },
+      duration: 2000,
+    });
+      onClose();
+    
   }
 
 
 
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-  <DialogContent className="sm:max-w-[400px]">
-    <DialogHeader>
-      <DialogTitle>Add Sections</DialogTitle>
-      <DialogDescription>
-        {resumeInfo.summary && 
-         resumeInfo.experience && 
-         resumeInfo.skills && 
-         resumeInfo.education && 
-         resumeInfo.languages && 
-         resumeInfo.certifications && 
-         resumeInfo.projects
-          ? "All available sections have already been added to your resume."
-          : "Select one section to add"}
-      </DialogDescription>
-    </DialogHeader>
-
-    <div className="py-3">
-      {resumeInfo.summary && 
-       resumeInfo.experience && 
-       resumeInfo.skills && 
-       resumeInfo.education && 
-       resumeInfo.languages && 
-       resumeInfo.certifications && 
-       resumeInfo.projects ? (
-        <div className="text-center py-4 text-gray-500">
-          There are no more sections available to add.
-        </div>
-      ) : (
-        <RadioGroup onValueChange={handleValueChange}>
-          {!resumeInfo.summary && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Professional Summary" id="Professional Summary" />
-              <Label className="text-base" htmlFor="Professional Summary">Professional Summary</Label>
-            </div>
-          )}
-          {!resumeInfo.experience && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Experience" id="Experience" />
-              <Label className="text-base" htmlFor="Experience">Experience</Label>
-            </div>
-          )}
-          {!resumeInfo.skills && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Skills" id="Skills" />
-              <Label className="text-base" htmlFor="Skills">Skills</Label>
-            </div>
-          )}
-          {!resumeInfo.education && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Education" id="Education" />
-              <Label className="text-base" htmlFor="Education">Education</Label>
-            </div>
-          )}
-          {!resumeInfo.languages && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Languages" id="Language" />
-              <Label className="text-base" htmlFor="Language">Language</Label>
-            </div>
-          )}
-          {!resumeInfo.certifications && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Certifications" id="Certifications" />
-              <Label className="text-base" htmlFor="Certifications">Certifications</Label>
-            </div>
-          )}
-          {!resumeInfo.projects && (
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Projects" id="Projects" />
-              <Label className="text-base" htmlFor="Projects">Projects</Label>
-            </div>
-          )}
-        </RadioGroup>
-      )}
-    </div>
-
-    <DialogFooter>
-      <DialogClose asChild>
-        <Button type="button" variant="secondary">
+    <>
+      <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <DialogContent className="sm:max-w-[400px]">
+      <DialogHeader>
+        <DialogTitle>Add Sections</DialogTitle>
+        <DialogDescription>
           {resumeInfo.summary && 
            resumeInfo.experience && 
            resumeInfo.skills && 
            resumeInfo.education && 
            resumeInfo.languages && 
            resumeInfo.certifications && 
-           resumeInfo.projects ? "Close" : "Cancel"}
-        </Button>
-      </DialogClose>
-      {!(resumeInfo.summary && 
+           resumeInfo.projects
+            ? "All available sections have already been added to your resume."
+            : "Select one section to add"}
+        </DialogDescription>
+      </DialogHeader>
+  
+      <div className="py-3">
+        {resumeInfo.summary && 
          resumeInfo.experience && 
          resumeInfo.skills && 
          resumeInfo.education && 
          resumeInfo.languages && 
          resumeInfo.certifications && 
-         resumeInfo.projects) && (
-        <Button
-          onClick={handleContinue}
-          disabled={!selectedValue}
-        >
-          Continue
-        </Button>
-      )}
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
+         resumeInfo.projects ? (
+          <div className="text-center py-4 text-gray-500">
+            There are no more sections available to add.
+          </div>
+        ) : (
+          <RadioGroup onValueChange={handleValueChange}>
+            {!resumeInfo.summary && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Professional Summary" id="Professional Summary" />
+                <Label className="text-base" htmlFor="Professional Summary">Professional Summary</Label>
+              </div>
+            )}
+            {!resumeInfo.experience && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Experience" id="Experience" />
+                <Label className="text-base" htmlFor="Experience">Experience</Label>
+              </div>
+            )}
+            {!resumeInfo.skills && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Skills" id="Skills" />
+                <Label className="text-base" htmlFor="Skills">Skills</Label>
+              </div>
+            )}
+            {!resumeInfo.education && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Education" id="Education" />
+                <Label className="text-base" htmlFor="Education">Education</Label>
+              </div>
+            )}
+            {!resumeInfo.languages && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Languages" id="Language" />
+                <Label className="text-base" htmlFor="Language">Language</Label>
+              </div>
+            )}
+            {!resumeInfo.certifications && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Certifications" id="Certifications" />
+                <Label className="text-base" htmlFor="Certifications">Certifications</Label>
+              </div>
+            )}
+            {!resumeInfo.projects && (
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Projects" id="Projects" />
+                <Label className="text-base" htmlFor="Projects">Projects</Label>
+              </div>
+            )}
+          </RadioGroup>
+        )}
+      </div>
+  
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button type="button" variant="secondary">
+            {resumeInfo.summary && 
+             resumeInfo.experience && 
+             resumeInfo.skills && 
+             resumeInfo.education && 
+             resumeInfo.languages && 
+             resumeInfo.certifications && 
+             resumeInfo.projects ? "Close" : "Cancel"}
+          </Button>
+        </DialogClose>
+        {!(resumeInfo.summary && 
+           resumeInfo.experience && 
+           resumeInfo.skills && 
+           resumeInfo.education && 
+           resumeInfo.languages && 
+           resumeInfo.certifications && 
+           resumeInfo.projects) && (
+          <Button
+            onClick={handleContinue}
+            disabled={!selectedValue}
+          >
+            Continue
+          </Button>
+        )}
+      </DialogFooter>
+    </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
