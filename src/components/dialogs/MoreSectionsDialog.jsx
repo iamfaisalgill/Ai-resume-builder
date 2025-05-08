@@ -76,7 +76,7 @@ const MoreSectionsDialog = ({ isOpen, onClose }) => {
     else if (selectedValue === "Education") {
       setResumeInfo(prev => ({
         ...prev,
-        education: []
+        education: [formFields.education]
       }))
     }
     else if (selectedValue === "Skills") {

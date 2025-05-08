@@ -62,7 +62,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
                 <p className="text-gray-700 italic">
                   {exp.company}
                 </p>
-                {exp.description && <p className="text-gray-700 mt-1">• {exp.description}</p>}
+                {exp.description && <p className="text-gray-700 mt-1">→ {exp.description}</p>}
               </div>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">

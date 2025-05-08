@@ -110,6 +110,31 @@ const EducationDialog = ({ isOpen, onClose }) => {
     setIsEditing(false);
   }
 
+  const hasChanges = () => {
+    if (EducationList.length !== resumeInfo.education.length) {
+      return true;
+    }
+
+    return EducationList.some((edu, index) => {
+      const originalEdu = resumeInfo.education[index];
+      if (!originalEdu) return true;
+
+      return (
+        edu.institution !== originalEdu.institution ||
+        edu.degree !== originalEdu.degree ||
+        edu.fieldOfStudy !== originalEdu.fieldOfStudy ||
+        edu.graduationMonth !== originalEdu.graduationMonth ||
+        edu.graduationYear !== originalEdu.graduationYear
+      );
+    });
+  };
+
+  // institution: "",
+  // degree: "",
+  // graduationMonth: "",
+  // graduationYear: "",
+  // fieldOfStudy: "",
+
   const handleSave = () => {
     setResumeInfo(prev => ({
       ...prev,
@@ -154,6 +179,12 @@ const EducationDialog = ({ isOpen, onClose }) => {
     setIsEditing(false);
   }
 
+  useEffect(() => {
+    if (EducationList.length > 0 && (!EducationList[0].institution && !EducationList[0].degree)) {
+      setOpenItem("item-1");
+    }
+  }, []);
+
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -164,9 +195,8 @@ const EducationDialog = ({ isOpen, onClose }) => {
             Add or edit your education.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[450px] pl-6 py-6">
-
-          <div className="space-y-4">
+        <ScrollArea className="h-[450px] pl-3 md:pl-6 py-3 md:py-6">
+          <div className="space-y-3 md:space-y-4">
             <Accordion
               type="single"
               collapsible
@@ -188,124 +218,146 @@ const EducationDialog = ({ isOpen, onClose }) => {
               }}
             >
               {EducationList.map((item, index) => (
-                <div className="flex gap-2 space-y-3" key={index}>
+                <div className="flex gap-1 md:gap-2 space-y-2 md:space-y-3" key={index}>
                   <AccordionItem value={`item-${index + 1}`} className='flex-1 border-0 AccordionItem rounded-lg'>
-                    <AccordionTrigger className="AccordionTrigger px-5 items-center">
+                    <AccordionTrigger className="AccordionTrigger px-3 md:px-5 items-center">
                       <div className={clsx(item.institution ? "visible" : "invisible")}>
-                        <h4 className="font-semibold">
+                        <h4 className="text-sm md:text-base font-semibold">
                           {item.institution}
                         </h4>
-                        <p className="text-muted-foreground font-normal">
-                          {item.degree}{item.graduationMonth&&","} {item.graduationMonth} {item.graduationYear}
+                        <p className="text-xs md:text-sm text-muted-foreground font-normal">
+                          {item.degree}{item.graduationMonth && ","} {item.graduationMonth} {item.graduationYear}
                         </p>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className='p-5 border-0 outline-0'>
-                      <div className="mt-3 space-y-4">
-                        <div className="grid grid-cols-1 gap-4">
+                    <AccordionContent className='p-3 md:p-5 border-0 outline-0'>
+                      <div className="mt-2 md:mt-3 space-y-3 md:space-y-4">
+                        <div className="grid grid-cols-1 gap-3 md:gap-4">
                           {/* School name*/}
                           <div className="grid grid-cols-2 gap-2">
                             <div className="col-span-2">
-                              <Label>
+                              <Label className="text-sm md:text-base">
                                 School name
                               </Label>
-                              <Input defaultValue={item.institution}
+                              <Input
+                                defaultValue={item.institution}
                                 onChange={(e) => handleChange(index, e)}
-                                name="institution" placeholder="E.g. Harvard University" className="mt-2 bg-card" />
+                                name="institution"
+                                placeholder="E.g. Harvard University"
+                                className="mt-1 md:mt-2 bg-card text-sm md:text-base"
+                              />
                             </div>
-                            
                           </div>
 
                           {/* Field of study & graduation */}
-                          <div className=" space-y-3">
+                          <div className="space-y-2 md:space-y-3">
                             {/* Field of study & degree  */}
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                               <div>
-                                <Label>
+                                <Label className="text-sm md:text-base">
                                   Degree
                                 </Label>
-                                <Input defaultValue={item.degree}
+                                <Input
+                                  defaultValue={item.degree}
                                   onChange={(e) => handleChange(index, e)}
-                                  name="degree" placeholder="E.g. Master of Science (M.S)" className="mt-2 bg-card" />
+                                  name="degree"
+                                  placeholder="E.g. Master of Science (M.S)"
+                                  className="mt-1 md:mt-2 bg-card text-sm md:text-base"
+                                />
                               </div>
 
                               <div>
-                                <Label>
+                                <Label className="text-sm md:text-base">
                                   Field of study
                                 </Label>
-                                <Input defaultValue={item.fieldOfStudy}
+                                <Input
+                                  defaultValue={item.fieldOfStudy}
                                   onChange={(e) => handleChange(index, e)}
-                                  name="fieldOfStudy" placeholder="E.g. Computer Science" className="mt-2 bg-card" />
+                                  name="fieldOfStudy"
+                                  placeholder="E.g. Computer Science"
+                                  className="mt-1 md:mt-2 bg-card text-sm md:text-base"
+                                />
                               </div>
-                              
                             </div>
                           </div>
 
                           {/* Graduation date */}
-                            <div className="grid grid-cols-2 gap-2">
-                                <div >
-                                  <p className="mb-2">
-                                    <Label>
-                                      Graduation date
-                                    </Label>
-                                  </p>
-                                  <Select defaultValue={item.graduationMonth}
-                                    onValueChange={(value) =>
-                                      handleChange(index, value, "graduationMonth")
-                                    }
-                                    name="graduationMonth">
-                                    <SelectTrigger className='bg-card'>
-                                      <SelectValue placeholder="Month" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {months.map((month) => (
-                                        <SelectItem key={month} value={month}>
-                                          {month}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                                <div>
-                                  <p className="mb-2">
-                                    <Label>
-                                      &nbsp;
-                                    </Label>
-                                  </p>
-                                  <Select defaultValue={item.graduationYear}
-                                    onValueChange={(value) =>
-                                      handleChange(index, value, "graduationYear")
-                                    } name="graduationYear">
-                                    <SelectTrigger className='bg-card'>
-                                      <SelectValue placeholder="Year" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {years.map((year) => (
-                                        <SelectItem
-                                          key={year}
-                                          value={year.toString()}
-                                        >
-                                          {year}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </div>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <p className="mb-1 md:mb-2">
+                                <Label className="text-sm md:text-base">
+                                  Graduation date
+                                </Label>
+                              </p>
+                              <Select
+                                defaultValue={item.graduationMonth}
+                                onValueChange={(value) =>
+                                  handleChange(index, value, "graduationMonth")
+                                }
+                                name="graduationMonth">
+                                <SelectTrigger className='bg-card text-sm md:text-base'>
+                                  <SelectValue placeholder="Month" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {months.map((month) => (
+                                    <SelectItem key={month} value={month} className="text-sm md:text-base">
+                                      {month}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
+                            <div>
+                              <p className="mb-1 md:mb-2">
+                                <Label className="text-sm md:text-base">
+                                  &nbsp;
+                                </Label>
+                              </p>
+                              <Select
+                                defaultValue={item.graduationYear}
+                                onValueChange={(value) =>
+                                  handleChange(index, value, "graduationYear")
+                                }
+                                name="graduationYear">
+                                <SelectTrigger className='bg-card text-sm md:text-base'>
+                                  <SelectValue placeholder="Year" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {years.map((year) => (
+                                    <SelectItem
+                                      key={year}
+                                      value={year.toString()}
+                                      className="text-sm md:text-base"
+                                    >
+                                      {year}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
                         </div>
-
                       </div>
                     </AccordionContent>
                   </AccordionItem>
-                  <button className="self-start mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70" onClick={() => deleteThis(index)}><TrashIcon size={20} /></button>
+                  <button
+                    className="self-start mr-2 md:mr-4 mt-3 md:mt-5 cursor-pointer text-primary hover:text-primary/70"
+                    onClick={() => deleteThis(index)}
+                  >
+                    <TrashIcon size={18} />
+                  </button>
                 </div>
               ))}
             </Accordion>
-            <Button variant={"outline"} onClick={addMore} disabled={isAccordionOpen}>
-              <PlusCircle /> Add another position
+            <Button
+              variant={"ghost"}
+              onClick={addMore}
+              disabled={isAccordionOpen}
+              className="text-sm md:text-base"
+            >
+              + Add another position
             </Button>
           </div>
-
         </ScrollArea>
         <DialogFooter className='px-6 pb-6'>
           <DialogClose asChild>
@@ -313,7 +365,7 @@ const EducationDialog = ({ isOpen, onClose }) => {
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={isEditing}>Save changes</Button>
+          <Button onClick={handleSave} disabled={!hasChanges()}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
