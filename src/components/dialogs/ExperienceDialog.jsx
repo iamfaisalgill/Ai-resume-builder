@@ -41,6 +41,7 @@ import { PlusCircle, TrashIcon } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import { Checkbox } from "../ui/checkbox";
 
 const months = [
   "January",
@@ -65,6 +66,7 @@ const formField = {
   endMonth: '',
   endYear: '',
   description: '',
+  present: false,
   isNew: true // Add this flag
 };
 
@@ -77,8 +79,9 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
   const [experienceList, setExperienceList] = useState([...resumeInfo.experience]);
   const [openItem, setOpenItem] = useState("");
-  const [isEditing, setIsEditing] = useState(true)
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
+  // const [isEditing, setIsEditing] = useState(true)
+  const [isPresent, setIsPresent] = useState(false)
 
 
   const addMore = () => {
@@ -95,6 +98,29 @@ export default function ExperienceDialog({ isOpen, onClose }) {
     }
   }, [openItem])
 
+  const hasChanges = () => {
+    if (experienceList.length !== resumeInfo.experience.length) {
+      return true;
+    }
+
+    return experienceList.some((exp, index) => {
+      const originalExp = resumeInfo.experience[index];
+      if (!originalExp) return true;
+
+      return (
+        exp.jobTitle !== originalExp.jobTitle ||
+        exp.company !== originalExp.company ||
+        exp.startMonth !== originalExp.startMonth ||
+        exp.startYear !== originalExp.startYear ||
+        exp.endMonth !== originalExp.endMonth ||
+        exp.endYear !== originalExp.endYear ||
+        exp.description !== originalExp.description ||
+        exp.present !== originalExp.present
+        // Add any other fields you want to compare
+      );
+    });
+  };
+
   const handleChange = (index, eOrValue, fieldName = null) => {
     setExperienceList(prevList => {
       const newEntries = [...prevList];
@@ -106,8 +132,9 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       }
       return newEntries;
     });
-    setIsEditing(false);
+    // setIsEditing(false);
   }
+
 
   const handleSave = () => {
     setResumeInfo(prev => ({
@@ -127,12 +154,12 @@ export default function ExperienceDialog({ isOpen, onClose }) {
         duration: 2000,
       }
     );
-    setIsEditing(true)
+    // setIsEditing(true)
   }
 
   const deleteThis = (index) => {
     const newList = experienceList.filter((_, i) => i !== index);
-    
+
     // Handle openItem state
     if (openItem === `item-${index + 1}`) {
       // If we're deleting the currently open item, close it
@@ -144,14 +171,21 @@ export default function ExperienceDialog({ isOpen, onClose }) {
         setOpenItem(`item-${openIndex - 1}`);
       }
     }
-  
+
     setExperienceList(newList);
     setResumeInfo(prev => ({
       ...prev,
       experience: newList,
     }));
-    setIsEditing(false);
+    // setIsEditing(false);
   }
+
+
+  useEffect(() => {
+    if (experienceList.length > 0 && (!experienceList[0].jobTitle && !experienceList[0].company)) {
+      setOpenItem("item-1");
+    }
+  }, []);
 
 
   return (
@@ -163,86 +197,109 @@ export default function ExperienceDialog({ isOpen, onClose }) {
             Add or edit your work experience.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[450px] pl-6 py-6">
+        <ScrollArea className="h-[450px] pl-3 md:pl-6 py-3 md:py-6">
+          <div className="space-y-3 md:space-y-4">
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full"
+              value={openItem}
+              onValueChange={(value) => {
+                // If collapsing an item (value is empty)
+                if (!value && openItem) {
+                  const index = parseInt(openItem.split('-')[1]) - 1;
+                  const item = experienceList[index];
 
-          <div className="space-y-4">
-          <Accordion 
-            type="single" 
-            collapsible 
-            className="w-full" 
-            value={openItem}
-            onValueChange={(value) => {
-              // If collapsing an item (value is empty) and it's a new empty item
-              if (!value && openItem) {
-                const index = parseInt(openItem.split('-')[1]) - 1;
-                const item = experienceList[index];
-                
-                // Check if the item is empty (new and not modified)
-                if (item.isNew && !item.jobTitle && !item.company) {
-                  deleteThis(index); // Remove the empty item
-                  return;
+                  // Check if the item is empty (either new or with no data)
+                  const isEmpty = (!item.jobTitle && !item.company);
+
+                  if (isEmpty) {
+                    deleteThis(index); // Remove the empty item
+                    return;
+                  }
                 }
-              }
-              setOpenItem(value);
-            }}
-          >
+                setOpenItem(value);
+              }}
+            >
               {experienceList.map((item, index) => (
-                <div className="flex gap-2 space-y-3" key={index}>
+                <div className="flex gap-1 md:gap-2 space-y-2 md:space-y-3" key={index}>
                   <AccordionItem value={`item-${index + 1}`} className='flex-1 border-0 AccordionItem rounded-lg'>
-                    <AccordionTrigger className="AccordionTrigger px-5 items-center">
-                      <div className={clsx(item.jobTitle ? "visible" : "invisible")}>
-                        <h4 className="font-semibold">
+                    <AccordionTrigger className="AccordionTrigger px-3 md:px-5 items-center">
+                      <div className={clsx((item.jobTitle) ? "visible" : "invisible")}>
+                        <h4 className="text-sm md:text-base font-semibold">
                           {item.jobTitle} {item.company && "at"} {item.company}
                         </h4>
-                        <p className="text-muted-foreground font-normal">
-                          {item.startMonth} {item.startYear} {(!item.endMonth) && (item.startMonth && item.startYear)?"- current": ""} {item.endMonth && "-"} {item.endMonth} {item.endYear}
-                        </p>
+                        <p className="text-xs md:text-sm text-muted-foreground font-normal">
+                          <>
+                            {(item.startMonth || item.startYear) && (
+                              <>{item.startMonth} {item.startYear}</>
+                            )}
+                            {item.present && (
+                              <>{(item.startMonth || item.startYear) ? " - current" : "current"}</>
+                            )}
+                            {item.endMonth && (
+                              <> - {item.endMonth} {item.endYear}</>
+                            )}
+                            {!item.present && item.endYear && !item.endMonth && (
+                              <> - {item.endYear}</>
+                            )}
+                          </>
+                        </p> 
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className='p-5 border-0 outline-0'>
-                      <div className="mt-3 space-y-4">
-                        <div className="grid grid-cols-1 gap-4">
+                    <AccordionContent className='p-3 md:p-5 border-0 outline-0'>
+                      <div className="mt-2 md:mt-3 space-y-4 md:space-y-6">
+                        <div className="grid grid-cols-1 gap-3 md:gap-4">
                           {/* Employer & Job Title */}
-                          <div className=" space-y-3">
+                          <div className="space-y-2 md:space-y-3">
                             <div>
-                              <Label>
+                              <Label className="text-sm md:text-base">
                                 Job Title
                               </Label>
-                              <Input defaultValue={item.jobTitle}
+                              <Input
+                                defaultValue={item.jobTitle}
                                 onChange={(e) => handleChange(index, e)}
-                                name="jobTitle" placeholder="e.g. Engineer" className="mt-2 bg-card" />
+                                name="jobTitle"
+                                placeholder="e.g. Engineer"
+                                className="mt-1 md:mt-2 bg-card text-sm md:text-base"
+                              />
                             </div>
                             <div>
-                              <Label>
+                              <Label className="text-sm md:text-base">
                                 Company
                               </Label>
-                              <Input defaultValue={item.company}
+                              <Input
+                                defaultValue={item.company}
                                 onChange={(e) => handleChange(index, e)}
-                                name="company" placeholder="e.g. IBM" className="mt-2 bg-card" />
+                                name="company"
+                                placeholder="e.g. IBM"
+                                className="mt-1 md:mt-2 bg-card text-sm md:text-base"
+                              />
                             </div>
                           </div>
 
                           {/* Start date & End date */}
-                          <div className=" space-y-3">
+                          <div className="space-y-2 md:space-y-3">
                             {/* Start Date */}
                             <div className="grid grid-cols-2 gap-2">
                               <div>
-                                <p className="mb-2">
-                                  <Label>
+                                <p className="mb-1 md:mb-2">
+                                  <Label className="text-sm md:text-base">
                                     Start date
                                   </Label>
                                 </p>
-                                <Select defaultValue={item.startMonth}
+                                <Select
+                                  defaultValue={item.startMonth}
                                   onValueChange={(value) =>
                                     handleChange(index, value, "startMonth")
                                   }
                                   name="startMonth">
-                                  <SelectTrigger className='bg-card'>
+                                  <SelectTrigger className='bg-card text-sm md:text-base'>
                                     <SelectValue placeholder="Month" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     {months.map((month) => (
-                                      <SelectItem key={month} value={month}>
+                                      <SelectItem key={month} value={month} className="text-sm md:text-base">
                                         {month}
                                       </SelectItem>
                                     ))}
@@ -250,16 +307,18 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                 </Select>
                               </div>
                               <div>
-                                <p className="mb-2">
-                                  <Label>
+                                <p className="mb-1 md:mb-2">
+                                  <Label className="text-sm md:text-base">
                                     &nbsp;
                                   </Label>
                                 </p>
-                                <Select defaultValue={item.startYear}
+                                <Select
+                                  defaultValue={item.startYear}
                                   onValueChange={(value) =>
                                     handleChange(index, value, "startYear")
-                                  } name="startYear">
-                                  <SelectTrigger className='bg-card'>
+                                  }
+                                  name="startYear">
+                                  <SelectTrigger className='bg-card text-sm md:text-base'>
                                     <SelectValue placeholder="Year" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -267,6 +326,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                       <SelectItem
                                         key={year}
                                         value={year.toString()}
+                                        className="text-sm md:text-base"
                                       >
                                         {year}
                                       </SelectItem>
@@ -279,21 +339,24 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                             {/* End Date */}
                             <div className="grid grid-cols-2 gap-2">
                               <div>
-                                <p className="mb-2">
-                                  <Label>
+                                <p className="mb-1 md:mb-2">
+                                  <Label className="text-sm md:text-base">
                                     End date
                                   </Label>
                                 </p>
-                                <Select defaultValue={item.endMonth}
+                                <Select
+                                  defaultValue={item.endMonth}
                                   onValueChange={(value) =>
                                     handleChange(index, value, "endMonth")
-                                  } name="endMonth">
-                                  <SelectTrigger className='bg-card'>
+                                  }
+                                  name="endMonth"
+                                  disabled={item.present}>
+                                  <SelectTrigger className='bg-card text-sm md:text-base'>
                                     <SelectValue placeholder="Month" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     {months.map((month) => (
-                                      <SelectItem key={month} value={month}>
+                                      <SelectItem key={month} value={month} className="text-sm md:text-base">
                                         {month}
                                       </SelectItem>
                                     ))}
@@ -301,16 +364,19 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                 </Select>
                               </div>
                               <div>
-                                <p className="mb-2">
-                                  <Label>
+                                <p className="mb-1 md:mb-2">
+                                  <Label className="text-sm md:text-base">
                                     &nbsp;
                                   </Label>
                                 </p>
-                                <Select defaultValue={item.endYear}
+                                <Select
+                                  defaultValue={item.endYear}
                                   onValueChange={(value) =>
                                     handleChange(index, value, "endYear")
-                                  } name="endYear">
-                                  <SelectTrigger className='bg-card'>
+                                  }
+                                  name="endYear"
+                                  disabled={item.present}>
+                                  <SelectTrigger className='bg-card text-sm md:text-base'>
                                     <SelectValue placeholder="Year" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -318,6 +384,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                       <SelectItem
                                         key={year}
                                         value={year.toString()}
+                                        className="text-sm md:text-base"
                                       >
                                         {year}
                                       </SelectItem>
@@ -326,33 +393,52 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                 </Select>
                               </div>
                             </div>
+                            <Label className="text-sm md:text-base">
+                              <Checkbox
+                                checked={item.present}
+                                onCheckedChange={(value) => handleChange(index, value, "present")}
+                                className="h-4 w-4"
+                              /> I currently work here
+                            </Label>
                           </div>
                         </div>
 
+                        {/* Description */}
                         <div>
-                          <Label>
+                          <Label className="text-sm md:text-base">
                             Description (Optional)
                           </Label>
-                          <Textarea defaultValue={item.description}
+                          <Textarea
+                            defaultValue={item.description}
                             onChange={(e) => handleChange(index, e)}
                             name="description"
                             placeholder="Add tasks you performed at this job to fill in this section"
-                            className="mt-2 bg-card"
+                            className="mt-1 md:mt-2 bg-card text-sm md:text-base"
                             id="description"
+                            rows={4}
                           />
                         </div>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
-                  <button className="self-start mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70" onClick={() => deleteThis(index)}><TrashIcon size={20} /></button>
+                  <button
+                    className="self-start mr-2 md:mr-4 mt-3 md:mt-5 cursor-pointer text-primary hover:text-primary/70"
+                    onClick={() => deleteThis(index)}
+                  >
+                    <TrashIcon size={18} />
+                  </button>
                 </div>
               ))}
             </Accordion>
-            <Button variant={"outline"} onClick={addMore} disabled={isAccordionOpen}>
-              <PlusCircle /> Add another position
+            <Button
+              variant={"ghost"}
+              onClick={addMore}
+              disabled={isAccordionOpen}
+              className="text-sm md:text-base"
+            >
+              + Add Experience
             </Button>
           </div>
-
         </ScrollArea>
         <DialogFooter className='px-6 pb-6'>
           <DialogClose asChild>
@@ -360,7 +446,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={isEditing}>Save changes</Button>
+          <Button onClick={handleSave} disabled={!hasChanges()}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
