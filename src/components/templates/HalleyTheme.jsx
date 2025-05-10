@@ -11,7 +11,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
   return (
     <div className="mx-auto bg-white max-w-4xl text-[10px] sm:text-sm md:text-base">
-      <div className="flex">
+      <div className="flex select-none">
         {/* Main Content (Left 3/4) */}
         <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
           {/* Name/Logo Section */}
@@ -27,14 +27,14 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">{resumeInfo.contactInfo.lastName}</p>
             </div>
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-                <div className="flex gap-2 bg-gray-900">
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}><Edit size={14} /> Edit</button>
+                <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center sm:gap-2 gap-1 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}><Edit className="size-3 sm:size-4" /> Edit</button>
                 </div>
               </div>
           </div>
 
           {/* Professional Summary */}
-          {(resumeInfo.summary || resumeInfo.summary === "") && <div className="c-info relative mt-5 lg:mt-7 hover:outline-dashed outline-primary">
+          {(resumeInfo.summary || resumeInfo.summary === "") && <div className="c-info relative mt-5 lg:mt-7">
             <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">
               PROFESSIONAL SUMMARY
             </h2>
@@ -42,9 +42,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               {resumeInfo.summary}
             </p>}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-                <div className="flex gap-2 bg-gray-900">
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Professional Summary")}><Edit size={14} /> Edit</button>
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Professional Summary")}><Trash2 size={14} /> Delete</button>
+                <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+                  <button className="text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Professional Summary")}><Edit className="size-3 sm:size-4" /> Edit</button>
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Professional Summary")}><Trash2 className="size-3 sm:size-4" /> Delete</button>
                 </div>
               </div>
           </div>}
@@ -66,9 +66,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               </div>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-                <div className="flex gap-2 bg-gray-900">
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Experience")}><Edit size={14} /> Edit</button>
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Experience")}><Trash2 size={14} /> Delete</button>
+                <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Experience")}><Edit className="size-3 sm:size-4" /> Edit</button>
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Experience")}><Trash2 className="size-3 sm:size-4" /> Delete</button>
                 </div>
               </div>
           </div>}
@@ -84,9 +84,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               </div>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-                <div className="flex gap-2 bg-gray-900">
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Projects")}><Edit size={14} /> Edit</button>
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Projects")}><Trash2 size={14} /> Delete</button>
+                <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Projects")}><Edit className="size-3 sm:size-4" /> Edit</button>
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Projects")}><Trash2 className="size-3 sm:size-4" /> Delete</button>
                 </div>
               </div>
           </div>}
@@ -107,9 +107,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               </div>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-              <div className="flex gap-2 bg-gray-900">
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Education")}><Edit size={14} /> Edit</button>
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Education")}><Trash2 size={14} /> Delete</button>
+              <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+                <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Education")}><Edit className="size-3 sm:size-4" /> Edit</button>
+                <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Education")}><Trash2 className="size-3 sm:size-4" /> Delete</button>
               </div>
             </div>
           </div>}
@@ -123,9 +123,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               </p>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-              <div className="flex gap-2 bg-gray-900">
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Language")}><Edit size={14} /> Edit</button>
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Language")}><Trash2 size={14} /> Delete</button>
+              <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+                <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Language")}><Edit className="size-3 sm:size-4" /> Edit</button>
+                <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Language")}><Trash2 className="size-3 sm:size-4" /> Delete</button>
               </div>
             </div>
           </div>}
@@ -142,8 +142,8 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               <p className="mt-1 sm:mt-2 md:mt-3 break-all">{resumeInfo.github}</p>
             )}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-                <div className="flex gap-2 bg-gray-900">
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}><Edit size={14} /> Edit</button>
+                <div className="flex gap-2 sm:gap-3 bg-gray-900">
+                  <button className=" text-white p-1 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}><Edit className="size-3 sm:size-4" /> <span className="max-sm:hidden">Edit</span></button>
                 </div>
               </div>
           </div>
@@ -156,9 +156,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               ))}
             </div>
             <div className="edit hidden absolute -right-1 -top-1 p-1">
-              <div className="flex gap-2 bg-gray-900">
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Skills")}><Edit size={14} /> Edit</button>
-                <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Skills")}><Trash2 size={14} /> Delete</button>
+              <div className="flex max-sm:flex-col gap-2 sm:gap-3 bg-gray-900">
+                <button className=" text-white p-1 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Skills")}><Edit className="size-3 sm:size-4" /> <span className="max-sm:hidden">Edit</span></button>
+                <button className=" text-white p-1 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Skills")}><Trash2 className="size-3 sm:size-4" /> <span className="max-sm:hidden">Delete</span></button>
               </div>
             </div>
           </div>
@@ -172,9 +172,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
                 ))}
               </ul>
               <div className="edit hidden absolute -right-1 -top-1 p-1">
-                <div className="flex gap-2 bg-gray-900">
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Certifications")}><Edit size={14} /> Edit</button>
-                  <button className=" text-white p-1 text-xs flex justify-center items-center gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Certifications")}><Trash2 size={14} /> Delete</button>
+                <div className="flex max-sm:flex-col gap-2 sm:gap-3 bg-gray-900">
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Certifications")}><Edit className="size-3 sm:size-4" /> <span className="max-sm:hidden">Edit</span></button>
+                  <button className=" text-white sm:p-1 p-0.5 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Certifications")}><Trash2 className="size-3 sm:size-4" /> <span className="max-sm:hidden">Delete</span></button>
                 </div>
               </div>
             </div>

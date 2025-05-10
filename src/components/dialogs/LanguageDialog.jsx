@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { TrashIcon } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { toast } from "sonner";
+import { Separator } from "../ui/separator";
 
 const formField = {
   language: "",
@@ -47,8 +48,10 @@ export default function LanguageDialog({ isOpen, onClose }) {
   }, []);*/
 
   const addMore = () => {
-    setLanguageList([...languageList, { language: "",
-  proficiency: "", }]);
+    setLanguageList([...languageList, {
+      language: "",
+      proficiency: "",
+    }]);
     setIsEditing(false);
   };
 
@@ -94,10 +97,20 @@ export default function LanguageDialog({ isOpen, onClose }) {
     setIsEditing(true);
   };
 
-  const deleteSec = () => {
-    alert("Hello kitty")
+  const haschanges = () => {
+    if (languageList.length !== resumeInfo.languages.length){
+      return true
+    }
+
+      return languageList.some((lang,index)=>{
+        const originalLang = resumeInfo.languages[index]
+        if (!originalLang) return true;
+
+        lang.language !== originalLang.language ||
+        lang.proficiency !== originalLang.proficiency
+      })
   }
-  
+
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -107,79 +120,87 @@ export default function LanguageDialog({ isOpen, onClose }) {
           <DialogDescription>Add or edit your Languages.</DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className="h-[450px] p-6">
-          {languageList.map((item, index) => (
-            <div key={index} className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="text-sm font-medium tracking-wider">
-                  Language
-                </label>
-                <Input
-                  className="mt-2"
-                  name="language"
-                  placeholder="e.g., Spanish"
-                  value={item.language}
-                  onChange={(e) => handleChange(index, e)}
-                />
-              </div>
+        <ScrollArea className="h-[450px] p-3 md:p-6">
+  {languageList.map((item, index) => (
+    <div key={index}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-3 md:mb-4">
+        <div>
+          <label className="text-xs md:text-sm font-medium tracking-wider">
+            Language
+          </label>
+          <Input
+            className="mt-1 md:mt-2 text-sm md:text-base"
+            name="language"
+            placeholder="e.g., Spanish"
+            value={item.language}
+            onChange={(e) => handleChange(index, e)}
+          />
+        </div>
 
-              <div className="flex gap-4 items-center">
-                <div className="flex-1">
-                  <label className="text-sm font-medium tracking-wider">
-                    Proficiency Level
-                  </label>
-                  <Select
-                    value={item.proficiency}
-                    onValueChange={(value) =>
-                      handleChange(index, value, "proficiency")
-                    }
-                  >
-                    <SelectTrigger className="mt-2">
-                      <SelectValue placeholder="Select proficiency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[
-                        "Native",
-                        "Fluent",
-                        "Advanced",
-                        "Intermediate",
-                        "Basic",
-                        "Elementary",
-                      ].map((level) => (
-                        <SelectItem key={level} value={level}>
-                          {level}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+        <div className="flex gap-2 md:gap-4 items-center">
+          <div className="flex-1">
+            <label className="text-xs md:text-sm font-medium tracking-wider">
+              Proficiency Level
+            </label>
+            <Select
+              value={item.proficiency}
+              onValueChange={(value) =>
+                handleChange(index, value, "proficiency")
+              }
+            >
+              <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                <SelectValue placeholder="Select proficiency" />
+              </SelectTrigger>
+              <SelectContent>
+                {[
+                  "Native",
+                  "Fluent",
+                  "Advanced",
+                  "Intermediate",
+                  "Basic",
+                  "Elementary",
+                ].map((level) => (
+                  <SelectItem key={level} value={level} className="text-sm md:text-base">
+                    {level}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-                <button
-                  className="mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70"
-                  onClick={() => deleteThis(index)}
-                >
-                  <TrashIcon size={20} />
-                </button>
-              </div>
-            </div>
-          ))}
-          <Button variant="ghost" onClick={addMore} className="mt-2">
-            + Add Language
-          </Button>
-        </ScrollArea>
+          <button
+            className="mr-2 md:mr-4 mt-5 cursor-pointer text-primary hover:text-primary/70"
+            onClick={() => deleteThis(index)}
+          >
+            <TrashIcon size={18} />
+          </button>
+        </div>
+      </div>
+      
+      {/* Separator - only show between items, not after last one */}
+      {index < languageList.length - 1 && (
+        <Separator className="my-3 md:my-4 bg-border" />
+      )}
+    </div>
+  ))}
+  <Button 
+    variant="ghost" 
+    onClick={addMore} 
+    className="mt-1 md:mt-2 text-sm md:text-base"
+  >
+    + Add Language
+  </Button>
+</ScrollArea>
 
-        <DialogFooter className="px-6 pb-6 sm:justify-between">
-        <Button variant={'ghost'} className='self-start' onClick={deleteSec}>Delete</Button>
-          <div className="flex flex-col-reverse gap-2 sm:flex-row">
+        <DialogFooter className="px-6 pb-6">
             <DialogClose asChild>
               <Button type="button" variant="secondary">
                 Close
               </Button>
             </DialogClose>
-            <Button onClick={handleSave} disabled={isEditing}>
+            <Button onClick={handleSave} disabled={!haschanges()}>
               Save changes
             </Button>
-          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
