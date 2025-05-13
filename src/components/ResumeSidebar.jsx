@@ -24,6 +24,7 @@ import EducationDialog from "./dialogs/EducationDialog"
 import LanguageDialog from "./dialogs/LanguageDialog"
 import MoreSectionsDialog from "./dialogs/MoreSectionsDialog"
 import { useResume } from "@/context/ResumeInfoContext"
+import ProjectsDialog from "./dialogs/ProjectsDialog";
 
 
 export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec, setActiveSec, isAlertDialogOpen, setIsAlertDialogOpen, deleteItem, editItem }) {
@@ -385,6 +386,9 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec
       )}
       {activeDialog === "Language" && (
         <LanguageDialog isOpen={true} onClose={closeDialog} />
+      )}
+       {activeDialog === "Projects" && (
+        <ProjectsDialog isOpen={true} onClose={closeDialog} />
       )}
       {activeDialog === "More Sections" && (
         <MoreSectionsDialog isOpen={true} onClose={closeDialog} />
