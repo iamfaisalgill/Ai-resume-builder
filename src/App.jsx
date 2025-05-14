@@ -22,7 +22,7 @@ function App() {
               <Route path='/select-theme' element={<><Header pageIndex={pageIndex} setPageIndex={setPageIndex} /><SelectTheme/></>} />
               <Route path='/:selectedTheme/download' element={<DownloadFile/>} />
             </Routes>
-            <Toaster />
+            <Toaster richColors />
           </ThemeProvider>
         </ResumeInfoProvider>
     </>
