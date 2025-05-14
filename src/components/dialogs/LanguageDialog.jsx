@@ -32,13 +32,7 @@ export default function LanguageDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
 
   // Initialize safely
-  const [languageList, setLanguageList] = useState(() => {
-    return Array.isArray(resumeInfo.languages)
-      ? [...resumeInfo.languages]
-      : [formField];
-  });
-
-  const [isEditing, setIsEditing] = useState(true);
+  const [languageList, setLanguageList] = useState(resumeInfo.languages? resumeInfo.languages: [formField]);
 
   // Ensure resumeInfo.languages exists
   /*useEffect(() => {
@@ -52,13 +46,11 @@ export default function LanguageDialog({ isOpen, onClose }) {
       language: "",
       proficiency: "",
     }]);
-    setIsEditing(false);
   };
 
   const deleteThis = (index) => {
     const newList = languageList.filter((_, i) => i !== index);
     setLanguageList(newList);
-    setIsEditing(false);
     setResumeInfo((prev) => ({
       ...prev,
       languages: newList,
@@ -70,14 +62,30 @@ export default function LanguageDialog({ isOpen, onClose }) {
       const updatedList = [...prevList];
       if (typeof eOrValue === "object" && eOrValue.target) {
         const { name, value } = eOrValue.target;
-        updatedList[index][name] = value;
+        updatedList[index] = {...updatedList[index], [name]: value }
       } else if (fieldName) {
-        updatedList[index][fieldName] = eOrValue;
+        updatedList[index] = {...updatedList[index], [fieldName]: eOrValue }
       }
       return updatedList;
     });
-    setIsEditing(false);
   };
+
+  const haschanges = () => {
+    if (languageList.length !== resumeInfo.languages.length){
+      return true
+    }
+
+      return languageList.some((lang,index)=>{
+        const originalLang = resumeInfo.languages[index]
+        if (!originalLang) return true;
+
+        return (
+          lang.language !== originalLang.language ||
+          lang.proficiency !== originalLang.proficiency
+      )
+      })
+  }
+
 
   const handleSave = () => {
     setResumeInfo((prev) => ({
@@ -93,24 +101,7 @@ export default function LanguageDialog({ isOpen, onClose }) {
       },
       duration: 2000,
     });
-
-    setIsEditing(true);
   };
-
-  const haschanges = () => {
-    if (languageList.length !== resumeInfo.languages.length){
-      return true
-    }
-
-      return languageList.some((lang,index)=>{
-        const originalLang = resumeInfo.languages[index]
-        if (!originalLang) return true;
-
-        lang.language !== originalLang.language ||
-        lang.proficiency !== originalLang.proficiency
-      })
-  }
-
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
