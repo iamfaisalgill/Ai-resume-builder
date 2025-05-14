@@ -169,9 +169,9 @@ export default function LanguageDialog({ isOpen, onClose }) {
       </div>
       
       {/* Separator - only show between items, not after last one */}
-      {index < languageList.length - 1 && (
+      {/* {index < languageList.length - 1 && (
         <Separator className="my-3 md:my-4 bg-border" />
-      )}
+      )} */}
     </div>
   ))}
   <Button 

@@ -95,18 +95,21 @@ export default function LanguageDialog({ isOpen, onClose }) {
                 className="space-y-3 md:space-y-4 p-3 md:p-4 border rounded-lg relative"
                 key={index}
               >
+               <div className="flex gap-2 justify-between items-center">
+              <h3 className="text-primary" >#{index+1}</h3>
                 {/* Delete button */}
-                <button
-                  className="absolute right-3 md:right-4 top-3 md:top-4 cursor-pointer text-primary hover:text-primary/70"
+              <button
+                  className="cursor-pointer text-primary hover:text-primary/70"
                   onClick={() => deleteThis(index)}
                 >
                   <Trash2 size={18} className="md:w-5 md:h-5 w-4 h-4" />
                 </button>
+              </div>
 
                 {/* Project Title */}
                 <div>
                   <label className="text-xs md:text-sm font-medium tracking-wider">
-                    Project #{index + 1} Title
+                    Project Title
                   </label>
                   <Input
                     onChange={(e) => handleChange(index, e)}
