@@ -22,8 +22,8 @@ function ContactInfoDialog({ isOpen, onClose }) {
   const [isEditing, setIsEditing] = useState(true)
 
   const [formData, setFormData] = useState({
-    firstName: resumeInfo.contactInfo.firstName || '',
-    lastName: resumeInfo.contactInfo.lastName || '',
+    firstName: '',
+    lastName: '',
     email: resumeInfo.contactInfo.email || "",
     city: resumeInfo.contactInfo.city || "",
     country: resumeInfo.contactInfo.country || "",
@@ -41,20 +41,18 @@ function ContactInfoDialog({ isOpen, onClose }) {
     setResumeInfo(prev => ({ ...prev, contactInfo: formData }))
     setIsEditing(true)
 
-    toast.success(
-      <div className="flex items-center gap-2">
-        <span>Details Updated</span>
-      </div>,
-      {
-        style: {
-          background: "#f0fdf4", // Light green background
-          border: "1px solid #bbf7d0", // Light green border
-          color: "#166534", // Dark green text
-        },
-        duration: 2000,
-      }
-    );
+    toast.info("Contact Information Updated");
+    onClose()
   }
+
+  const hasChanges = () => {
+    if (
+      formData.firstName !== resumeInfo.firstName
+    ){
+      return true
+    }
+  }
+  
 
 
   return (
@@ -73,7 +71,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 text-foreground">
             {/* First Name */}
             <div className='col-span-1'>
-              <Label htmlFor="firstName" className="text-sm md:text-base">First Name</Label>
+              <Label htmlFor="firstName" className="text-xs md:text-sm">First Name</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -81,14 +79,14 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="firstName"
                 name="firstName"
                 type='text'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="e.g. Jason"
               />
             </div>
   
             {/* Last Name */}
             <div className='col-span-1'>
-              <Label htmlFor="lastName" className="text-sm md:text-base">Last Name</Label>
+              <Label htmlFor="lastName" className="text-xs md:text-sm">Last Name</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -96,14 +94,14 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="lastName"
                 name="lastName"
                 type='text'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="e.g. Carter"
               />
             </div>
   
             {/* City */}
             <div className='col-span-1'>
-              <Label htmlFor="city" className="text-sm md:text-base">City</Label>
+              <Label htmlFor="city" className="text-xs md:text-sm">City</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -111,14 +109,14 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="city"
                 name="city"
                 type='text'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="City"
               />
             </div>
   
             {/* Email */}
             <div className='col-span-1'>
-              <Label htmlFor="email" className="text-sm md:text-base">Email</Label>
+              <Label htmlFor="email" className="text-xs md:text-sm">Email</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -126,14 +124,14 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="email"
                 name="email"
                 type='email'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="Email"
               />
             </div>
   
             {/* Country */}
             <div className='col-span-1'>
-              <Label htmlFor="country" className="text-sm md:text-base">Country</Label>
+              <Label htmlFor="country" className="text-xs md:text-sm">Country</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -141,14 +139,14 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="country"
                 name="country"
                 type='text'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="Country"
               />
             </div>
   
             {/* Phone Number */}
             <div className='col-span-1'>
-              <Label htmlFor="phoneNumber" className="text-sm md:text-base">Phone Number</Label>
+              <Label htmlFor="phoneNumber" className="text-xs md:text-sm">Phone Number</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -156,14 +154,14 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="phoneNumber"
                 name="phoneNumber"
                 type='text'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="Phone Number"
               />
             </div>
   
             {/* LinkedIn */}
             <div className='sm:col-span-2'>
-              <Label htmlFor="linkedIn" className="text-sm md:text-base">LinkedIn</Label>
+              <Label htmlFor="linkedIn" className="text-xs md:text-sm">LinkedIn</Label>
               <Input
                 required
                 onChange={e => handleChange(e)}
@@ -171,19 +169,19 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 id="linkedIn"
                 name="linkedIn"
                 type='text'
-                className='mt-1 md:mt-2 text-sm md:text-base'
+                className='mt-1 md:mt-2 text-sm h-10'
                 placeholder="e.g. linkedin.com/in/jasoncarter"
               />
             </div>
           </div>
         </ScrollArea>
-        <DialogFooter className="px-6 pb-6">
+        <DialogFooter className="border-t px-6 py-3">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" size="sm">
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={isEditing}>Save changes</Button>
+          <Button size="sm" onClick={handleSave} disabled={!hasChanges()}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

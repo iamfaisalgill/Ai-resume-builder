@@ -7,12 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useResume } from "@/context/ResumeInfoContext"
-import { useEffect,useState } from "react"
-import { ScrollArea } from "../ui/scroll-area";
+import { useState } from "react"
 import { toast } from "sonner"
 import { Textarea } from "../ui/textarea";
 
@@ -20,12 +17,10 @@ const SummaryDialog = ({ isOpen, onClose }) => {
 
   const {resumeInfo,setResumeInfo} = useResume()
   const [textareaValue, setTextareaValue] = useState("" || resumeInfo.summary);
-  const [isEditing, setIsEditing] = useState(true)
 
   const handleChange = (e) => {
     const {value} = e.target
     setTextareaValue(value)
-    setIsEditing(false)
   }
 
   const handleSave = () => {
@@ -33,11 +28,17 @@ const SummaryDialog = ({ isOpen, onClose }) => {
       ...prev,
       summary: textareaValue
     }))
-    setIsEditing(true)
-    toast.success("Details updated", {
-      className: "custom-success-toast",
-    });
+    toast.info("Summary Updated");
+    onClose()
   }
+
+  const hasChanges = () => {
+    if (textareaValue !== resumeInfo.summary) {
+      return true
+    }
+
+  }
+  
 
 
   return (
@@ -53,11 +54,11 @@ const SummaryDialog = ({ isOpen, onClose }) => {
             className="!text-[16px] resize-none min-h-64 max-h-64"></Textarea>
           <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" size="sm">
               Close
             </Button>
           </DialogClose>
-            <Button disabled={isEditing} onClick={handleSave}>Save changes</Button>
+            <Button size="sm" disabled={!hasChanges()} onClick={handleSave}>Save changes</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

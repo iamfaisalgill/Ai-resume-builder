@@ -140,20 +140,9 @@ const EducationDialog = ({ isOpen, onClose }) => {
       ...prev,
       education: [...EducationList],
     }));
-    toast.success(
-      <div className="flex items-center gap-2">
-        <span>Details Updated</span>
-      </div>,
-      {
-        style: {
-          background: "#f0fdf4", // Light green background
-          border: "1px solid #bbf7d0", // Light green border
-          color: "#166534", // Dark green text
-        },
-        duration: 2000,
-      }
-    );
+    toast.info("Education Updated");
     setIsEditing(true)
+    onClose()
   }
 
   const deleteThis = (index) => {
@@ -351,21 +340,22 @@ const EducationDialog = ({ isOpen, onClose }) => {
             </Accordion>
             <Button
               variant={"ghost"}
+              size="sm"
               onClick={addMore}
               disabled={isAccordionOpen}
-              className="text-sm md:text-base"
+              className="text-sm"
             >
               + Add another position
             </Button>
           </div>
         </ScrollArea>
-        <DialogFooter className='px-6 pb-6'>
+        <DialogFooter className='border-t px-6 py-3'>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" size="sm">
               Close
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={!hasChanges()}>Save changes</Button>
+          <Button size="sm" onClick={handleSave} disabled={!hasChanges()}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

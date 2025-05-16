@@ -103,14 +103,7 @@ const MoreSectionsDialog = ({ isOpen, onClose }) => {
         projects: [formFields.projects]
       }))
     }
-    toast.success(`${selectedValue} Added`, {
-      style: {
-        background: "#f0fdf4",
-        border: "1px solid #bbf7d0",
-        color: "#166534",
-      },
-      duration: 2000,
-    });
+    toast.info(`${selectedValue} Added`);
       onClose();
     
   }

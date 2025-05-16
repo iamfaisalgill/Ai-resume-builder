@@ -44,14 +44,7 @@ export default function LanguageDialog({ isOpen, onClose }) {
 
   const handleSave = () => {
     setResumeInfo((prev) => ({ ...prev, projects: [...projectList] }));
-    toast.success("Details Updated", {
-      style: {
-        background: "#f0fdf4",
-        border: "1px solid #bbf7d0",
-        color: "#166534",
-      },
-      duration: 2000,
-    });
+    toast.info("Projects Updated");
     onClose();
   };
 
@@ -98,22 +91,24 @@ export default function LanguageDialog({ isOpen, onClose }) {
                <div className="flex gap-2 justify-between items-center">
               <h3 className="text-primary" >#{index+1}</h3>
                 {/* Delete button */}
-              <button
-                  className="cursor-pointer text-primary hover:text-primary/70"
-                  onClick={() => deleteThis(index)}
-                >
-                  <Trash2 size={18} className="md:w-5 md:h-5 w-4 h-4" />
-                </button>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 w-9 p-0 cursor-pointer text-muted-foreground hover:text-destructive"
+                    onClick={() => deleteThis(index)}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
               </div>
 
                 {/* Project Title */}
                 <div>
-                  <label className="text-xs md:text-sm font-medium tracking-wider">
+                  <Label className="text-xs md:text-sm">
                     Project Title
-                  </label>
+                  </Label>
                   <Input
                     onChange={(e) => handleChange(index, e)}
-                    className="mt-1 md:mt-2 text-sm md:text-base"
+                    className="mt-1 md:mt-2 text-sm h-9"
                     defaultValue={item.title}
                     placeholder="Enter project title"
                     name="title"
@@ -123,14 +118,14 @@ export default function LanguageDialog({ isOpen, onClose }) {
 
                 {/* Project Description */}
                 <div>
-                  <label className="text-xs md:text-sm font-medium tracking-wider">
+                  <Label className="text-xs md:text-sm">
                     Description
-                  </label>
+                  </Label>
                   <Textarea
                     onChange={(e) => handleChange(index, e)}
                     value={item.description}
                     name="description"
-                    className="mt-1 md:mt-2 text-sm md:text-base min-h-[80px] md:min-h-[100px]"
+                    className="mt-1 md:mt-2 text-sm min-h-[80px] md:min-h-[100px]"
                     placeholder="Describe the project, your role, technologies used, and any notable achievements"
                     required
                   />
@@ -139,13 +134,13 @@ export default function LanguageDialog({ isOpen, onClose }) {
                 {/* Project URL */}
                 <div className="grid grid-cols-1 gap-2">
                   <div className="col-span-1">
-                    <label className="text-xs md:text-sm font-medium tracking-wider">
+                    <Label className="text-xs md:text-sm">
                       Project URL (optional)
-                    </label>
+                    </Label>
                     <Input
                       onChange={(e) => handleChange(index, e)}
                       value={item.url}
-                      className="mt-1 md:mt-2 text-sm md:text-base"
+                      className="mt-1 md:mt-2 text-sm h-9"
                       placeholder="https://example.com"
                       type="url"
                       name="url"
@@ -158,21 +153,21 @@ export default function LanguageDialog({ isOpen, onClose }) {
             {/* Add Project Button */}
             <Button
               variant={"ghost"}
-              className={"mb-1 md:mb-2 text-sm md:text-base"}
-              onClick={addMore}
+              className={"mb-1 md:mb-2 text-sm"}
+              onClick={addMore} size="sm"
             >
               + Add more projects
             </Button>
           </div>
         </ScrollArea>
 
-        <DialogFooter className="px-6 py-6">
+        <DialogFooter className="border-t px-6 py-3">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" size="sm">
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={!haschanges()}>
+          <Button size="sm" onClick={handleSave} disabled={!haschanges()}>
             Save changes
           </Button>
         </DialogFooter>

@@ -22,7 +22,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { toast } from "sonner";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 const formField = {
   name: "",
@@ -59,14 +59,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
       ...prev,
       certifications: [...certificationsList],
     }));
-    toast.success("Details Updated", {
-      style: {
-        background: "#f0fdf4",
-        border: "1px solid #bbf7d0",
-        color: "#166534",
-      },
-      duration: 2000,
-    });
+    toast.info("Certifications Updated");
     onClose();
   };
 
@@ -116,12 +109,14 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                     #{index + 1}
                   </h3>
                   {/* Delete button */}
-                  <button
-                    className="cursor-pointer text-primary hover:text-primary/70"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 w-9 p-0 cursor-pointer text-muted-foreground hover:text-destructive"
                     onClick={() => deleteThis(index)}
                   >
-                    <Trash2 size={18} className="w-4 h-4 md:w-5 md:h-5" />
-                  </button>
+                    <Trash2 size={16} />
+                  </Button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
@@ -134,7 +129,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                       onChange={(e) => handleChange(index, e)}
                       defaultValue={item.name}
                       name="name"
-                      className="mt-1 md:mt-2 text-sm md:text-base"
+                      className="mt-1 md:mt-2 text-sm h-9"
                       placeholder="e.g., AWS Certified Solutions Architect"
                     />
                   </div>
@@ -148,7 +143,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                       onChange={(e) => handleChange(index, e)}
                       defaultValue={item.organization}
                       name="organization"
-                      className="mt-1 md:mt-2 text-sm md:text-base"
+                      className="mt-1 md:mt-2 text-sm h-9"
                       placeholder="e.g., Amazon Web Services"
                     />
                   </div>
@@ -164,28 +159,28 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                       }
                       defaultValue={item.issueMonth}
                     >
-                      <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                      <SelectTrigger className="mt-1 md:mt-2 text-sm !h-9">
                         <SelectValue placeholder="Month" />
                       </SelectTrigger>
                       <SelectContent>
                         {[
-                      "January",
-                      "February",
-                      "March",
-                      "April",
-                      "May",
-                      "June",
-                      "July",
-                      "August",
-                      "September",
-                      "October",
-                      "November",
-                      "December",
-                    ].map((month) => (
+                          "January",
+                          "February",
+                          "March",
+                          "April",
+                          "May",
+                          "June",
+                          "July",
+                          "August",
+                          "September",
+                          "October",
+                          "November",
+                          "December",
+                        ].map((month) => (
                           <SelectItem
                             key={month}
                             value={month}
-                            className="text-sm md:text-base"
+                            className="text-sm"
                           >
                             {month}
                           </SelectItem>
@@ -203,7 +198,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                       }
                       defaultValue={item.issueYear}
                     >
-                      <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                      <SelectTrigger className="mt-1 md:mt-2 text-sm !h-9">
                         <SelectValue placeholder="Year" />
                       </SelectTrigger>
                       <SelectContent>
@@ -214,7 +209,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                           <SelectItem
                             key={year}
                             value={year.toString()}
-                            className="text-sm md:text-base"
+                            className="text-sm"
                           >
                             {year}
                           </SelectItem>
@@ -228,23 +223,30 @@ export default function CertificationsDialog({ isOpen, onClose }) {
 
             {/* Add Certification Button */}
             <Button
-              variant={"ghost"}
-              className={"mb-1 md:mb-2 text-sm md:text-base"}
+              variant="ghost"
               onClick={addMore}
+              className="mt-4"
+              size="sm"
             >
-              + Add Certification
+              <Plus size={16} className="mr-2" />
+              Add Certification
             </Button>
           </div>
         </ScrollArea>
 
-        <DialogFooter className="px-6 py-6">
+        <DialogFooter className="border-t px-6 py-3">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button variant="secondary" size="sm">
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={handleSave} disabled={!haschanges()}>
-            Save changes
+          <Button
+            onClick={handleSave}
+            disabled={!haschanges()}
+            size="sm"
+            className="min-w-[100px]"
+          >
+            Save
           </Button>
         </DialogFooter>
       </DialogContent>

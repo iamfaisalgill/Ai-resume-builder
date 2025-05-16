@@ -106,7 +106,7 @@ export default function LanguageDialog({ isOpen, onClose }) {
       languages: [...languageList],
     }));
 
-    toast.info("Details Updated");
+    toast.info("Language Updated");
     onClose();
   };
 

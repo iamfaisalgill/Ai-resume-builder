@@ -66,7 +66,7 @@ export default function SkillsDialog({ isOpen, onClose }) {
       skills: skills,
     }));
     setIsEditing(false);
-    toast.info("Skills updated successfully");
+    toast.info("Skills Updated");
     onClose();
   };
 
@@ -156,9 +156,7 @@ export default function SkillsDialog({ isOpen, onClose }) {
             onClick={handleSave}
             disabled={!isEditing}
             size="sm"
-            className="gap-1"
           >
-            <Check size={16} />
             Save Changes
           </Button>
         </DialogFooter>
