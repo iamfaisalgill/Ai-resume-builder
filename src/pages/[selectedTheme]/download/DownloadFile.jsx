@@ -148,7 +148,7 @@ const DownloadFile = () => {
             {isHalley ? (
               <HalleyTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} editItem={editItem} deleteItem={deleteItem} />
             ) : isIconic ? (
-              <IconicTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
+              <IconicTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} editItem={editItem} deleteItem={deleteItem} />
             ) : isStalwart ? (
               <StalwartTheme activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
             ) : null}

@@ -1,168 +1,227 @@
+import { useResume } from "@/context/ResumeInfoContext";
+import { Edit, Trash2 } from "lucide-react";
 import React from "react";
 
 // Template name: iconic
-const IconicTheme = () => {
+const IconicTheme = ({ deleteItem, editItem }) => {
+
+  const { resumeInfo } = useResume()
   return (
-    <div className="text-white max-w-4xl mx-auto">
-      <div className="bg-[#1E3A5F] p-6 flex justify-between">
-        <h1 className="text-3xl font-bold">JASON CARTER</h1>
-        <div>
-          <p className="mt-2 text-sm">+1 (555) 123-4567</p>
-          <p className="text-sm">jason.carter@example.com</p>
-          <p className="text-sm">San Francisco, CA, USA</p>
-          <p className="text-sm">linkedin.com/in/jasoncarter</p>
-        </div>
-      </div>
-
-      <div className="bg-white text-black p-6 space-y-6">
-        {/* PROFESSIONAL SUMMARY */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F]">
-            PROFESSIONAL SUMMARY
-          </h2>
-          <p className="col-span-2 text-sm">
-            Senior Full Stack Developer with 8+ years of experience building scalable web applications. 
-            Specialized in JavaScript frameworks and cloud architecture. Proven leader in agile development 
-            environments with a passion for mentoring junior developers and implementing CI/CD pipelines. 
-            Strong focus on performance optimization and security best practices.
-          </p>
-        </div>
-
-        {/* TECHNICAL SKILLS */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">TECHNICAL SKILLS</h2>
-          <div className="col-span-2 grid grid-cols-3 gap-2 text-sm mt-2">
-            <p>React.js/Next.js</p>
-            <p>Node.js/Express</p>
-            <p>TypeScript</p>
-            <p>AWS/Serverless</p>
-            <p>Docker/Kubernetes</p>
-            <p>GraphQL</p>
-            <p>MongoDB/PostgreSQL</p>
-            <p>Jest/Cypress</p>
-            <p>CI/CD Pipelines</p>
+    <div className="text-white max-w-4xl mx-auto text-[10px] sm:text-base select-none">
+    <div className="c-info relative bg-[#1E3A5F] p-3 sm:p-6 flex justify-between">
+      {resumeInfo.contactInfo && (
+        <>
+          <h1 className="text-lg sm:text-3xl font-bold uppercase">{`${resumeInfo.contactInfo.firstName} ${resumeInfo.contactInfo.lastName}`}</h1>
+          <div>
+            {resumeInfo.contactInfo.phoneNumber && <p className="mt-1 sm:mt-2 text-[8px] sm:text-sm">{resumeInfo.contactInfo.phoneNumber}</p>}
+            {resumeInfo.contactInfo.email && <p className="text-[8px] sm:text-sm">{resumeInfo.contactInfo.email}</p>}
+            {(resumeInfo.contactInfo.city || resumeInfo.contactInfo.country) && (
+              <p className="text-[8px] sm:text-sm">{`${resumeInfo.contactInfo.city || ''}${resumeInfo.contactInfo.city && resumeInfo.contactInfo.country ? ', ' : ''}${resumeInfo.contactInfo.country || ''}`}</p>
+            )}
+            {resumeInfo.contactInfo.linkedIn && <p className="text-[8px] sm:text-sm">{resumeInfo.contactInfo.linkedIn}</p>}
           </div>
-        </div>
-
-        {/* EXPERIENCE */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">EXPERIENCE</h2>
-          <div className="col-span-2 space-y-6">
-            <div>
-              <p className="font-bold mt-2">Senior Software Engineer</p>
-              <p className="text-sm">
-                TechNova Solutions, San Francisco, CA, Jun 2020 - Present
-              </p>
-              <ul className="list-disc list-inside text-sm mt-2 space-y-1">
-                <li>
-                  Led migration of legacy system to microservices architecture, improving scalability by 40%
-                </li>
-                <li>
-                  Implemented CI/CD pipeline reducing deployment time from 2 hours to 15 minutes
-                </li>
-                <li>
-                  Developed React component library used across 12+ company products
-                </li>
-                <li>
-                  Mentored 5 junior developers through code reviews and pair programming sessions
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="font-bold mt-2">Full Stack Developer</p>
-              <p className="text-sm">
-                Digital Creations Inc, Austin, TX, Mar 2017 - May 2020
-              </p>
-              <ul className="list-disc list-inside text-sm mt-2 space-y-1">
-                <li>
-                  Built RESTful APIs serving 10,000+ daily requests with 99.9% uptime
-                </li>
-                <li>
-                  Optimized database queries reducing page load times by 65%
-                </li>
-                <li>
-                  Implemented JWT authentication system for enterprise application
-                </li>
-              </ul>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Contact information")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
             </div>
           </div>
-        </div>
-
-        {/* PROJECTS */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">PROJECTS</h2>
-          <div className="col-span-2 space-y-4">
-            <div>
-              <p className="font-bold text-sm">E-commerce Platform</p>
-              <p className="text-sm">
-                Built with React, Node.js, and MongoDB. Implemented payment gateway integration, 
-                inventory management, and analytics dashboard.
-              </p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">Healthcare Analytics Dashboard</p>
-              <p className="text-sm">
-                Developed using D3.js and Express. Visualized complex patient data for hospital administrators.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* EDUCATION */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">EDUCATION</h2>
-          <div className="col-span-2 space-y-2">
-            <div>
-              <p className="font-bold text-sm">
-                Master of Science: Computer Science
-              </p>
-              <p className="text-sm">Stanford University, 2016</p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">
-                Bachelor of Science: Software Engineering
-              </p>
-              <p className="text-sm">University of Texas at Austin, 2014</p>
-            </div>
-          </div>
-        </div>
-
-        {/* CERTIFICATIONS */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">CERTIFICATIONS</h2>
-          <div className="col-span-2 space-y-2">
-            <p className="text-sm">AWS Certified Solutions Architect (2022)</p>
-            <p className="text-sm">Google Professional Data Engineer (2021)</p>
-            <p className="text-sm">Scrum Master Certification (2020)</p>
-          </div>
-        </div>
-
-        {/* LANGUAGES */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">LANGUAGES</h2>
-          <div className="col-span-2 grid grid-cols-2 gap-4">
-            <div>
-              <p className="font-bold text-sm">English</p>
-              <p className="text-sm">Native</p>
-            </div>
-            <div>
-              <p className="font-bold text-sm">Spanish</p>
-              <p className="text-sm">Professional Working</p>
-            </div>
-          </div>
-        </div>
-
-        {/* VOLUNTEER WORK */}
-        <div className="grid grid-cols-3 gap-4">
-          <h2 className="text-xl font-bold text-[#1E3A5F] mt-6">VOLUNTEER WORK</h2>
-          <div className="col-span-2">
-            <p className="font-bold text-sm">Code for America</p>
-            <p className="text-sm">Developed open-source tools for local government (2018-Present)</p>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
+  
+    <div className="bg-white text-black p-3 sm:p-6 space-y-3 sm:space-y-6">
+      {/* PROFESSIONAL SUMMARY */}
+      {(resumeInfo.summary || resumeInfo.summary === "") && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">
+            PROFESSIONAL <br /> SUMMARY
+          </h2>
+          <p className="col-span-2 text-[8px] sm:text-sm">{resumeInfo.summary}</p>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Professional Summary")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Professional Summary")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* TECHNICAL SKILLS */}
+      {resumeInfo.skills && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">SKILLS</h2>
+          <div className="col-span-2 grid grid-cols-3 gap-1 sm:gap-2 text-[8px] sm:text-sm mt-1 sm:mt-2">
+            {resumeInfo.skills.map((skill, index) => (
+              <p key={index}>{skill}</p>
+            ))}
+          </div>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Skills")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Skills")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* EXPERIENCE */}
+      {resumeInfo.experience && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">EXPERIENCE</h2>
+          <div className="col-span-2 space-y-3 sm:space-y-6">
+            {resumeInfo.experience.map((exp, index) => (
+              <div key={index}>
+                <p className="font-bold mt-1 sm:mt-2 text-[8px] sm:text-sm">{exp.jobTitle}</p>
+                <p className="text-[8px] sm:text-sm">
+                  {exp.company}, {exp.startMonth} {exp.startYear} - {exp.present ? 'Present' : `${exp.endMonth} ${exp.endYear}`}
+                </p>
+                {exp.description && (
+                  <ul className="list-disc list-inside text-[8px] sm:text-sm mt-1 sm:mt-2 space-y-0.5 sm:space-y-1">
+                    {exp.description.split('. ').map((item, i) => (
+                      item && <li key={i}>{item.trim()}{!item.endsWith('.') && '.'}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Experience")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Experience")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* PROJECTS */}
+      {resumeInfo.projects && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">PROJECTS</h2>
+          <div className="col-span-2 space-y-2 sm:space-y-4">
+            {resumeInfo.projects.map((project, index) => (
+              <div key={index}>
+                <p className="font-bold text-[8px] sm:text-sm">{project.title}</p>
+                {project.description && <p className="text-[8px] sm:text-sm">{project.description}</p>}
+                {project.url && <p className="text-[8px] sm:text-sm text-[#5F6A8A]">{project.url.replace(/^https?:\/\//, '')}</p>}
+              </div>
+            ))}
+          </div>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Projects")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Projects")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* EDUCATION */}
+      {resumeInfo.education && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">EDUCATION</h2>
+          <div className="col-span-2 space-y-1 sm:space-y-2">
+            {resumeInfo.education.map((edu, index) => (
+              <div key={index}>
+                <p className="font-bold text-[8px] sm:text-sm">
+                  {edu.degree}: {edu.fieldOfStudy}
+                </p>
+                <p className="text-[8px] sm:text-sm">
+                  {edu.institution}, {edu.graduationMonth} {edu.graduationYear}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Education")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Education")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* CERTIFICATIONS */}
+      {resumeInfo.certifications && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">CERTIFICATIONS</h2>
+          <div className="col-span-2 space-y-1 sm:space-y-2">
+            {resumeInfo.certifications.map((cert, index) => (
+              <p key={index} className="text-[8px] sm:text-sm">
+                {cert.name} {(cert.organization || cert.issueYear) && `(${cert.organization}${!cert.organization || !cert.issueYear ? '': ' '}${cert.issueYear})`}
+              </p>
+            ))}
+          </div>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Certifications")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Certifications")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+  
+      {/* LANGUAGES */}
+      {resumeInfo.languages && (
+        <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">LANGUAGES</h2>
+          <div className="col-span-2 grid grid-cols-3 gap-2 sm:gap-4">
+            {resumeInfo.languages.map((lang, index) => (
+              <div key={index}>
+                <p className="font-bold text-[8px] sm:text-sm">{lang.language}</p>
+                <p className="text-[8px] sm:text-sm">{lang.proficiency}</p>
+              </div>
+            ))}
+          </div>
+          <div className="edit hidden absolute -right-1 -top-1 p-1">
+            <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-primary" onClick={() => editItem("Language")}>
+                <Edit className="size-2 sm:size-4" /> Edit
+              </button>
+              <button className="text-white p-0.5 sm:p-1 text-[8px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Language")}>
+                <Trash2 className="size-2 sm:size-4" /> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* VOLUNTEER WORK */}
+        {resumeInfo.volunteer && <div className="grid grid-cols-3 gap-2 sm:gap-4">
+          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">VOLUNTEER WORK</h2>
+          <div className="col-span-2">
+            <p className="font-bold text-[8px] sm:text-sm">Code for America</p>
+            <p className="text-[8px] sm:text-sm">Developed open-source tools for local government (2018-Present)</p>
+          </div>
+        </div>}
+    </div>
+</div>
   );
 };
 

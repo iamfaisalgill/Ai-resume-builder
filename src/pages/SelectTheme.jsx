@@ -6,7 +6,14 @@ import iconic_template from '../assets/iconic.png'
 import stalwart_template from '../assets/stalwart.png'
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useResume } from "@/context/ResumeInfoContext";
+import { useResume, useMediaQuery } from "@/context/ResumeInfoContext";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 
 
 const templates = [
@@ -20,6 +27,7 @@ export default function SelectTheme() {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const {resumeInfo} = useResume()
   const navigate = useNavigate()
+   const isMobile = useMediaQuery("(max-width: 768px)");
   
   useEffect(()=>{
     function isValueEmpty(value) {
@@ -51,8 +59,43 @@ export default function SelectTheme() {
   return (
     <div className="min-w-full p-7">
       <div className="mt-8 space-y-9 p-6 max-w-[1020px] mx-auto bg-card rounded-lg">
-      <h1 className="text-4xl text-center">Select a template</h1>
-        <div className="grid grid-cols-3 gap-4 p-6">
+      <div>
+        <h1 className="sm:text-2xl text-lg font-medium uppercase text-center">Choose your resume template</h1>
+        <p className="text-center">Remember, you can always change your template later on.</p>
+      </div>
+        {isMobile ? (
+          <div className="p-2">
+            <Carousel className="w-full max-w-xs mx-auto">
+              <CarouselContent>
+                {templates.map((template) => (
+                  <CarouselItem key={template.id}>
+                    <div className="p-1">
+                      <Card
+                        className={`relative flex items-center justify-center cursor-pointer rounded-md transition-all p-0 ${
+                          selectedTemplate === template.name ? "ring-2 ring-primary" : ""
+                        }`}
+                        onClick={() => setSelectedTemplate(template.name)}
+                      >
+                        <CardContent className="flex flex-col items-center justify-center p-0 h-full text-center">
+                          <img src={template.src} alt="" className="rounded-md w-full" />
+                        </CardContent>
+                        {selectedTemplate === template.name && (
+                          <div className="flex items-center justify-center rounded-full absolute top-2 right-2 text-white bg-gray-800 size-7">
+                            <Check size={20} />
+                          </div>
+                        )}
+                      </Card>
+                      <p className="text-center mt-2">{template.name}</p>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-4 p-6">
           {templates.map((template) => (
             <div key={template.id}>
               <Card
@@ -74,9 +117,10 @@ export default function SelectTheme() {
             </div>
           ))}
         </div>
+        )}
                 <div className="flex justify-between">
                 <Button>Back</Button>
-                  <Button onClick={handleSave} >Save & Next</Button>
+                  <Button onClick={handleSave} disabled={!selectedTemplate}>Save & Next</Button>
                 </div>
 
       </div>
