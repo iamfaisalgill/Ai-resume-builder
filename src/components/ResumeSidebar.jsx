@@ -27,11 +27,14 @@ import { useResume } from "@/context/ResumeInfoContext"
 import ProjectsDialog from "./dialogs/ProjectsDialog";
 import CertificationsDialog from "./dialogs/CertificationsDialog";
 import TemplatesColorsDialog from "./dialogs/TemplatesColorsDialog";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec, setActiveSec, isAlertDialogOpen, setIsAlertDialogOpen, deleteItem, editItem }) {
 
   const { resumeInfo, setResumeInfo } = useResume();
+
+  const navigate = useNavigate()
   
   const confirmDelete = () => {
     setActiveSec("");
@@ -73,10 +76,12 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec
       </div>
       <span className="py-2 px-4 font-bold border-b">Customize</span>
       <div className="my-4 px-4">
-        <Button variant="outline" className="w-full flex items-center justify-center gap-2" onClick={() => setActiveDialog("Templates Colors")}>
-          <Palette className="h-4 w-4" />
-          Templates & Colors
-        </Button>
+        <Link to="/select-theme">
+          <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+            <Palette className="h-4 w-4" />
+            Change Theme
+          </Button>
+        </Link>
       </div>
       <span className="py-2 px-4 font-bold border-y">Sections</span>
       <div className="my-4 px-4">
