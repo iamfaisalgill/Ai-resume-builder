@@ -26,6 +26,7 @@ import MoreSectionsDialog from "./dialogs/MoreSectionsDialog"
 import { useResume } from "@/context/ResumeInfoContext"
 import ProjectsDialog from "./dialogs/ProjectsDialog";
 import CertificationsDialog from "./dialogs/CertificationsDialog";
+import TemplatesColorsDialog from "./dialogs/TemplatesColorsDialog";
 
 
 export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec, setActiveSec, isAlertDialogOpen, setIsAlertDialogOpen, deleteItem, editItem }) {
@@ -72,7 +73,7 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec
       </div>
       <span className="py-2 px-4 font-bold border-b">Customize</span>
       <div className="my-4 px-4">
-        <Button variant="outline" className="w-full flex items-center justify-center gap-2">
+        <Button variant="outline" className="w-full flex items-center justify-center gap-2" onClick={() => setActiveDialog("Templates Colors")}>
           <Palette className="h-4 w-4" />
           Templates & Colors
         </Button>
@@ -396,6 +397,9 @@ export default function ResumeSidebar({ activeDialog, setActiveDialog, activeSec
       )}
       {activeDialog === "More Sections" && (
         <MoreSectionsDialog isOpen={true} onClose={closeDialog} />
+      )}
+      {activeDialog === "Templates Colors" && (
+        <TemplatesColorsDialog isOpen={true} onClose={closeDialog} />
       )}
       {/* Add more dialogs for other sections as needed */}
 

@@ -11,7 +11,12 @@ Font.register({
   src: segeo_bold,
 });
 
-// Create styles
+
+
+
+const StalwartPDF = ({resumeInfo}) => {
+
+  // Create styles
 const styles = StyleSheet.create({
   page: {
     padding: 15,
@@ -74,11 +79,13 @@ const styles = StyleSheet.create({
   },
   bulletList: {
     fontSize: 9, // reduced from 10
-    marginLeft: 10,
-    marginBottom: 12,
+    marginLeft: 8,
   },
   bulletItem: {
-    marginBottom: 4,
+    fontSize: 10,
+    marginBottom: 2, // Reduced from 3
+    marginLeft: 8,
+    lineHeight: 1.3, // Better readability
   },
   educationItem: {
     flexDirection: 'row',
@@ -139,83 +146,112 @@ const styles = StyleSheet.create({
   },
 });
 
-
-const StalwartPDF = ({resumeInfo}) => (
+  const skills = Array.isArray(resumeInfo.skills) ? resumeInfo.skills : [];
+  const experience = Array.isArray(resumeInfo.experience) ? resumeInfo.experience : [];
+  const education = Array.isArray(resumeInfo.education) ? resumeInfo.education : [];
+  const projects = Array.isArray(resumeInfo.projects) ? resumeInfo.projects : [];
+  const languages = Array.isArray(resumeInfo.languages) ? resumeInfo.languages : [];
+  const certifications = Array.isArray(resumeInfo.certifications) ? resumeInfo.certifications : [];
+  
+ return (
   <Document>
     <Page size="A4" style={styles.page}>
       {/* Header */}
-      <Text style={styles.name}>{resumeInfo.firstName} {resumeInfo.lastName}</Text>
+      <Text style={styles.name}>{resumeInfo.contactInfo.firstName} {resumeInfo.contactInfo.lastName}</Text>
       <Text style={styles.contactInfo}>
-        {resumeInfo.city}, {resumeInfo.country} • {resumeInfo.phoneNumber} • {resumeInfo.email} • {resumeInfo.linkedIn}
+        {resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country} • {resumeInfo.contactInfo.phoneNumber} • {resumeInfo.contactInfo.email} • {resumeInfo.contactInfo.linkedIn}
       </Text>
 
       {/* Professional Summary */}
-      <Text style={styles.sectionHeader}>PROFESSIONAL SUMMARY</Text>
-      <Text style={styles.sectionText}>{resumeInfo.summary}</Text>
+      {resumeInfo.summary && (
+      <>
+        <Text style={styles.sectionHeader}>PROFESSIONAL SUMMARY</Text>
+        <Text style={styles.sectionText}>{resumeInfo.summary}</Text>
+      </>
+      )}
 
       {/* Technical Skills */}
-      <Text style={styles.sectionHeader}>TECHNICAL SKILLS</Text>
-      <View style={styles.skillGrid}>
-        {resumeInfo.skills.map((skill, index) => (
-          <Text key={index} style={styles.skillItem}>• {skill}</Text>
-        ))}
-      </View>
+      {skills.length > 0 && (
+        <>
+          <Text style={styles.sectionHeader}>TECHNICAL SKILLS</Text>
+          <View style={styles.skillGrid}>
+            {resumeInfo.skills.map((skill, index) => (
+              <Text key={index} style={styles.skillItem}>• {skill}</Text>
+            ))}
+          </View>
+        </>
+      )}
 
       {/* Professional Experience */}
-      <Text style={styles.sectionHeader}>PROFESSIONAL EXPERIENCE</Text>
-      {resumeInfo.experience.map((exp, index) => (
-        <View key={index}>
-          <View style={styles.jobHeader}>
-            <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
-            {/* <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text> */}
-            <Text style={styles.jobDate}>{exp.company}, {exp.startMonth} {exp.startYear} -  {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`} </Text>
+      { experience.length > 0 && (
+        <>
+        <Text style={styles.sectionHeader}>PROFESSIONAL EXPERIENCE</Text>
+        {resumeInfo.experience.map((exp, index) => (
+          <View key={index}>
+            <View style={styles.jobHeader}>
+              <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
+              {/* <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text> */}
+              <Text style={styles.jobDate}>{exp.company}, {exp.startMonth} {exp.startYear} -  {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`} </Text>
+            </View>
+            <Text style={styles.companyInfo}>{exp.company}</Text>
+            {exp.description && exp.description.split('. ').map((item,i)=>(
+              <Text style={styles.bulletItem} key={i}>
+                • {item.trim()}{!item.endsWith('.') && '.'}
+              </Text>
+            ))}
           </View>
-          <Text style={styles.companyInfo}>{exp.company}</Text>
-          <Text style={styles.sectionText}>{exp.description}</Text>
-        </View>
-      ))}
+        ))}
+      </>)}
 
       {/* Education */}
-      <Text style={styles.sectionHeader}>EDUCATION</Text>
-      {resumeInfo.education.map((edu, index) => (
-        <View key={index}>
-          <View style={styles.educationItem}>
-            <Text style={styles.educationTitle}>{edu.degree} in {edu.fieldOfStudy}</Text>
-            <Text style={styles.educationDate}>{edu.graduationMonth} {edu.graduationYear}</Text>
+      {education.length > 0 &&(<>
+        <Text style={styles.sectionHeader}>EDUCATION</Text>
+        {resumeInfo.education.map((edu, index) => (
+          <View key={index}>
+            <View style={styles.educationItem}>
+              <Text style={styles.educationTitle}>{edu.degree} in {edu.fieldOfStudy}</Text>
+              <Text style={styles.educationDate}>{edu.graduationMonth} {edu.graduationYear}</Text>
+            </View>
+            <Text style={styles.educationSchool}>{edu.institution}</Text>
           </View>
-          <Text style={styles.educationSchool}>{edu.institution}</Text>
-        </View>
-      ))}
+        ))}
+      </>)}
 
       {/* Certifications */}
-      <Text style={styles.sectionHeader}>CERTIFICATIONS</Text>
-        <View style={styles.certGrid}>
-      {resumeInfo.certifications.map((cert, index) => (
-          <Text key={index} style={styles.certItem}>{cert.name} ({cert.issueYear})</Text>
-      ))}
-        </View>
+      {certifications.length > 0 && (<>
+        <Text style={styles.sectionHeader}>CERTIFICATIONS</Text>
+          <View style={styles.certGrid}>
+        {resumeInfo.certifications.map((cert, index) => (
+            <Text key={index} style={styles.certItem}>{cert.name} ({cert.issueYear})</Text>
+        ))}
+          </View>
+      </>)}
 
       {/* Projects */}
-      <Text style={styles.sectionHeader}>PROJECTS</Text>
-      {resumeInfo.projects.map((project, index) => (
-        <View key={index}>
-          <Text style={styles.projectTitle}>{project.title}</Text>
-          <Text style={styles.projectDesc}>{project.description}</Text>
-          {/* {project.url && <Text style={styles.projectUrl}>URL: {project.url}</Text>} */}
-        </View>
-      ))}
+      { projects.length > 0 && (<>
+        <Text style={styles.sectionHeader}>PROJECTS</Text>
+        {resumeInfo.projects.map((project, index) => (
+          <View key={index}>
+            <Text style={styles.projectTitle}>{project.title}</Text>
+            <Text style={styles.projectDesc}>{project.description}</Text>
+            {/* {project.url && <Text style={styles.projectUrl}>URL: {project.url}</Text>} */}
+          </View>
+        ))}
+      </>)}
 
       {/* Languages */}
-      <Text style={styles.sectionHeader}>LANGUAGES</Text>
-        {resumeInfo.languages && <View style={styles.languageGrid}>
-      {resumeInfo.languages.map((lang, index) => (
-          <Text key={index} style={styles.languageTitle}>{lang.language} ({lang.proficiency})</Text>
-      ))}
-      {/* {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}
-          {lang.yearsOfExperience && <Text style={styles.languageExp}>Years of Experience: {lang.yearsOfExperience}</Text>} */}
-        </View>} 
+      {languages.length > 0 && (<>
+        <Text style={styles.sectionHeader}>LANGUAGES</Text>
+          <View style={styles.languageGrid}>
+        {resumeInfo.languages.map((lang, index) => (
+            <Text key={index} style={styles.languageTitle}>{lang.language} ({lang.proficiency})</Text>
+        ))}
+        {/* {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}
+            {lang.yearsOfExperience && <Text style={styles.languageExp}>Years of Experience: {lang.yearsOfExperience}</Text>} */}
+          </View>
+      </>)}
     </Page>
   </Document>
-);
+)}
 
 export default StalwartPDF;

@@ -11,7 +11,7 @@ import ResumeBuild from './pages/ResumeBuild'
 import { Toaster } from './components/ui/sonner'
 
 function App() {
-  const [pageIndex, setPageIndex] = useState(7);
+  const [pageIndex, setPageIndex] = useState(1);
   return (
     <>
       <ResumeInfoProvider>
