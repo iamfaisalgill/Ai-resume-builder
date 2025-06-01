@@ -38,7 +38,8 @@ export const ResumeInfoProvider = ({ children }) => {
           "endYear": "",
           "endMonth": "",
           "present": true,
-          "description": "Lead a team developing machine learning models for customer behavior prediction. Implemented new algorithms that improved prediction accuracy by 35%."
+          "description": "<ul><li><b>Lead a team</b> developing machine learning models for customer behavior prediction.</li><li>Implemented <b>new algorithms</b> that improved prediction accuracy by <u>35%</u>.</li></ul>"
+
         },
         {
           "jobTitle": "Data Analyst",

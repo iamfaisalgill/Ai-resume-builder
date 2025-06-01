@@ -2,6 +2,7 @@ import { Document, Page, Text, View, StyleSheet, Font,  Svg, Path } from '@react
 import georgia from '../assets/fonts/georgiab.ttf';
 import { useResume } from '../context/ResumeInfoContext.jsx';
 import { useEffect } from 'react';
+import Html from 'react-pdf-html';
 
 Font.register({
   family: 'Georgia-Bold',
@@ -154,6 +155,16 @@ const HalleyPDF = ({ resumeInfo }) => {
   const languages = Array.isArray(resumeInfo.languages) ? resumeInfo.languages : [];
   const certifications = Array.isArray(resumeInfo.certifications) ? resumeInfo.certifications : [];
 
+  const customRenderers = {
+    li: ({ children }) => (
+      <View style={{ flexDirection: "row", marginBottom: 2 }}>
+        {/* Bullet — replace with "" to remove or use • */}
+        <Text style={{ width: 10, textAlign: "center" }}>•</Text>
+        <Text style={{ flex: 1 }}>{children}</Text>
+      </View>
+    ),
+  };
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -190,18 +201,24 @@ const HalleyPDF = ({ resumeInfo }) => {
                     <Text style={styles.jobDate}>{exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}</Text>
                   </View>
                   <Text style={styles.companyInfo}>{exp.company}</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 4 }}>
-                    <Svg width="10" height="10" viewBox="0 0 24 24">
-                      <Path
-                        d="M5 12H19M12 5L19 12L12 19"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </Svg>
-                    <Text style={styles.text}>{exp.description}</Text>
-                  </View>
+                  <Html
+                  style={{ fontFamily: 'Helvetica', fontSize: 10 }}
+                  stylesheet={{
+                    ul: {
+                      marginTop: 0,
+                      marginBottom: 0,
+                      marginLeft: 0, // or 0 if you want no indent
+                      paddingLeft: 0,
+                    },
+                    li: {
+                      marginBottom: 2, // spacing between list items
+                      marginLeft: 0
+                    },
+                  }}
+                  renderers={customRenderers}
+                >
+                  {exp.description}
+                </Html>
                 </View>
               ))}
             </View>

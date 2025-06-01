@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
 import halley_template from "../assets/halley.png";
+import iconic_template from "../assets/iconic.png";
+import stalwart_template from "../assets/stalwart.png";
 import {
   FileText,
   Bot,
@@ -11,6 +13,7 @@ import {
   Palette,
   Monitor,
 } from "lucide-react";
+import Marquee from "react-fast-marquee";
 
 const Home = () => {
   return (
@@ -32,13 +35,41 @@ const Home = () => {
           </Button>
         </div>
 
-        <div className="mt-12 w-full max-w-5xl">
+        {/* <div className="mt-12 w-full max-w-5xl"> */}
+        <Marquee autoFill className="mt-8 py-7">
           <img
             src={halley_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[550px] mx-auto"
+            className="rounded-2xl shadow-md w-[250px] mx-5"
           />
-        </div>
+          <img
+            src={iconic_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={stalwart_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={halley_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={iconic_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={stalwart_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+        </Marquee>
+
+        {/* </div> */}
       </section>
 
       {/* Features Section */}
@@ -54,7 +85,9 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto text-center">
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <FileText className="w-20 h-20 mx-auto mb-4 text-primary" />
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-blue-500 rounded-sm text-white">
+              <FileText size={24} />
+            </div>
             <h4 className="text-xl font-semibold mb-2">Multiple Templates</h4>
             <p className="text-muted-foreground">
               Choose from a variety of modern, creative, and professional
@@ -63,7 +96,9 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <Bot className="w-20 h-20 mx-auto mb-4 text-primary" />
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-purple-500 rounded-sm text-white">
+              <Bot size={24} />
+            </div>
             <h4 className="text-xl font-semibold mb-2">AI-Generated Summary</h4>
             <p className="text-muted-foreground">
               Let AI help you craft a compelling professional summary that
@@ -72,7 +107,9 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <Download className="w-20 h-20 mx-auto mb-4 text-primary" />
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-green-500 rounded-sm text-white">
+              <Download size={24} />
+            </div>
             <h4 className="text-xl font-semibold mb-2">
               Download as Editable PDF
             </h4>
@@ -83,7 +120,9 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <LayoutPanelLeft className="w-20 h-20 mx-auto mb-4 text-primary" />
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-orange-500 rounded-sm text-white">
+              <LayoutPanelLeft size={24} />
+            </div>
             <h4 className="text-xl font-semibold mb-2">
               Customizable Sections
             </h4>
@@ -94,7 +133,9 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <Palette className="w-20 h-20 mx-auto mb-4 text-primary" />
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-pink-500 rounded-sm text-white">
+              <Palette size={24} />
+            </div>
             <h4 className="text-xl font-semibold mb-2">Theme Color Options</h4>
             <p className="text-muted-foreground">
               Easily change the resume's color scheme to match your style or
@@ -103,7 +144,9 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <Monitor className="w-20 h-20 mx-auto mb-4 text-primary" />
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-indigo-500 rounded-sm text-white">
+              <Monitor size={24} />
+            </div>
             <h4 className="text-xl font-semibold mb-2">Live Preview</h4>
             <p className="text-muted-foreground">
               See updates in real-time as you customize your resume.
@@ -127,7 +170,7 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#18181b] text-gray-100 py-10 px-6 mt-10">
+      <footer className="bg-[#27272a] text-gray-100 py-10 px-6 mt-10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div>
             <h3 className="text-2xl font-bold">ResumeBuilder</h3>

@@ -6,12 +6,13 @@ import React from "react";
 const IconicTheme = ({ deleteItem, editItem }) => {
 
   const { resumeInfo } = useResume()
+
   return (
-    <div className="text-white max-w-4xl mx-auto text-[10px] sm:text-base select-none">
+    <div className="text-white max-w-4xl mx-auto text-[10px] sm:text-base ">
     <div className="c-info relative bg-[#1E3A5F] p-3 sm:p-6 flex justify-between">
       {resumeInfo.contactInfo && (
         <>
-          <h1 className="text-lg sm:text-3xl font-bold uppercase">{`${resumeInfo.contactInfo.firstName} ${resumeInfo.contactInfo.lastName}`}</h1>
+          <h1 className="text-[15px] sm:text-3xl font-bold uppercase">{`${resumeInfo.contactInfo.firstName} ${resumeInfo.contactInfo.lastName}`}</h1>
           <div>
             {resumeInfo.contactInfo.phoneNumber && <p className="mt-1 sm:mt-2 text-[8px] sm:text-sm">{resumeInfo.contactInfo.phoneNumber}</p>}
             {resumeInfo.contactInfo.email && <p className="text-[8px] sm:text-sm">{resumeInfo.contactInfo.email}</p>}
@@ -35,7 +36,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* PROFESSIONAL SUMMARY */}
       {(resumeInfo.summary || resumeInfo.summary === "") && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">
             PROFESSIONAL <br /> SUMMARY
           </h2>
           <p className="col-span-2 text-[8px] sm:text-sm">{resumeInfo.summary}</p>
@@ -55,7 +56,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* TECHNICAL SKILLS */}
       {resumeInfo.skills && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">SKILLS</h2>
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">SKILLS</h2>
           <div className="col-span-2 grid grid-cols-3 gap-1 sm:gap-2 text-[8px] sm:text-sm mt-1 sm:mt-2">
             {resumeInfo.skills.map((skill, index) => (
               <p key={index}>{skill}</p>
@@ -77,21 +78,15 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* EXPERIENCE */}
       {resumeInfo.experience && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">EXPERIENCE</h2>
-          <div className="col-span-2 space-y-3 sm:space-y-6">
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">EXPERIENCE</h2>
+          <div className="col-span-2 space-y-3">
             {resumeInfo.experience.map((exp, index) => (
               <div key={index}>
                 <p className="font-bold mt-1 sm:mt-2 text-[8px] sm:text-sm">{exp.jobTitle}</p>
                 <p className="text-[8px] sm:text-sm">
                   {exp.company}, {exp.startMonth} {exp.startYear} - {exp.present ? 'Present' : `${exp.endMonth} ${exp.endYear}`}
                 </p>
-                {exp.description && (
-                  <ul className="list-disc list-inside text-[8px] sm:text-sm mt-1 sm:mt-2 space-y-0.5 sm:space-y-1">
-                    {exp.description.split('. ').map((item, i) => (
-                      item && <li key={i}>{item.trim()}{!item.endsWith('.') && '.'}</li>
-                    ))}
-                  </ul>
-                )}
+                <span className="text-[8px] sm:text-sm" dangerouslySetInnerHTML={{__html: exp.description}}/>
               </div>
             ))}
           </div>
@@ -111,7 +106,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* PROJECTS */}
       {resumeInfo.projects && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">PROJECTS</h2>
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">PROJECTS</h2>
           <div className="col-span-2 space-y-2 sm:space-y-4">
             {resumeInfo.projects.map((project, index) => (
               <div key={index}>
@@ -137,7 +132,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* EDUCATION */}
       {resumeInfo.education && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">EDUCATION</h2>
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">EDUCATION</h2>
           <div className="col-span-2 space-y-1 sm:space-y-2">
             {resumeInfo.education.map((edu, index) => (
               <div key={index}>
@@ -166,7 +161,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* CERTIFICATIONS */}
       {resumeInfo.certifications && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">CERTIFICATIONS</h2>
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">CERTIFICATIONS</h2>
           <div className="col-span-2 space-y-1 sm:space-y-2">
             {resumeInfo.certifications.map((cert, index) => (
               <p key={index} className="text-[8px] sm:text-sm">
@@ -190,7 +185,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
       {/* LANGUAGES */}
       {resumeInfo.languages && (
         <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">LANGUAGES</h2>
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">LANGUAGES</h2>
           <div className="col-span-2 grid grid-cols-3 gap-2 sm:gap-4">
             {resumeInfo.languages.map((lang, index) => (
               <div key={index}>
@@ -214,14 +209,14 @@ const IconicTheme = ({ deleteItem, editItem }) => {
 
       {/* VOLUNTEER WORK */}
         {resumeInfo.volunteer && <div className="grid grid-cols-3 gap-2 sm:gap-4">
-          <h2 className="text-sm sm:text-xl font-bold text-[#1E3A5F]">VOLUNTEER WORK</h2>
+          <h2 className="text-[10px] sm:text-xl font-bold text-[#1E3A5F]">VOLUNTEER WORK</h2>
           <div className="col-span-2">
             <p className="font-bold text-[8px] sm:text-sm">Code for America</p>
             <p className="text-[8px] sm:text-sm">Developed open-source tools for local government (2018-Present)</p>
           </div>
         </div>}
     </div>
-</div>
+    </div>
   );
 };
 

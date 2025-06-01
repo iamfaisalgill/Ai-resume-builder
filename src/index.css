@@ -166,6 +166,10 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+ul {
+  @apply list-disc list-inside
+}
+
 .rsw-ce ul {
   list-style: disc;
   padding-left: 2em;
@@ -174,6 +178,38 @@ input[type="number"]::-webkit-outer-spin-button {
 .rsw-ce ol {
   list-style: decimal;
   padding-left: 2em;
+}
+
+.rsw-editor{
+  @apply !border-border
+}
+
+.rsw-ce{
+  @apply bg-card/50
+}
+
+.rsw-toolbar {
+  @apply !bg-card !border-border
+}
+
+/* html.dark .rsw-toolbar{
+  @apply !bg-neutral-900
+} */
+
+.rsw-btn{
+  @apply !text-foreground
+}
+
+.rsw-btn:hover{
+  @apply !bg-card
+}
+
+.rsw-btn[data-active=true]{
+  @apply !bg-card
+}
+
+.rsw-separator{
+  @apply !border-r-border
 }
 
 .AccordionTrigger[data-state="open"] {
@@ -203,4 +239,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .c-info:hover .edit{
   @apply block
+}
+
+.custom-shadow{
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

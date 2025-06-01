@@ -8,10 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ResumeInfoContext } from "@/context/ResumeInfoContext";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useResume } from "@/context/ResumeInfoContext";
+import { ChevronLeft, ChevronRight, Loader2, Trash2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import RichTextEditor from "@/components/RichTextEditor";
 
 const months = [
   "January",
@@ -44,10 +46,11 @@ const years = Array.from(
 );
 
 const Experience = ({setPageIndex}) => {
-  const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
-  const [experienceList, setExperienceList] = useState(
-    resumeInfo.experience?.length? resumeInfo.experience : [formField]
-  );
+  const { resumeInfo, setResumeInfo } = useResume();
+   const [experienceList, setExperienceList] = useState(
+     resumeInfo.experience?.length? resumeInfo.experience : [formField]
+   );
+  // const [experienceList, setExperienceList] = useState([...resumeInfo.experience]);
   const [loading, setLoading] = useState(false)
 
   const handleChange = (index, eOrValue, fieldName = null) => {
@@ -66,11 +69,17 @@ const Experience = ({setPageIndex}) => {
       return newEntries;
     });
   };
+  const handleRichTextEditor = (e, name, index) => {
+    const newEntries = experienceList.slice()
+    newEntries[index][name]=e.target.value
+    setExperienceList(newEntries)
+  }
+  
 
   const addMoreExperience = () => {
     const newList = [...experienceList, formField]
     setExperienceList(newList)
-    setResumeInfo(prev=>({...prev, experience: newList}))
+    // setResumeInfo(prev=>({...prev, experience: newList}))
   };
   const removeExperience = () => {
     if(experienceList.length <=1) return
@@ -88,15 +97,42 @@ const Experience = ({setPageIndex}) => {
     e.preventDefault();
     setLoading(true);
   
+     if (hasChanges()) {
     await new Promise(resolve => setTimeout(resolve, 1000));
+  } else {
+    await new Promise(resolve => resolve());
+  }
+  const updatedExperience = experienceList.filter(exp=>exp.jobTitle )
   
     setResumeInfo(prev => ({
       ...prev,
-      experience: [...experienceList], // Use current form state
+      experience: [...updatedExperience],
     }));
   
     setLoading(false);
     setPageIndex(3); // Navigate after saving
+  };
+
+  const hasChanges = () => {
+    if (experienceList.length !== resumeInfo.experience.length) {
+      return true;
+    }
+
+    return experienceList.some((exp, index) => {
+      const originalExp = resumeInfo.experience[index];
+      if (!originalExp) return true;
+
+      return (
+        exp.jobTitle !== originalExp.jobTitle ||
+        exp.company !== originalExp.company ||
+        exp.startMonth !== originalExp.startMonth ||
+        exp.startYear !== originalExp.startYear ||
+        exp.endMonth !== originalExp.endMonth ||
+        exp.endYear !== originalExp.endYear ||
+        exp.description !== originalExp.description ||
+        exp.present !== originalExp.present
+      );
+    });
   };
 
 
@@ -107,7 +143,10 @@ const Experience = ({setPageIndex}) => {
         <p className="lead">Let’s start with your most recent job.</p>
       </div>
       {experienceList.map((item, index) => (
-        <div className="space-y-4" key={index}>
+        <div className="space-y-4  p-4 border rounded-lg" key={index}>
+          <h3 className="text-primary text-sm md:text-base">
+            #{index + 1}
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Employer & Job Title */}
             <div>
@@ -130,7 +169,6 @@ const Experience = ({setPageIndex}) => {
                 <Input
                   defaultValue={item.company}
                   onChange={(e) => handleChange(index, e)}
-                  required
                   name="company"
                   placeholder="e.g. IBM"
                   className="mt-2"
@@ -208,6 +246,7 @@ const Experience = ({setPageIndex}) => {
                       handleChange(index, value, "endMonth")
                     }
                     name="endMonth"
+                    disabled={item.present}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Month" />
@@ -233,6 +272,7 @@ const Experience = ({setPageIndex}) => {
                       handleChange(index, value, "endYear")
                     }
                     name="endYear"
+                    disabled={item.present}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Year" />
@@ -247,6 +287,13 @@ const Experience = ({setPageIndex}) => {
                   </Select>
                 </div>
               </div>
+              <Label className="text-sm mt-3">
+                <Checkbox
+                  checked={item.present}
+                  onCheckedChange={(value) => handleChange(index, value, "present")}
+                  className="h-4 w-4"
+                /> I currently work here
+              </Label>
             </div>
           </div>
 
@@ -260,29 +307,30 @@ const Experience = ({setPageIndex}) => {
           <label className="text-sm font-medium tracking-wider">
                  Description
                  </label>
-            <Textarea defaultValue={item.description}
+            {/* <Textarea defaultValue={item.description}
                   onChange={(e) => handleChange(index, e)}
                   name="description"
                   placeholder="Enter description"
                   className='mt-2'
                   id="description"
-                  />
-            
-          </div>
-          {/* <RichTextEditor
+                  /> */}
+            <RichTextEditor
             onRichTextEditorChange={(e) =>
-              handleRichTextEditor(e, "description", index)
+              handleRichTextEditor(e, "description", index )
             }
-          /> */}
+            defaultValue={item.description}
+          />
+          </div>
+          
         </div>
       ))}
 
       <div className="flex items-center gap-4">
         <Button type="button" onClick={addMoreExperience}>
-          Add More Experience
+          + Add More Experience
         </Button>
-        <Button type="button" onClick={removeExperience}>
-          Remove Experience
+        <Button type="button" variant={'secondary'} onClick={removeExperience}>
+          - Remove Experience
         </Button>
       </div>
       <div className="flex justify-between">

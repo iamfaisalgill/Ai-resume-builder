@@ -1,102 +1,146 @@
 let dummyData = {
-  "contactInfo": {
-  "firstName": "Emily",
-  "lastName": "Johnson",
-  "email": "emily.johnson@example.com",
-  "city": "Seattle",
-  "country": "United States",
-  "phoneNumber": "+1 (555) 123-4567",
-  "linkedIn": "linkedin.com/in/emilyjohnson",
-},
-  "summary": "Results-driven software engineer with 7+ years of experience in full-stack development. Passionate about building scalable, efficient systems and mentoring junior developers. Strong problem-solving skills with expertise in cloud technologies and modern web frameworks.",
+  contactInfo: {
+    firstName: "Michael",
+    lastName: "Chen",
+    email: "michael.chen@example.com",
+    city: "Toronto",
+    country: "Canada",
+    phoneNumber: "+1 (416) 987-6543",
+    linkedIn: "linkedin.com/in/michaelchen",
+  },
+  summary:
+    "Innovative data scientist with 5+ years of experience in machine learning and big data analytics. Specialized in developing predictive models and data-driven solutions for business challenges. Strong communicator with proven ability to translate complex technical concepts for non-technical stakeholders.",
   aiGeneratedSummaries: [],
-  "skills": [
-    "JavaScript",
-    "React",
-    "Node.js",
+  skills: [
     "Python",
-    "AWS",
-    "Docker",
+    "TensorFlow",
+    "PyTorch",
     "SQL",
-    "Agile Methodologies"
+    "Big Data",
+    "Data Visualization",
+    "Cloud Computing",
+    "Statistical Modeling",
   ],
-  
-  "experience": [
+
+  experience: [
     {
-      "jobTitle": "Senior Software Engineer",
-      "company": "TechSolutions Inc.",
-      "startYear": "2018",
-      "startMonth": "June",
-      "endYear": "",
-      "endMonth": "",
-      "present": true,
-      "description": "Lead development team building scalable web applications using React and Node.js. Implemented CI/CD pipelines reducing deployment time by 40%."
+      jobTitle: "Lead Data Scientist",
+      company: "DataInsights Corp.",
+      startYear: "2019",
+      startMonth: "April",
+      endYear: "",
+      endMonth: "",
+      present: true,
+      description:
+        "Lead a team developing machine learning models for customer behavior prediction. Implemented new algorithms that improved prediction accuracy by 35%.",
     },
     {
-      "jobTitle": "Software Developer",
-      "company": "Digital Innovations LLC",
-      "startYear": "2015",
-      "startMonth": "August",
-      "endYear": "2018",
-      "endMonth": "May",
-      "present": false,
-      "description": "Developed and maintained e-commerce platforms. Optimized database queries improving system performance by 25%."
-    }
+      jobTitle: "Data Analyst",
+      company: "Analytics Pro",
+      startYear: "2017",
+      startMonth: "January",
+      endYear: "2019",
+      endMonth: "March",
+      present: false,
+      description:
+        "Performed data mining and analysis for client projects. Created automated reporting systems that reduced manual work by 60%.",
+    },
   ],
-  "education": [
+  education: [
     {
-      "institution": "University of Washington",
-      "degree": "Master of Science",
-      "graduationMonth": "May",
-      "graduationYear": "2015",
-      "fieldOfStudy": "Computer Science"
+      institution: "University of Toronto",
+      degree: "Master of Science",
+      graduationMonth: "November",
+      graduationYear: "2016",
+      fieldOfStudy: "Data Science",
     },
     {
-      "institution": "Stanford University",
-      "degree": "Bachelor of Science",
-      "graduationMonth": "June",
-      "graduationYear": "2013",
-      "fieldOfStudy": "Software Engineering"
-    }
+      institution: "McGill University",
+      degree: "Bachelor of Science",
+      graduationMonth: "May",
+      graduationYear: "2014",
+      fieldOfStudy: "Statistics",
+    },
   ],
-  "projects": [
+  projects: [
     {
-      "title": "Task Management App",
-      "description": "Developed a full-stack task management application with user authentication and real-time updates.",
-      "url": "github.com/emilyj/task-manager"
+      title: "Sentiment Analysis Tool",
+      description:
+        "Built a natural language processing system to analyze customer feedback sentiment across multiple channels.",
+      url: "github.com/michaelc/sentiment-analysis",
     },
     {
-      "title": "Health Tracker Dashboard",
-      "description": "Created a data visualization dashboard for fitness metrics using D3.js and React.",
-      "url": "healthtracker.example.com"
-    }
+      title: "Fraud Detection System",
+      description:
+        "Developed a machine learning model to identify fraudulent transactions with 92% accuracy.",
+      url: "github.com/michaelc/fraud-detection",
+    },
   ],
-  "certifications": [
+  certifications: [
     {
-      "name": "AWS Certified Solutions Architect",
-      "organization": "Amazon Web Services",
-      "issueMonth": "November",
-      "issueYear": "2020"
+      name: "TensorFlow Developer Certificate",
+      organization: "Google",
+      issueMonth: "September",
+      issueYear: "2021",
     },
     {
-      "name": "Google Professional Data Engineer",
-      "organization": "Google Cloud",
-      "issueMonth": "March",
-      "issueYear": "2019"
+      name: "Microsoft Certified: Azure Data Scientist",
+      organization: "Microsoft",
+      issueMonth: "July",
+      issueYear: "2020",
     },
-    
   ],
-  "languages": [
+  languages: [
     {
-      "language": "English",
-      "proficiency": "Native",
+      language: "English",
+      proficiency: "Native",
     },
     {
-      "language": "Spanish",
-      "proficiency": "Intermediate",
-    }
+      language: "Mandarin",
+      proficiency: "Fluent",
+    },
+    {
+      language: "French",
+      proficiency: "Intermediate",
+    },
   ],
-  
+};
+
+let emptyData = {
+  contactInfo: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    city: "",
+    country: "",
+    phoneNumber: "",
+    linkedIn: "",
+  },
+  summary: "",
+  aiGeneratedSummaries: [],
+  skills: [],
+
+  experience: [
+    {
+      jobTitle: "",
+      company: "",
+      startYear: "",
+      startMonth: "",
+      endYear: "",
+      endMonth: "",
+      present: false,
+      description: "",
+    },
+  ],
+  education: [
+    {
+      institution: "",
+      degree: "",
+      graduationMonth: "",
+      graduationYear: "",
+      fieldOfStudy: "",
+    },
+  ],
 };
 
 let degrees = [

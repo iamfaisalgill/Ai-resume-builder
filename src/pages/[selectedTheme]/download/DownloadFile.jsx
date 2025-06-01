@@ -136,7 +136,7 @@ const DownloadFile = () => {
           >
             <Page 
               pageNumber={pageNumber} 
-              width={500} 
+              width={900} 
               className="border shadow-sm"
             />
           </Document>

@@ -17,8 +17,8 @@ import {
     Editor,
   } from 'react-simple-wysiwyg';
 
-export default function RichTextEditor({onRichTextEditorChange}) {
-  const [value, setValue] = useState();
+export default function RichTextEditor({onRichTextEditorChange, defaultValue}) {
+  const [value, setValue] = useState(defaultValue? defaultValue: '');
 
   function onChange(e) {
     setValue(e.target.value);
@@ -27,7 +27,7 @@ export default function RichTextEditor({onRichTextEditorChange}) {
 
   return (
     <EditorProvider>
-      <Editor value={value} onChange={onChange} className='min-h-64 max-h-64 overflow-auto' >
+      <Editor value={value} onChange={onChange} className='min-h-48 max-h-48 overflow-auto'>
         <Toolbar >
         <BtnUndo />
           <BtnRedo />
@@ -35,11 +35,8 @@ export default function RichTextEditor({onRichTextEditorChange}) {
           <BtnBold />
           <BtnItalic />
           <BtnUnderline />
-          <BtnStrikeThrough />
           <Separator />
-          <BtnNumberedList />
-          <BtnBulletList />
-          <BtnLink />
+          <BtnBulletList /> 
         </Toolbar>
       </Editor>
     </EditorProvider>

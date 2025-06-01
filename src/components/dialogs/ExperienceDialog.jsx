@@ -24,24 +24,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { toast } from "sonner"
 import { useResume } from "@/context/ResumeInfoContext";
-import { PlusCircle, TrashIcon } from "lucide-react";
-import { Textarea } from "../ui/textarea";
+import { TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Checkbox } from "../ui/checkbox";
+import RichTextEditor from "../RichTextEditor";
 
 const months = [
   "January",
@@ -133,6 +122,12 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       return newEntries;
     });
     // setIsEditing(false);
+  }
+
+  const handleRichTextEditor = (e, name, index) => {
+    const newEntries = experienceList.slice()
+    newEntries[index][name]=e.target.value
+    setExperienceList(newEntries)
   }
 
 
@@ -393,10 +388,10 @@ export default function ExperienceDialog({ isOpen, onClose }) {
 
                         {/* Description */}
                         <div>
-                          <Label className="text-sm md:text-base">
+                          <Label className="text-sm md:text-base mb-1 md:mb-2 ">
                             Description (Optional)
                           </Label>
-                          <Textarea
+                          {/* <Textarea
                             defaultValue={item.description}
                             onChange={(e) => handleChange(index, e)}
                             name="description"
@@ -404,6 +399,12 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                             className="mt-1 md:mt-2 bg-card text-sm md:text-base"
                             id="description"
                             rows={4}
+                          /> */}
+                          <RichTextEditor
+                            onRichTextEditorChange={(e) =>
+                              handleRichTextEditor(e, "description", index )
+                            }
+                            defaultValue={item.description}
                           />
                         </div>
                       </div>

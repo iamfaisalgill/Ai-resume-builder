@@ -109,7 +109,7 @@ export default function SelectTheme() {
             {templates.map((template) => (
               <div key={template.id}>
                 <Card
-                  className={`relative flex items-center justify-center cursor-pointer outline-3 rounded-md transition-all p-0 ${
+                  className={`relative flex items-center justify-center cursor-pointer outline-3 rounded-md transition-all p-0 custom-shadow ${
                     selectedTemplate === template.name
                       ? "outline-primary"
                       : "outline-none"

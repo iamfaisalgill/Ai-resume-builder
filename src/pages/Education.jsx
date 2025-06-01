@@ -17,7 +17,7 @@ const Education = ({setPageIndex}) => {
   const [loading, setLoading] = useState(false)
   const {resumeInfo, setResumeInfo} = useResume()
   const [educationList, setEducationList] = useState(
-    resumeInfo.education.length>0? resumeInfo.education: [formField]
+    resumeInfo.education?.length? resumeInfo.education: [formField]
   )
 
   const handleGoBack = () => {
@@ -39,13 +39,13 @@ const Education = ({setPageIndex}) => {
   
 
   const addMoreEducation = () => {
-    setResumeInfo((prevInfo)=>{
+    /*setResumeInfo((prevInfo)=>{
       const newEducation = [...prevInfo.education]
       if (newEducation.length>0) {
         newEducation.push(formField)
       }
       return {...prevInfo, education: newEducation}
-    })
+    })*/
     setEducationList([...educationList, formField])
   }
   
@@ -78,23 +78,23 @@ const Education = ({setPageIndex}) => {
         <h2 className="text-2xl font-semibold">Education</h2>
         <p className="lead">Start with your most recent education and work backwards, including the degree/certification, institution's name and location, and year of completion.</p>
       </div>
-      { resumeInfo.education.map((item, index)=>(
+      { educationList.map((item, index)=>(
           <div key={index}>
         <div className="grid grid-cols-2 gap-4">
             <div className='my-4 mt-8'>
             <label className="text-sm font-medium tracking-wider">School Name</label>
-              <Input onChange={(e)=>handleChange(index,e)} defaultValue={resumeInfo.education[index]?.institution || ''} name="institution" className="mt-2" placeholder="Enter school name" />
+              <Input onChange={(e)=>handleChange(index,e)} defaultValue={item.institution} name="institution" className="mt-2" placeholder="Enter school name" />
             </div>
             <div className='mb-4 mt-8'>
             <label className="text-sm font-medium tracking-wider">Degree</label>
-              <Input onChange={(e)=>handleChange(index, e) } defaultValue={resumeInfo.education[index]?.degree || ''} name="degree" className="mt-2" placeholder="Enter degree" />
+              <Input onChange={(e)=>handleChange(index, e) } defaultValue={item.degree} name="degree" className="mt-2" placeholder="Enter degree" />
             </div>
           </div>
   
           <div >
             <label className="text-sm font-medium tracking-wider">Graduation Date</label>
             <div className="grid grid-cols-2 gap-4 my-2">
-              <Select onValueChange={(value)=>handleChange(index, value, "graduationMonth")} defaultValue={resumeInfo.education[index]?.graduationMonth || ''}>
+              <Select onValueChange={(value)=>handleChange(index, value, "graduationMonth")} defaultValue={item.graduationMonth}>
                 <SelectTrigger>
                   <SelectValue placeholder="Month" />
                 </SelectTrigger>
@@ -104,7 +104,7 @@ const Education = ({setPageIndex}) => {
                   ))}
                 </SelectContent>
               </Select>
-              <Select onValueChange={(value)=>handleChange(index, value, "graduationYear")} defaultValue={resumeInfo.education[index]?.graduationYear || ''}>
+              <Select onValueChange={(value)=>handleChange(index, value, "graduationYear")} defaultValue={item.graduationYear}>
                 <SelectTrigger>
                   <SelectValue placeholder="Year" />
                 </SelectTrigger>

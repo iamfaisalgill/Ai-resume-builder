@@ -1,5 +1,5 @@
 import { useResume } from "@/context/ResumeInfoContext";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Edit, Edit3, Trash2 } from "lucide-react";
@@ -9,9 +9,19 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
   const { resumeInfo, setResumeInfo } = useResume()
 
+  const parseHtmlToList = (htmlString) => {
+  // Parse the HTML string
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, "text/html");
+
+  // Extract text from each <li> element
+  const listItems = Array.from(doc.querySelectorAll("li")).map(li => li.textContent);
+  return listItems
+};
+
   return (
-    <div className="mx-auto bg-white max-w-4xl text-[10px] sm:text-sm md:text-base">
-      <div className="flex select-none">
+    <div className="mx-auto bg-white max-w-4xl text-[8px] sm:text-sm md:text-base">
+      <div className="flex">
         {/* Main Content (Left 3/4) */}
         <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
           {/* Name/Logo Section */}
@@ -35,7 +45,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
           {/* Professional Summary */}
           {(resumeInfo.summary || resumeInfo.summary === "") && <div className="c-info relative mt-5 lg:mt-7">
-            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">
+            <h2 className="font-serif text-[10px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">
               PROFESSIONAL SUMMARY
             </h2>
             {resumeInfo.summary && <p className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
@@ -51,7 +61,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
           {/* Experience */}
           {resumeInfo.experience && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EXPERIENCE</h2>
+            <h2 className="font-serif text-[10px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EXPERIENCE</h2>
 
             {resumeInfo.experience.map((exp, index) => (
               <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
@@ -62,7 +72,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
                 <p className="text-gray-700 italic">
                   {exp.company}
                 </p>
-                {exp.description && <p className="text-gray-700 mt-1">→ {exp.description}</p>}
+                <p className="text-gray-700" dangerouslySetInnerHTML={{__html: exp.description}}/>
               </div>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">
@@ -75,7 +85,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
           {/* Projects */}
           {resumeInfo.projects && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">PROJECTS</h2>
+            <h2 className="font-serif text-[10px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">PROJECTS</h2>
             {resumeInfo.projects.map((project, index) => (
               <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
                 <p className="font-bold text-gray-900">{project.title}</p>
@@ -93,7 +103,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
           {/* Education */}
           {resumeInfo.education && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EDUCATION</h2>
+            <h2 className="font-serif text-[10px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">EDUCATION</h2>
             {resumeInfo.education.map((edu, index) => (
               <div key={index} className="mt-1 sm:mt-1.5 md:mt-2">
                 <p className="font-bold text-gray-900">
@@ -116,7 +126,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
 
           {/* Languages */}
           {resumeInfo.languages && <div className="c-info relative mt-3 sm:mt-4 md:mt-5 lg:mt-6">
-            <h2 className="font-serif text-[11px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">LANGUAGES</h2>
+            <h2 className="font-serif text-[10px] sm:text-base md:text-lg font-bold text-[#305276] pb-1 border-b-[1.5px] border-[#305276]">LANGUAGES</h2>
             {resumeInfo.languages.map((lang, index) => (
               <p key={index} className="text-gray-700 mt-1 sm:mt-1.5 md:mt-2">
                 {lang.language} {lang.proficiency ? `(${lang.proficiency})` : ""}
@@ -132,7 +142,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
         </div>
 
         {/* Sidebar (Right 1/4) */}
-        <div className="w-1/4 bg-[#305276] text-white text-[10px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
+        <div className="w-1/4 bg-[#305276] text-white text-[8px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
           <div className="c-info relative">
             <p className="break-words">{resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country}</p>
             <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.contactInfo.phoneNumber}</p>
@@ -148,7 +158,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               </div>
           </div>
 
-          <div className="c-info relative">
+          {resumeInfo.skills && (<div className="c-info relative">
             <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold font-serif">SKILLS</h2>
             <div className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
               {resumeInfo.skills.map((skill, index) => (
@@ -161,14 +171,14 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
                 <button className=" text-white p-1 text-[10px] sm:text-xs flex justify-center items-center gap-1 sm:gap-2 cursor-pointer hover:text-red-500" onClick={() => deleteItem("Skills")}><Trash2 className="size-3 sm:size-4" /> <span className="max-sm:hidden">Delete</span></button>
               </div>
             </div>
-          </div>
+          </div>)}
 
           {resumeInfo.certifications && (
             <div className="c-info relative">
               <h2 className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 font-bold font-serif">CERTIFICATIONS</h2>
               <ul className="mt-1 sm:mt-1.5 md:mt-2 space-y-1">
                 {resumeInfo.certifications.map((cert, index) => (
-                  <li key={index}>• {cert.name} ({cert.issueYear})</li>
+                  <li key={index}>{cert.name} ({cert.issueYear})</li>
                 ))}
               </ul>
               <div className="edit hidden absolute -right-1 -top-1 p-1">
