@@ -70,10 +70,15 @@ const Experience = ({setPageIndex}) => {
     });
   };
   const handleRichTextEditor = (e, name, index) => {
-    const newEntries = experienceList.slice()
-    newEntries[index][name]=e.target.value
-    setExperienceList(newEntries)
+    setExperienceList(prevList => {
+      const newEntries = [...prevList];
+      newEntries[index] = { ...newEntries[index], [name]: e.target.value};
+      return newEntries
+    })
   }
+
+  useEffect(()=>{console.log(experienceList);
+  },[experienceList])
   
 
   const addMoreExperience = () => {
@@ -85,7 +90,15 @@ const Experience = ({setPageIndex}) => {
     if(experienceList.length <=1) return
     const newList = experienceList.slice(0,-1)
     setExperienceList(newList)
-    setResumeInfo(prev=>({...prev, experience: newList}))
+  };
+
+  const deleteThis = (index) => {
+    const newList = experienceList.filter((_, i) => i !== index);
+    setExperienceList(newList);
+    /*setResumeInfo((prev) => ({
+      ...prev,
+      certifications: newList,
+    }));*/
   };
   
 
@@ -137,218 +150,231 @@ const Experience = ({setPageIndex}) => {
 
 
   return (
-    <form onSubmit={onSave} className="space-y-9">
-      <div>
-        <h2 className="text-2xl font-semibold">Work Experience</h2>
-        <p className="lead">Let’s start with your most recent job.</p>
+    <form onSubmit={onSave} className="space-y-6 md:space-y-9">
+  <div>
+    <h2 className="text-xl md:text-2xl font-semibold">Work Experience</h2>
+    <p className="text-sm md:text-base text-muted-foreground">
+      Let's start with your most recent job.
+    </p>
+  </div>
+  
+  {experienceList.map((item, index) => (
+    <div className="space-y-4 p-3 md:p-4 border rounded-lg" key={index}>
+      <div className="flex justify-between items-center">
+        <h3 className="text-primary text-sm md:text-base">
+          #{index + 1}
+        </h3>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 md:h-9 md:w-9 p-0 cursor-pointer text-muted-foreground hover:text-destructive"
+          onClick={() => deleteThis(index)}
+          type="button"
+        >
+          <Trash2 size={16} />
+        </Button>
       </div>
-      {experienceList.map((item, index) => (
-        <div className="space-y-4  p-4 border rounded-lg" key={index}>
-          <h3 className="text-primary text-sm md:text-base">
-            #{index + 1}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Employer & Job Title */}
+      
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+        {/* Employer & Job Title */}
+        <div className="space-y-3 md:space-y-4">
+          <div>
+            <label className="text-xs md:text-sm font-medium tracking-wider">
+              Job Title
+            </label>
+            <Input
+              value={item.jobTitle} 
+              onChange={(e) => handleChange(index, e)}
+              name="jobTitle"
+              placeholder="e.g. Engineer"
+              className="mt-1 md:mt-2 text-sm md:text-base"
+            />
+          </div>
+          <div>
+            <label className="text-xs md:text-sm font-medium tracking-wider">
+              Company
+            </label>
+            <Input
+              value={item.company}
+              onChange={(e) => handleChange(index, e)}
+              name="company"
+              placeholder="e.g. IBM"
+              className="mt-1 md:mt-2 text-sm md:text-base"
+            />
+          </div>
+        </div>
+
+        {/* Start date & End date */}
+        <div className="space-y-3 md:space-y-4">
+          {/* Start Date */}
+          <div className="grid grid-cols-2 gap-2">
             <div>
-              <div>
-                <label className="text-sm font-medium tracking-wider">
-                  Job Title
-                </label>
-                <Input
-                  defaultValue={item.jobTitle} 
-                  onChange={(e) => handleChange(index, e)}
-                  name="jobTitle"
-                  placeholder="e.g. Engineer"
-                  className="mt-2"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium tracking-wider">
-                  Company
-                </label>
-                <Input
-                  defaultValue={item.company}
-                  onChange={(e) => handleChange(index, e)}
-                  name="company"
-                  placeholder="e.g. IBM"
-                  className="mt-2"
-                />
-              </div>
+              <label className="text-xs md:text-sm font-medium tracking-wider">
+                Start date
+              </label>
+              <Select
+                value={item.startMonth}
+                onValueChange={(value) =>
+                  handleChange(index, value, "startMonth")
+                }
+                name="startMonth"
+              >
+                <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  {months.map((month) => (
+                    <SelectItem key={month} value={month} className="text-sm">
+                      {month}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-
-            {/* Start date & End date */}
             <div>
-              {/* Start Date */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <p className="mb-2">
-                    <label className="text-sm font-medium tracking-wider mb-2">
-                      Start date
-                    </label>
-                  </p>
-                  <Select
-                    defaultValue={item.startMonth}
-                    onValueChange={(value) =>
-                      handleChange(index, value, "startMonth")
-                    }
-                    name="startMonth"
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Month" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {months.map((month) => (
-                        <SelectItem key={month} value={month}>
-                          {month}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <p className="mb-2">
-                    <label className="text-sm font-medium tracking-wider mb-2">
-                      &nbsp;
-                    </label>
-                  </p>
-                  <Select
-                    defaultValue={item.startYear}
-                    onValueChange={(value) =>
-                      handleChange(index, value, "startYear")
-                    }
-                    name="startYear"
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {years.map((year) => (
-                        <SelectItem key={year} value={year.toString()}>
-                          {year}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* End Date */}
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <p className="mb-2">
-                    <label className="text-sm font-medium tracking-wider">
-                      End date
-                    </label>
-                  </p>
-                  <Select
-                    defaultValue={item.endMonth}
-                    onValueChange={(value) =>
-                      handleChange(index, value, "endMonth")
-                    }
-                    name="endMonth"
-                    disabled={item.present}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Month" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {months.map((month) => (
-                        <SelectItem key={month} value={month}>
-                          {month}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <p className="mb-2">
-                    <label className="text-sm font-medium tracking-wider">
-                      &nbsp;
-                    </label>
-                  </p>
-                  <Select
-                    defaultValue={item.endYear}
-                    onValueChange={(value) =>
-                      handleChange(index, value, "endYear")
-                    }
-                    name="endYear"
-                    disabled={item.present}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {years.map((year) => (
-                        <SelectItem key={year} value={year.toString()}>
-                          {year}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <Label className="text-sm mt-3">
-                <Checkbox
-                  checked={item.present}
-                  onCheckedChange={(value) => handleChange(index, value, "present")}
-                  className="h-4 w-4"
-                /> I currently work here
-              </Label>
+              <label className="text-xs md:text-sm font-medium tracking-wider invisible">
+                Year
+              </label>
+              <Select
+                value={item.startYear}
+                onValueChange={(value) =>
+                  handleChange(index, value, "startYear")
+                }
+                name="startYear"
+              >
+                <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {years.map((year) => (
+                    <SelectItem key={year} value={year.toString()} className="text-sm">
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
-          {/* Checkbox */}
-          {/* <div className="flex items-center space-x-2">
-            <Checkbox name="presentWork" checked={presentWork} onCheckedChange={setPresentWork}  onChange={(e)=>handleCheckChange(index,e)} />
-            <label className="text-sm">I Presently work here</label>
-          </div> */}
-
-          <div>
-          <label className="text-sm font-medium tracking-wider">
-                 Description
-                 </label>
-            {/* <Textarea defaultValue={item.description}
-                  onChange={(e) => handleChange(index, e)}
-                  name="description"
-                  placeholder="Enter description"
-                  className='mt-2'
-                  id="description"
-                  /> */}
-            <RichTextEditor
-            onRichTextEditorChange={(e) =>
-              handleRichTextEditor(e, "description", index )
-            }
-            defaultValue={item.description}
-          />
+          {/* End Date */}
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="text-xs md:text-sm font-medium tracking-wider">
+                End date
+              </label>
+              <Select
+                value={item.endMonth}
+                onValueChange={(value) =>
+                  handleChange(index, value, "endMonth")
+                }
+                name="endMonth"
+                disabled={item.present}
+              >
+                <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                  <SelectValue placeholder="Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  {months.map((month) => (
+                    <SelectItem key={month} value={month} className="text-sm">
+                      {month}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="text-xs md:text-sm font-medium tracking-wider invisible">
+                Year
+              </label>
+              <Select
+                value={item.endYear}
+                onValueChange={(value) =>
+                  handleChange(index, value, "endYear")
+                }
+                name="endYear"
+                disabled={item.present}
+              >
+                <SelectTrigger className="mt-1 md:mt-2 text-sm md:text-base">
+                  <SelectValue placeholder="Year" />
+                </SelectTrigger>
+                <SelectContent>
+                  {years.map((year) => (
+                    <SelectItem key={year} value={year.toString()} className="text-sm">
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           
+          <div className="flex items-center space-x-2 mt-2">
+            <Checkbox
+              checked={item.present}
+              onCheckedChange={(value) => handleChange(index, value, "present")}
+              className="h-4 w-4"
+            />
+            <label className="text-xs md:text-sm">
+              I currently work here
+            </label>
+          </div>
         </div>
-      ))}
+      </div>
 
-      <div className="flex items-center gap-4">
-        <Button type="button" onClick={addMoreExperience}>
-          + Add More Experience
-        </Button>
-        <Button type="button" variant={'secondary'} onClick={removeExperience}>
-          - Remove Experience
-        </Button>
+      <div className="mt-3 md:mt-4">
+        <label className="text-xs md:text-sm font-medium tracking-wider">
+          Description
+        </label>
+        <RichTextEditor
+          onRichTextEditorChange={(e) =>
+            handleRichTextEditor(e, "description", index) 
+          }
+          defaultValue={item.description}
+          className="mt-1 md:mt-2"
+        />
       </div>
-      <div className="flex justify-between">
-        <Button
-          onClick={handleGoBack}
-          type="button"
-          variant="link"
-          size="lg"
-          className="cursor-pointer"
-        >
-          <ChevronLeft /> Back
-        </Button>
-        <Button disabled={loading} type="submit" size="lg" className="cursor-pointer">
-        {loading && <Loader2 className="animate-spin" /> }
-          Next: Education <ChevronRight />
-        </Button>
-      </div>
-    </form>
+    </div>
+  ))}
+
+  <div className="flex flex-col sm:flex-row items-center gap-3">
+    <Button 
+      type="button" 
+      onClick={addMoreExperience}
+      className="w-full sm:w-auto"
+    >
+      + Add More Experience
+    </Button>
+    <Button 
+      type="button" 
+      variant="secondary" 
+      onClick={removeExperience}
+      className="w-full sm:w-auto"
+    >
+      - Remove Experience
+    </Button>
+  </div>
+  
+  <div className="flex flex-col-reverse sm:flex-row justify-between gap-4">
+    <Button
+      onClick={handleGoBack}
+      type="button"
+      variant="link"
+      size="lg"
+      className="cursor-pointer px-0"
+    >
+      <ChevronLeft className="h-5 w-5" /> Back
+    </Button>
+    <Button 
+      disabled={loading} 
+      type="submit" 
+      size="lg" 
+      className="cursor-pointer w-full sm:w-auto"
+    >
+      {loading && <Loader2 className="animate-spin mr-2" />}
+      Next: Education <ChevronRight className="h-5 w-5 ml-1" />
+    </Button>
+  </div>
+</form>
   );
 };
 

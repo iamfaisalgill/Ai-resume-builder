@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner"
 import { useResume } from "@/context/ResumeInfoContext";
-import { TrashIcon } from "lucide-react";
+import { Pencil, Trash2, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Checkbox } from "../ui/checkbox";
@@ -92,6 +92,8 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       return true;
     }
 
+    // fix changes now updating in description
+
     return experienceList.some((exp, index) => {
       const originalExp = resumeInfo.experience[index];
       if (!originalExp) return true;
@@ -125,14 +127,16 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   }
 
   const handleRichTextEditor = (e, name, index) => {
-    const newEntries = experienceList.slice()
-    newEntries[index][name]=e.target.value
-    setExperienceList(newEntries)
+    setExperienceList(prevList => {
+      const newEntries = [...prevList];
+      newEntries[index] = { ...newEntries[index], [name]: e.target.value};
+      return newEntries
+    })
   }
 
 
   const handleSave = () => {
-    setResumeInfo(prev => ({
+    setResumeInfo(prev => ({ 
       ...prev,
       experience: [...experienceList],
     }));
@@ -156,11 +160,10 @@ export default function ExperienceDialog({ isOpen, onClose }) {
     }
 
     setExperienceList(newList);
-    setResumeInfo(prev => ({
+    /*setResumeInfo(prev => ({
       ...prev,
       experience: newList,
-    }));
-    // setIsEditing(false);
+    }));*/
   }
 
 
@@ -228,6 +231,16 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                             )}
                           </>
                         </p> 
+                      </div>
+                      <div className="flex items-center">
+                        <Pencil
+            className="text-primary pointer-events-none size-[18px] transition-transform duration-200" size={18} />
+            <button
+                      className="ml-2 cursor-pointer text-destructive hover:text-primary/70"
+                      // onClick={() => deleteThis(index)}
+                    >
+                      <Trash2 size={18} />
+                    </button>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className='p-3 md:p-5 border-0 outline-0'>
@@ -391,15 +404,6 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                           <Label className="text-sm md:text-base mb-1 md:mb-2 ">
                             Description (Optional)
                           </Label>
-                          {/* <Textarea
-                            defaultValue={item.description}
-                            onChange={(e) => handleChange(index, e)}
-                            name="description"
-                            placeholder="Add tasks you performed at this job to fill in this section"
-                            className="mt-1 md:mt-2 bg-card text-sm md:text-base"
-                            id="description"
-                            rows={4}
-                          /> */}
                           <RichTextEditor
                             onRichTextEditorChange={(e) =>
                               handleRichTextEditor(e, "description", index )

@@ -83,10 +83,10 @@ export default function CertificationsDialog({ isOpen, onClose }) {
   const deleteThis = (index) => {
     const newList = certificationsList.filter((_, i) => i !== index);
     setCertificationsList(newList);
-    setResumeInfo((prev) => ({
+    /*setResumeInfo((prev) => ({
       ...prev,
       certifications: newList,
-    }));
+    }));*/
   };
 
   return (
@@ -127,7 +127,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                     </Label>
                     <Input
                       onChange={(e) => handleChange(index, e)}
-                      defaultValue={item.name}
+                      value={item.name}
                       name="name"
                       className="mt-1 md:mt-2 text-sm h-9"
                       placeholder="e.g., AWS Certified Solutions Architect"
@@ -141,7 +141,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                     </Label>
                     <Input
                       onChange={(e) => handleChange(index, e)}
-                      defaultValue={item.organization}
+                      value={item.organization}
                       name="organization"
                       className="mt-1 md:mt-2 text-sm h-9"
                       placeholder="e.g., Amazon Web Services"
@@ -157,7 +157,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                       onValueChange={(value) =>
                         handleChange(index, value, "issueMonth")
                       }
-                      defaultValue={item.issueMonth}
+                      value={item.issueMonth}
                     >
                       <SelectTrigger className="mt-1 md:mt-2 text-sm !h-9">
                         <SelectValue placeholder="Month" />
@@ -196,7 +196,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
                       onValueChange={(value) =>
                         handleChange(index, value, "issueYear")
                       }
-                      defaultValue={item.issueYear}
+                      value={item.issueYear}
                     >
                       <SelectTrigger className="mt-1 md:mt-2 text-sm !h-9">
                         <SelectValue placeholder="Year" />

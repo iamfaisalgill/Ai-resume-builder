@@ -32,13 +32,13 @@ function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "border-2 hover:border-primary flex flex-1 items-start justify-between gap-4 rounded-md p-3 text-left font-medium outline-none disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "border-2 hover:border-primary flex flex-1 items-start justify-between gap-4 rounded-md p-3 text-left font-medium outline-none disabled:pointer-events-none disabled:opacity-50 ",
           className
         )}
         {...props}>
         {children}
-        <ChevronDownIcon
-          className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+        {/* <ChevronDownIcon
+          className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" /> */}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );

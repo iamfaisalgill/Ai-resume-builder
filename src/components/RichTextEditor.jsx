@@ -18,16 +18,12 @@ import {
   } from 'react-simple-wysiwyg';
 
 export default function RichTextEditor({onRichTextEditorChange, defaultValue}) {
-  const [value, setValue] = useState(defaultValue? defaultValue: '');
 
-  function onChange(e) {
-    setValue(e.target.value);
-    onRichTextEditorChange(e)
-  }
+  
 
   return (
     <EditorProvider>
-      <Editor value={value} onChange={onChange} className='min-h-48 max-h-48 overflow-auto'>
+      <Editor value={defaultValue} onChange={e=>onRichTextEditorChange(e)} className='min-h-48 max-h-48 overflow-auto'>
         <Toolbar >
         <BtnUndo />
           <BtnRedo />

@@ -121,6 +121,17 @@
     @apply bg-background text-foreground;
     font-family: 'Inter';
   }
+  button {
+    @apply cursor-pointer
+  }
+}
+
+@layer utilities {
+  .sidebar-open-mobile {
+    @media (max-width: 767px) {
+      @apply overflow-hidden h-screen;
+    }
+  }
 }
 
 
