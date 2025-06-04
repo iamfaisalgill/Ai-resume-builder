@@ -72,7 +72,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
                 <p className="text-gray-700 italic">
                   {exp.company}
                 </p>
-                <p className="text-gray-700" dangerouslySetInnerHTML={{__html: exp.description}}/>
+                <span className="text-gray-700" dangerouslySetInnerHTML={{__html: exp.description}}/>
               </div>
             ))}
             <div className="edit hidden absolute -right-1 -top-1 p-1">

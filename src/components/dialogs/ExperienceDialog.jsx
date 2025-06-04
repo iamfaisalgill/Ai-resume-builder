@@ -24,13 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner"
+import { toast } from "sonner";
 import { useResume } from "@/context/ResumeInfoContext";
-import { Pencil, Trash2, TrashIcon } from "lucide-react";
+import { BrainCircuit, Loader2, Pencil, Trash2, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Checkbox } from "../ui/checkbox";
 import RichTextEditor from "../RichTextEditor";
+import { generateExperienceDescriptions } from "@/services/geminiService";
 
 const months = [
   "January",
@@ -48,15 +49,15 @@ const months = [
 ];
 
 const formField = {
-  jobTitle: '',
-  company: '',
-  startMonth: '',
-  startYear: '',
-  endMonth: '',
-  endYear: '',
-  description: '',
+  jobTitle: "",
+  company: "",
+  startMonth: "",
+  startYear: "",
+  endMonth: "",
+  endYear: "",
+  description: "",
   present: false,
-  isNew: true // Add this flag
+  isNew: true, // Add this flag
 };
 
 const years = Array.from(
@@ -66,12 +67,13 @@ const years = Array.from(
 
 export default function ExperienceDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
-  const [experienceList, setExperienceList] = useState([...resumeInfo.experience]);
+  const [experienceList, setExperienceList] = useState([
+    ...resumeInfo.experience,
+  ]);
   const [openItem, setOpenItem] = useState("");
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   // const [isEditing, setIsEditing] = useState(true)
-  const [isPresent, setIsPresent] = useState(false)
-
+  const [isPresent, setIsPresent] = useState(false);
 
   const addMore = () => {
     const newIndex = experienceList.length + 1;
@@ -81,11 +83,11 @@ export default function ExperienceDialog({ isOpen, onClose }) {
 
   useEffect(() => {
     if (openItem === "") {
-      setIsAccordionOpen(false)
+      setIsAccordionOpen(false);
     } else {
-      setIsAccordionOpen(true)
+      setIsAccordionOpen(true);
     }
-  }, [openItem])
+  }, [openItem]);
 
   const hasChanges = () => {
     if (experienceList.length !== resumeInfo.experience.length) {
@@ -113,36 +115,43 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   };
 
   const handleChange = (index, eOrValue, fieldName = null) => {
-    setExperienceList(prevList => {
+    setExperienceList((prevList) => {
       const newEntries = [...prevList];
-      if (typeof eOrValue === 'object' && eOrValue.target) {
+      if (typeof eOrValue === "object" && eOrValue.target) {
         const { name, value } = eOrValue.target;
-        newEntries[index] = { ...newEntries[index], [name]: value, isNew: false };
+        newEntries[index] = {
+          ...newEntries[index],
+          [name]: value,
+          isNew: false,
+        };
       } else if (fieldName) {
-        newEntries[index] = { ...newEntries[index], [fieldName]: eOrValue, isNew: false };
+        newEntries[index] = {
+          ...newEntries[index],
+          [fieldName]: eOrValue,
+          isNew: false,
+        };
       }
       return newEntries;
     });
     // setIsEditing(false);
-  }
+  };
 
   const handleRichTextEditor = (e, name, index) => {
-    setExperienceList(prevList => {
+    setExperienceList((prevList) => {
       const newEntries = [...prevList];
-      newEntries[index] = { ...newEntries[index], [name]: e.target.value};
-      return newEntries
-    })
-  }
-
+      newEntries[index] = { ...newEntries[index], [name]: e.target.value };
+      return newEntries;
+    });
+  };
 
   const handleSave = () => {
-    setResumeInfo(prev => ({ 
+    setResumeInfo((prev) => ({
       ...prev,
       experience: [...experienceList],
     }));
     toast.info("Experience Updated");
-    onClose()
-  }
+    onClose();
+  };
 
   const deleteThis = (index) => {
     const newList = experienceList.filter((_, i) => i !== index);
@@ -153,7 +162,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       setOpenItem("");
     } else if (openItem) {
       // If we're deleting an item before the open one, adjust the openItem index
-      const openIndex = parseInt(openItem.split('-')[1]);
+      const openIndex = parseInt(openItem.split("-")[1]);
       if (index < openIndex - 1) {
         setOpenItem(`item-${openIndex - 1}`);
       }
@@ -164,20 +173,47 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       ...prev,
       experience: newList,
     }));*/
-  }
-
+  };
 
   useEffect(() => {
-    if (experienceList.length > 0 && (!experienceList[0].jobTitle && !experienceList[0].company)) {
+    if (
+      experienceList.length > 0 &&
+      !experienceList[0].jobTitle &&
+      !experienceList[0].company
+    ) {
       setOpenItem("item-1");
     }
   }, []);
 
+  // Generate Experience bulletpoints from AI
+  const [loader, setLoader] = useState(false);
+  const generateDesc = async (title, index) => {
+    try {
+      if (!title) {
+        toast.error("Please enter jobtitle");
+        return;
+      }
+      setLoader(true);
+      const results = await generateExperienceDescriptions(title);
+      setLoader(false);
+      console.log(results);
+      setExperienceList((prevList) => {
+        const newEntries = [...prevList];
+        newEntries[index] = {
+          ...newEntries[index],
+          description: results.trim(),
+        };
+        return newEntries;
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[700px] sm:min-w-[700px] sm:min-h-[550px] p-0 gap-0">
-        <DialogHeader className='border-b px-6 pt-6 pb-3'>
+        <DialogHeader className="border-b px-6 pt-6 pb-3">
           <DialogTitle>Experience</DialogTitle>
           <DialogDescription>
             Add or edit your work experience.
@@ -193,11 +229,11 @@ export default function ExperienceDialog({ isOpen, onClose }) {
               onValueChange={(value) => {
                 // If collapsing an item (value is empty)
                 if (!value && openItem) {
-                  const index = parseInt(openItem.split('-')[1]) - 1;
+                  const index = parseInt(openItem.split("-")[1]) - 1;
                   const item = experienceList[index];
 
                   // Check if the item is empty (either new or with no data)
-                  const isEmpty = (!item.jobTitle && !item.company);
+                  const isEmpty = !item.jobTitle && !item.company;
 
                   if (isEmpty) {
                     deleteThis(index); // Remove the empty item
@@ -208,31 +244,50 @@ export default function ExperienceDialog({ isOpen, onClose }) {
               }}
             >
               {experienceList.map((item, index) => (
-                <div className="flex gap-1 md:gap-2 space-y-2 md:space-y-3" key={index}>
-                  <AccordionItem value={`item-${index + 1}`} className='flex-1 border-0 AccordionItem rounded-lg'>
+                <div
+                  className="flex gap-1 md:gap-2 space-y-2 md:space-y-3"
+                  key={index}
+                >
+                  <AccordionItem
+                    value={`item-${index + 1}`}
+                    className="flex-1 border-0 AccordionItem rounded-lg"
+                  >
                     <AccordionTrigger className="AccordionTrigger px-3 md:px-5 items-center">
-                      <div className={clsx((item.jobTitle) ? "visible" : "invisible")}>
+                      <div
+                        className={clsx(
+                          item.jobTitle ? "visible" : "invisible"
+                        )}
+                      >
                         <h4 className="text-sm md:text-base font-semibold">
                           {item.jobTitle} {item.company && "at"} {item.company}
                         </h4>
                         <p className="text-xs md:text-sm text-muted-foreground font-normal">
                           <>
                             {(item.startMonth || item.startYear) && (
-                              <>{item.startMonth} {item.startYear}</>
+                              <>
+                                {item.startMonth} {item.startYear}
+                              </>
                             )}
                             {item.present && (
-                              <>{(item.startMonth || item.startYear) ? " - current" : "current"}</>
+                              <>
+                                {item.startMonth || item.startYear
+                                  ? " - current"
+                                  : "current"}
+                              </>
                             )}
                             {item.endMonth && (
-                              <> - {item.endMonth} {item.endYear}</>
+                              <>
+                                {" "}
+                                - {item.endMonth} {item.endYear}
+                              </>
                             )}
-                            {!item.present && item.endYear && !item.endMonth && (
-                              <> - {item.endYear}</>
-                            )}
+                            {!item.present &&
+                              item.endYear &&
+                              !item.endMonth && <> - {item.endYear}</>}
                           </>
-                        </p> 
+                        </p>
                       </div>
-                      <div className="flex items-center">
+                      {/* <div className="flex items-center">
                         <Pencil
             className="text-primary pointer-events-none size-[18px] transition-transform duration-200" size={18} />
             <button
@@ -241,9 +296,9 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                     >
                       <Trash2 size={18} />
                     </button>
-                      </div>
+                      </div> */}
                     </AccordionTrigger>
-                    <AccordionContent className='p-3 md:p-5 border-0 outline-0'>
+                    <AccordionContent className="p-3 md:p-5 border-0 outline-0">
                       <div className="mt-2 md:mt-3 space-y-4 md:space-y-6">
                         <div className="grid grid-cols-1 gap-3 md:gap-4">
                           {/* Employer & Job Title */}
@@ -289,13 +344,18 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                   onValueChange={(value) =>
                                     handleChange(index, value, "startMonth")
                                   }
-                                  name="startMonth">
-                                  <SelectTrigger className='bg-card text-sm md:text-base'>
+                                  name="startMonth"
+                                >
+                                  <SelectTrigger className="bg-card text-sm md:text-base">
                                     <SelectValue placeholder="Month" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     {months.map((month) => (
-                                      <SelectItem key={month} value={month} className="text-sm md:text-base">
+                                      <SelectItem
+                                        key={month}
+                                        value={month}
+                                        className="text-sm md:text-base"
+                                      >
                                         {month}
                                       </SelectItem>
                                     ))}
@@ -313,8 +373,9 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                   onValueChange={(value) =>
                                     handleChange(index, value, "startYear")
                                   }
-                                  name="startYear">
-                                  <SelectTrigger className='bg-card text-sm md:text-base'>
+                                  name="startYear"
+                                >
+                                  <SelectTrigger className="bg-card text-sm md:text-base">
                                     <SelectValue placeholder="Year" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -346,13 +407,18 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                     handleChange(index, value, "endMonth")
                                   }
                                   name="endMonth"
-                                  disabled={item.present}>
-                                  <SelectTrigger className='bg-card text-sm md:text-base'>
+                                  disabled={item.present}
+                                >
+                                  <SelectTrigger className="bg-card text-sm md:text-base">
                                     <SelectValue placeholder="Month" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     {months.map((month) => (
-                                      <SelectItem key={month} value={month} className="text-sm md:text-base">
+                                      <SelectItem
+                                        key={month}
+                                        value={month}
+                                        className="text-sm md:text-base"
+                                      >
                                         {month}
                                       </SelectItem>
                                     ))}
@@ -371,8 +437,9 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                                     handleChange(index, value, "endYear")
                                   }
                                   name="endYear"
-                                  disabled={item.present}>
-                                  <SelectTrigger className='bg-card text-sm md:text-base'>
+                                  disabled={item.present}
+                                >
+                                  <SelectTrigger className="bg-card text-sm md:text-base">
                                     <SelectValue placeholder="Year" />
                                   </SelectTrigger>
                                   <SelectContent>
@@ -392,21 +459,40 @@ export default function ExperienceDialog({ isOpen, onClose }) {
                             <Label className="text-sm md:text-base">
                               <Checkbox
                                 checked={item.present}
-                                onCheckedChange={(value) => handleChange(index, value, "present")}
+                                onCheckedChange={(value) =>
+                                  handleChange(index, value, "present")
+                                }
                                 className="h-4 w-4"
-                              /> I currently work here
+                              />{" "}
+                              I currently work here
                             </Label>
                           </div>
                         </div>
 
                         {/* Description */}
                         <div>
-                          <Label className="text-sm md:text-base mb-1 md:mb-2 ">
-                            Description (Optional)
-                          </Label>
+                          <div className="flex justify-between items-center mb-1 md:mb-2">
+                            <Label className="text-sm md:text-base">
+                              Description (Optional)
+                            </Label>
+                            <Button
+                              variant={"outline"}
+                              type="button"
+                              size={"sm"}
+                              onClick={() => generateDesc(item.jobTitle, index)}
+                              disabled={loader}
+                            >
+                              {loader ? (
+                                <Loader2 className="animate-spin" />
+                              ) : (
+                                <BrainCircuit />
+                              )}
+                              Generate from AI
+                            </Button>
+                          </div>
                           <RichTextEditor
                             onRichTextEditorChange={(e) =>
-                              handleRichTextEditor(e, "description", index )
+                              handleRichTextEditor(e, "description", index)
                             }
                             defaultValue={item.description}
                           />
@@ -434,13 +520,15 @@ export default function ExperienceDialog({ isOpen, onClose }) {
             </Button>
           </div>
         </ScrollArea>
-        <DialogFooter className='border-t px-6 py-3'>
+        <DialogFooter className="border-t px-6 py-3">
           <DialogClose asChild>
             <Button type="button" variant="secondary" size="sm">
               Close
             </Button>
           </DialogClose>
-          <Button size="sm" onClick={handleSave} disabled={!hasChanges()}>Save changes</Button>
+          <Button size="sm" onClick={handleSave} disabled={!hasChanges()}>
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -11,6 +11,7 @@ import segeo_bold from "../assets/fonts/Seogeo/segoeuithibd.ttf";
 import segeo_italic from "../assets/fonts/Seogeo/segoeuithisi.ttf";
 import segeo_italicb from "../assets/fonts/Seogeo/segoeuithisz.ttf";
 import Html from "react-pdf-html";
+import { Children } from "react";
 
 Font.register({
   family: "Segeo",
@@ -197,15 +198,33 @@ const StalwartPDF = ({ resumeInfo }) => {
     : [];
   
 
-  const customRenderers = {
-  li: ({ children }) => (
-    <View style={{ flexDirection: 'row', marginBottom: 2 }}>
-      {/* Bullet — replace with "" to remove or use • */}
-      <Text style={{ width: 10, textAlign: 'center' }}>•</Text>
-      <Text style={{ flex: 1 }}>{children}</Text>
-    </View>
-  ),
-};
+  const CustomUl = ({ children }) => (
+     <View style={{ margin: 0, padding: 0 }}>
+       {Children.map(children, (child, index) => (
+         <View style={{ flexDirection: "row", marginBottom: 2 }}>
+           <Text style={{ marginRight: 5 }}>•</Text>
+           {child}
+         </View>
+       ))}
+     </View>
+   );
+ 
+   const CustomOl = ({ children }) => (
+     <View style={{ margin: 0, padding: 0, counterReset: "item" }}>
+       {Children.map(children, (child, index) => (
+         <View style={{ flexDirection: "row", marginBottom: 2 }}>
+           <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
+           {child}
+         </View>
+       ))}
+     </View>
+   );
+ 
+   const customRenderers = {
+     ul: CustomUl,
+     ol: CustomOl,
+     li: ({ children }) => <Text>{children}</Text>,
+   };
 
   return (
     <Document>
@@ -259,18 +278,6 @@ const StalwartPDF = ({ resumeInfo }) => {
                 <Text style={styles.companyInfo}>{exp.company}</Text>
                 <Html
                   style={{ fontFamily: 'Segeo', fontSize: 10 }}
-                  stylesheet={{
-                    ul: {
-                      marginTop: 0,
-                      marginBottom: 0,
-                      marginLeft: 0, // or 0 if you want no indent
-                      paddingLeft: 0,
-                    },
-                    li: {
-                      marginBottom: 2, // spacing between list items
-                      marginLeft: 0
-                    },
-                  }}
                   renderers={customRenderers}
                 >
                   {exp.description}

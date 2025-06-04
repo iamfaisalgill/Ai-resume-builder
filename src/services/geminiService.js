@@ -9,8 +9,8 @@ export const generateResumeSummaries = async (userDetails) => {
     const model = genAI.getGenerativeModel({ 
         model: "gemini-2.0-flash",
         generationConfig: {
-          maxOutputTokens: 1000, // Keep response concise
-          temperature: 0.7, // Balance creativity and focus
+          maxOutputTokens: 500, // Keep response concise
+          temperature: 0.6, // Balance creativity and focus
         }
       });
     
@@ -44,5 +44,46 @@ export const generateResumeSummaries = async (userDetails) => {
   } catch (error) {
     console.error("Error generating summaries:", error);
     throw error;
+  }
+};
+
+export const generateExperienceDescriptions = async (jobTitle) => {
+  try {
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.0-flash",
+      generationConfig: {
+        maxOutputTokens: 350,
+        temperature: 0.7,
+      }
+    });
+    
+    const prompt = `Generate 3-5 technical bullet points for ${jobTitle} (12-15 words max each).
+    
+    Formatting Rules:
+    - Return ONLY as HTML <ul> with <li> elements
+    - Use <b> for tools/technologies (e.g., <b>Python</b>)
+    - Use <i> for methodologies (e.g., <i>Agile</i>)
+    - Use <u> for quantifiable results (e.g., <u>30% faster</u>)
+    - Never combine formats (no nested tags)
+    
+    Example Output:
+    <ul>
+      <li>Developed <b>React</b> components that improved rendering by <u>40%</u></li>
+      <li>Implemented <i>CI/CD</i> pipeline using <b>Jenkins</b></li>
+      <li>Reduced API latency by <u>200ms</u> through <b>Redis</b> caching</li>
+    </ul>`;
+    
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    let text = response.text();
+    
+    // Clean response and validate HTML
+    text = text.replace(/```html|```/g, '').trim();
+    if (!text.startsWith('<ul>')) text = `<ul>${text}</ul>`;
+    
+    return text;
+  } catch (error) {
+    console.error("Error generating descriptions:", error);
+    return `<ul><li>${jobTitle} responsibilities</li></ul>`;
   }
 };

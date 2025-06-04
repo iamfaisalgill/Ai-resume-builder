@@ -9,11 +9,13 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useResume } from "@/context/ResumeInfoContext";
-import { ChevronLeft, ChevronRight, Loader2, Trash2 } from "lucide-react";
+import { BrainCircuit, ChevronLeft, ChevronRight, Loader2, Trash2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/RichTextEditor";
+import { toast } from "sonner";
+import { generateExperienceDescriptions } from "@/services/geminiService";
 
 const months = [
   "January",
@@ -76,9 +78,6 @@ const Experience = ({setPageIndex}) => {
       return newEntries
     })
   }
-
-  useEffect(()=>{console.log(experienceList);
-  },[experienceList])
   
 
   const addMoreExperience = () => {
@@ -147,6 +146,33 @@ const Experience = ({setPageIndex}) => {
       );
     });
   };
+
+
+  const [loader, setLoader] = useState(false)
+  const generateDesc = async (title, index) => {
+    try {
+      if (!title) {
+      toast.error("Please enter jobtitle")
+      return
+    }
+    setLoader(true)
+    const results = await generateExperienceDescriptions(title)
+    setLoader(false)
+    console.log(results);
+    setExperienceList(prevList => {
+      const newEntries = [...prevList];
+      newEntries[index] = { ...newEntries[index], description: results.trim()};
+      return newEntries
+    })
+    
+    
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+  }
+  
 
 
   return (
@@ -322,15 +348,19 @@ const Experience = ({setPageIndex}) => {
       </div>
 
       <div className="mt-3 md:mt-4">
-        <label className="text-xs md:text-sm font-medium tracking-wider">
-          Description
-        </label>
+        <div className="flex justify-between items-center mb-1 md:mb-2">
+          <label className="text-xs md:text-sm font-medium tracking-wider">
+            Description
+          </label>
+          <Button variant={'outline'} type="button" size={'sm'} onClick={()=>generateDesc(item.jobTitle, index)} disabled={loader}>
+          {loader ? <Loader2 className="animate-spin"/> : <BrainCircuit/>}
+          Generate from AI</Button>
+        </div>
         <RichTextEditor
           onRichTextEditorChange={(e) =>
             handleRichTextEditor(e, "description", index) 
           }
           defaultValue={item.description}
-          className="mt-1 md:mt-2"
         />
       </div>
     </div>

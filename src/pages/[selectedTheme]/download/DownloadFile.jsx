@@ -216,7 +216,7 @@ const DownloadFile = () => {
                 size="sm"
                 onClick={() => setSidebar(false)}
               >
-                <PanelRightClose className="rotate-180 text-muted-foreground" />
+                <PanelRightClose className="rotate-180" />
               </Button>
             ) : (
               <Button
@@ -225,7 +225,7 @@ const DownloadFile = () => {
                 onClick={() => setSidebar(true)}
                 className="max-md:block"
               >
-                <PanelRightOpen className="rotate-180 text-muted-foreground " />
+                <PanelRightOpen className="rotate-180" />
               </Button>
             )}
             <Separator

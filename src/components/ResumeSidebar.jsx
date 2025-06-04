@@ -134,7 +134,7 @@ export default function ResumeSidebar({
             onClick={() => setSidebar(false)}
             className='md:invisible visible'
           >
-            <PanelRightClose className="rotate-180 text-muted-foreground" />
+            <PanelRightClose className="rotate-180" />
           </Button>
         </div>
         <span className="py-2 px-4 font-bold border-b">Customize</span>

@@ -77,8 +77,9 @@ const Home = () => {
         {/* </div> */}
       </section>
 
+      {/* How it works */}
       <section class="px-6">
-        <h2 class="text-3xl md:text-4xl font-bold text-center mb-[40px] relative pb-[15px] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[80px] after:h-[4px] after:bg-primary after:rounded-[4px]">
+        <h2 class="text-3xl md:text-4xl font-bold text-center relative mb-16 pb-[15px] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[80px] after:h-[4px] after:bg-primary after:rounded-[4px]">
           How It Works
         </h2>
 

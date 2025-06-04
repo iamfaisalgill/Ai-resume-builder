@@ -73,8 +73,6 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
 
-
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -134,8 +132,6 @@
   }
 }
 
-
-
 @media print {
   @page {
     size: auto;
@@ -163,8 +159,6 @@
   }
 }
 
-
-
 /* Hide the increment and decrement arrows for all number inputs */
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
@@ -178,8 +172,32 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 ul {
-  @apply list-disc list-inside
+  @apply list-disc pl-[1em]
 }
+ol{
+  @apply list-decimal pl-[1em]
+}
+
+ol li {
+  padding-left: 1.3em; 
+  text-indent: -1em; 
+}
+
+/* .rsw-editor {
+  resize: vertical;
+  overflow-y: auto !important;
+  min-height: 12rem; 
+  max-height: 600px;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  position: relative;
+} */
+
+.rsw-editor .rsw-ce {
+  min-height: 200px;
+}
+
+
 
 .rsw-ce ul {
   list-style: disc;
@@ -192,7 +210,7 @@ ul {
 }
 
 .rsw-editor{
-  @apply !border-border
+  @apply !border-border resize-y !overflow-auto
 }
 
 .rsw-ce{
@@ -212,11 +230,11 @@ ul {
 }
 
 .rsw-btn:hover{
-  @apply !bg-card
+  @apply !bg-secondary
 }
 
 .rsw-btn[data-active=true]{
-  @apply !bg-card
+  @apply !bg-secondary
 }
 
 .rsw-separator{
@@ -254,4 +272,13 @@ ul {
 
 .custom-shadow{
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

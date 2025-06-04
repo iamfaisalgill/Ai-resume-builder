@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     EditorProvider, 
     BtnBold,
@@ -23,7 +22,7 @@ export default function RichTextEditor({onRichTextEditorChange, defaultValue}) {
 
   return (
     <EditorProvider>
-      <Editor value={defaultValue} onChange={e=>onRichTextEditorChange(e)} className='min-h-48 max-h-48 overflow-auto'>
+      <Editor value={defaultValue} onChange={e=>onRichTextEditorChange(e)}>
         <Toolbar >
         <BtnUndo />
           <BtnRedo />
@@ -32,6 +31,7 @@ export default function RichTextEditor({onRichTextEditorChange, defaultValue}) {
           <BtnItalic />
           <BtnUnderline />
           <Separator />
+          <BtnNumberedList />
           <BtnBulletList /> 
         </Toolbar>
       </Editor>

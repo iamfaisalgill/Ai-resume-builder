@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Children } from "react";
 import Html from "react-pdf-html";
 
 // Updated styles with better spacing and consistency
@@ -150,15 +151,33 @@ const IconicPDF = ({ resumeInfo }) => {
     ? resumeInfo.certifications
     : [];
 
-  const customRenderers = {
-    li: ({ children }) => (
-      <View style={{ flexDirection: "row", marginBottom: 2 }}>
-        {/* Bullet — replace with "" to remove or use • */}
-        <Text style={{ width: 10, textAlign: "center" }}>•</Text>
-        <Text style={{ flex: 1 }}>{children}</Text>
+   const CustomUl = ({ children }) => (
+      <View style={{ margin: 0, padding: 0 }}>
+        {Children.map(children, (child, index) => (
+          <View style={{ flexDirection: "row", marginBottom: 2 }}>
+            <Text style={{ marginRight: 5 }}>•</Text>
+            {child}
+          </View>
+        ))}
       </View>
-    ),
-  };
+    );
+  
+    const CustomOl = ({ children }) => (
+      <View style={{ margin: 0, padding: 0, counterReset: "item" }}>
+        {Children.map(children, (child, index) => (
+          <View style={{ flexDirection: "row", marginBottom: 2 }}>
+            <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
+            {child}
+          </View>
+        ))}
+      </View>
+    );
+  
+    const customRenderers = {
+      ul: CustomUl,
+      ol: CustomOl,
+      li: ({ children }) => <Text>{children}</Text>,
+    };
 
   return (
     <Document>
@@ -242,18 +261,6 @@ const IconicPDF = ({ resumeInfo }) => {
 
                     <Html
                       style={{ fontFamily: "Helvetica", fontSize: 10 }}
-                      stylesheet={{
-                        ul: {
-                          marginTop: 0,
-                          marginBottom: 0,
-                          marginLeft: 0, // or 0 if you want no indent
-                          paddingLeft: 0,
-                        },
-                        li: {
-                          marginBottom: 2, // spacing between list items
-                          marginLeft: 0,
-                        },
-                      }}
                       renderers={customRenderers}
                     >
                       {exp.description}
