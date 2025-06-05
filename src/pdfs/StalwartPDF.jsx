@@ -271,7 +271,7 @@ const StalwartPDF = ({ resumeInfo }) => {
                   <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
                   {/* <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text> */}
                   <Text style={styles.jobDate}>
-                    {exp.company}, {exp.startMonth} {exp.startYear} -{" "}
+                    {exp.startMonth} {exp.startYear} -{" "}
                     {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}{" "}
                   </Text>
                 </View>

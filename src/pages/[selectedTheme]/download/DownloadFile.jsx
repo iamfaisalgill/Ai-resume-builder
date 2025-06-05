@@ -15,8 +15,11 @@ import {
   Eye,
   PanelRightOpen,
   PanelRightClose,
+  File,
+  FilePen,
+  Loader2,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
 import {
   Drawer,
@@ -45,6 +48,7 @@ import "react-pdf/dist/Page/TextLayer.css";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import clsx from "clsx";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -60,6 +64,9 @@ const DownloadFile = () => {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");
   const [sidebar, setSidebar] = useState(true);
+  const inputRef = useRef(null)
+  const [fileName, setFileName] = useState(resumeInfo.fileName? resumeInfo.fileName : "New Resume")
+  const [loading, setLoading] = useState(false)
 
   const deleteItem = (label) => {
     setActiveSec(label);
@@ -164,6 +171,7 @@ const DownloadFile = () => {
 
   const handleDownload = async () => {
     try {
+      setLoading(true)
       // Generate PDF blob
       const blob = await pdf(getPdfComponent()).toBlob();
 
@@ -173,7 +181,7 @@ const DownloadFile = () => {
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = "resume.pdf";
+      link.download = `${fileName.trim() || 'My-Resume'}.pdf`;
 
       // Trigger download
       document.body.appendChild(link);
@@ -184,11 +192,31 @@ const DownloadFile = () => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }, 100);
+      setLoading(false)
+
     } catch (error) {
       console.error("Error generating PDF:", error);
       alert("Failed to generate PDF. Please try again.");
     }
   };
+
+
+  const saveFileName = () => {
+    const trimmedFileName = fileName.trim()
+    setResumeInfo(prev=>({...prev, fileName: trimmedFileName}))
+    
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      if (fileName===resumeInfo.fileName) {
+      inputRef.current.blur()
+      return
+    }
+      saveFileName();
+      inputRef.current.blur()
+    }
+  }
 
   /*const downloadPdf = () =>{
     window.print()
@@ -232,16 +260,38 @@ const DownloadFile = () => {
               orientation="vertical"
               className="mx-2 data-[orientation=vertical]:h-10"
             />
-            <h3 className="md:text-xl sm:text-lg text-sm font-bold">
+            {/* <h3 className="md:text-xl sm:text-lg text-sm font-bold">
               Your resume is ready!
-            </h3>
-            {/* <div className="h-10 border-r mx-4"></div> */}
+            </h3> */}
+
+              {/* File name */}
+            <div className="relative">
+              <FilePen className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                className="border-input bg-background h-10 w-full max-w-[200px] rounded-md text-sm border pl-10 pr-10"
+                value={fileName}
+                placeholder={"Untitle document"}
+                onChange={(e)=>setFileName(e.target.value)}
+                onKeyDown={handleKeyDown}
+                 onBlur={(e) => {
+                  if (fileName===resumeInfo.fileName) {
+                    return
+                  }
+                  saveFileName();
+                }}
+                ref={inputRef}
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                .pdf
+              </div>
+            </div>
             <Button
               onClick={handleDownload}
               className="cursor-pointer"
-              disabled={!resumeInfo} // Disable if no data
+              disabled={!resumeInfo || loading} 
             >
-              <FileDown />
+             {loading? <Loader2 className="animate-spin"/> : <FileDown />} 
               <span className="max-sm:hidden">Download PDF</span>
             </Button>
             <div className="max-sm:hidden">

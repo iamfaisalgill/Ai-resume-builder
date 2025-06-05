@@ -40,7 +40,8 @@ export const ResumeInfoProvider = ({ children }) => {
       endMonth: "",
       present: true,
       description:
-        "Lead a team developing machine learning models for customer behavior prediction. Implemented new algorithms that improved prediction accuracy by 35%.",
+        "<ul><li>Led development of <b>TensorFlow</b> models, improving prediction accuracy by <u>15%</u>.</li><li>Implemented <i>statistical</i> analysis using <b>R</b> to identify key business drivers.</li><li>Designed and deployed <b>Spark</b>-based data pipelines, reducing processing time by <u>50%</u>.</li><li>Mentored junior data scientists in <b>Python</b>, <i>machine learning</i>, and data visualization.</li></ul>"
+,
     },
     {
       jobTitle: "Data Analyst",
@@ -51,7 +52,8 @@ export const ResumeInfoProvider = ({ children }) => {
       endMonth: "March",
       present: false,
       description:
-        "Performed data mining and analysis for client projects.Created automated reporting systems that reduced manual work by 60%.",
+        "<ul><li>Utilized <b>SQL</b> and <b>Python</b> to extract, transform, and load data for analysis.</li><li>Developed interactive dashboards using <b>Tableau</b> to visualize key performance indicators.</li><li>Implemented <i>data mining</i> techniques to identify trends, resulting in <u>15%</u> increase in sales.</li><li>Performed statistical analysis with <b>R</b> to predict customer churn rate.</li></ul>"
+,
     },
   ],
   education: [
@@ -112,7 +114,7 @@ export const ResumeInfoProvider = ({ children }) => {
       proficiency: "Intermediate",
     },
   ],
-}
+};
   });
 
     // Save state to localStorage whenever it changes

@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Use environment variables in React (create-react-app or Vite)
-const API_KEY = 'AIzaSyBuxjMslj9V_CSfxvI9QSBLoJz2TfDhHoE';
+const API_KEY = import.meta.env.VITE_API_KEY;;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export const generateResumeSummaries = async (userDetails) => {

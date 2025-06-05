@@ -32,7 +32,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
 
       {(resumeInfo.summary || resumeInfo.summary === "") && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROFESSIONAL SUMMARY
           </h2>
           <p className="mt-1 sm:mt-2 ">
@@ -60,7 +60,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       {/* Skills */}
       {resumeInfo.skills && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             TECHNICAL SKILLS
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2  mt-1 sm:mt-2">
@@ -90,7 +90,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       {/* Experience */}
       {resumeInfo.experience && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROFESSIONAL EXPERIENCE
           </h2>
 
@@ -100,7 +100,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
                 <div className="flex flex-col sm:flex-row sm:justify-between  font-bold mt-1 sm:mt-2">
                   <p>{exp.jobTitle}</p>
                   <p>
-                    {exp.company}, {exp.startMonth} {exp.startYear} -{" "}
+                    {exp.startMonth} {exp.startYear} -{" "}
                     {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}
                   </p>
                 </div>
@@ -134,7 +134,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       {/* Education */}
       {resumeInfo.education && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             EDUCATION
           </h2>
           {resumeInfo.education.map((edu, index) => (
@@ -172,7 +172,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       {/* Certifications */}
       {resumeInfo.certifications && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             CERTIFICATIONS
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2  mt-1 sm:mt-2">
@@ -204,7 +204,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       {/* Projects */}
       {resumeInfo.projects && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROJECTS
           </h2>
           <div className=" mt-1 sm:mt-2">
@@ -237,7 +237,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       {/* Languages */}
       {resumeInfo.languages && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
-          <h2 className="text-[10px] md:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
+          <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             LANGUAGES
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2 mt-1 sm:mt-2">
