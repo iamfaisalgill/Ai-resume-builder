@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useResume } from "@/context/ResumeInfoContext";
-import { BrainCircuit, ChevronLeft, ChevronRight, Loader2, Trash2 } from "lucide-react";
+import { BrainCircuit, ChevronLeft, ChevronRight, Loader2, Sparkles, Trash2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -126,7 +126,7 @@ const Experience = ({setPageIndex}) => {
   };
 
   const hasChanges = () => {
-    if (experienceList.length !== resumeInfo.experience.length) {
+    if (experienceList.length !== resumeInfo.experience?.length) {
       return true;
     }
 
@@ -353,7 +353,7 @@ const Experience = ({setPageIndex}) => {
             Description
           </label>
           <Button variant={'outline'} type="button" size={'sm'} onClick={()=>generateDesc(item.jobTitle, index)} disabled={loader}>
-          {loader ? <Loader2 className="animate-spin"/> : <BrainCircuit/>}
+          {loader ? <Loader2 className="animate-spin"/> : <Sparkles/>}
           Generate from AI</Button>
         </div>
         <RichTextEditor
@@ -379,6 +379,7 @@ const Experience = ({setPageIndex}) => {
       variant="secondary" 
       onClick={removeExperience}
       className="w-full sm:w-auto"
+      disabled={experienceList.length <=1}
     >
       - Remove Experience
     </Button>

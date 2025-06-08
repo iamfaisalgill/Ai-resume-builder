@@ -14,7 +14,7 @@ const Skills = ({setPageIndex}) => {
 
   const [loading, setLoading] = useState(false)
   const [skills, setSkills] = useState(
-    resumeInfo.skills.length>0? resumeInfo.skills : []
+    resumeInfo.skills?.length>0? resumeInfo.skills : []
   );
   const [inputValue, setInputValue] = useState("");
 
@@ -57,11 +57,6 @@ const Skills = ({setPageIndex}) => {
       ...prev,
       skills: skills
     }))
-    /*if (resumeInfo.aiGeneratedSummaries.length == 0) {
-      const results = await generateResumeSummaries(resumeInfo);
-      setResumeInfo(prev=>({...prev, aiGeneratedSummaries: results}))
-    }
-    await new Promise(resolve=>setTimeout(resolve, 1000))*/
     setLoading(false)
     setPageIndex(prev=>prev+1)
   }

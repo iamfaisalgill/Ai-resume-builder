@@ -16,7 +16,6 @@ export const generateResumeSummaries = async (userDetails) => {
     
     const prompt = `Generate 3 distinct professional resume summary variations (30-40 words each) for:
     - Name: ${userDetails.fullName || 'Candidate'}
-    - Position: ${userDetails.experience[0].jobTitle || 'Backend Developer'}
     - Skills: ${userDetails.skills?.join(', ') || 'various technical skills'}
     
     Requirements:

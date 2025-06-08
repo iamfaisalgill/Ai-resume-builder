@@ -12,6 +12,7 @@ import {
   Info,
   Loader2,
   RefreshCcw,
+  Sparkles,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,7 @@ const Summary = ({ setPageIndex }) => {
   const [aiGeneratedText, setAiGeneratedText] = useState(
     resumeInfo.aiGeneratedSummaries || []
   );
+  const [aigeneratedSummary, setAigeneratedSummary] = useState(resumeInfo.aiGeneratedSummaries || [])
   const [loader, setLoader] = useState(false)
   const navigate = useNavigate()
 
@@ -82,7 +84,7 @@ const Summary = ({ setPageIndex }) => {
   };
 
   useEffect(()=>{
-    if (resumeInfo.aiGeneratedSummaries.length==0) {
+    if (aigeneratedSummary.length==0) {
       handleGenerate()  
     }
   }, [])
@@ -139,7 +141,7 @@ const Summary = ({ setPageIndex }) => {
                 </div>
                 <div className=" flex justify-between">
                   <Button disabled={loader} variant="outline" onClick={handleGenerate}>
-                    <Brain /> Regenerate
+                    <Sparkles /> Regenerate
                   </Button>
                   <div className="flex items-center gap-2">
                     <Button

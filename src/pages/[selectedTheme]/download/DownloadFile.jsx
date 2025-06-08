@@ -4,7 +4,7 @@ import HalleyTheme from "@/components/templates/HalleyTheme";
 import IconicTheme from "@/components/templates/IconicTheme";
 import StalwartTheme from "@/components/templates/StalwartTheme";
 import { Button } from "@/components/ui/button";
-import { useResume } from "@/context/ResumeInfoContext";
+import { useMediaQuery, useResume } from "@/context/ResumeInfoContext";
 import HalleyPDF from "@/pdfs/HalleyPDF";
 import IconicPDF from "@/pdfs/IconicPDF";
 import StalwartPDF from "@/pdfs/StalwartPDF";
@@ -18,6 +18,7 @@ import {
   File,
   FilePen,
   Loader2,
+  PencilLineIcon,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
@@ -67,6 +68,23 @@ const DownloadFile = () => {
   const inputRef = useRef(null)
   const [fileName, setFileName] = useState(resumeInfo.fileName? resumeInfo.fileName : "New Resume")
   const [loading, setLoading] = useState(false)
+    const [width, setWidth] = useState(null)
+useEffect(() => {
+    const handleResize = () => {
+      console.log('Window innerWidth:', setWidth(window.innerWidth));
+    };
+
+    // Initial log
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const deleteItem = (label) => {
     setActiveSec(label);
@@ -110,6 +128,22 @@ const DownloadFile = () => {
     const [fileUrl, setFileUrl] = useState(null);
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
+    const [width, setWidth] = useState(window.innerWidth);
+     useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+    const isLargeScreen = useMediaQuery('(min-width: 1200px)');
+    const isMediumScreen = useMediaQuery('(min-width: 768px)');
+    const isSmallScreen = useMediaQuery('(max-width: 767px)');
+
+  const getPageWidth = () => {
+    if (isLargeScreen) return 900;
+    if (isMediumScreen) return 600;
+    if (isSmallScreen) return 300; // Small screens
+  };
 
     const onDocumentLoadSuccess = ({ numPages }) => {
       setNumPages(numPages);
@@ -155,11 +189,11 @@ const DownloadFile = () => {
               file={fileUrl}
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={console.error}
-              className=""
             >
               <Page
                 pageNumber={pageNumber}
-                width={900}
+                width={getPageWidth()}
+                //scale={width > 1200 ? 1.5 : width > 768 ? 1.0 : 0.6}
                 className="border shadow-sm"
               />
             </Document>
@@ -266,7 +300,7 @@ const DownloadFile = () => {
 
               {/* File name */}
             <div className="relative">
-              <FilePen className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <PencilLineIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 className="border-input bg-background h-10 w-full max-w-[200px] rounded-md text-sm border pl-10 pr-10"
