@@ -14,8 +14,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/RichTextEditor";
-import { toast } from "sonner";
 import { generateExperienceDescriptions } from "@/services/geminiService";
+import toast from "react-hot-toast";
 
 const months = [
   "January",
@@ -94,10 +94,6 @@ const Experience = ({setPageIndex}) => {
   const deleteThis = (index) => {
     const newList = experienceList.filter((_, i) => i !== index);
     setExperienceList(newList);
-    /*setResumeInfo((prev) => ({
-      ...prev,
-      certifications: newList,
-    }));*/
   };
   
 
@@ -122,7 +118,7 @@ const Experience = ({setPageIndex}) => {
     }));
   
     setLoading(false);
-    setPageIndex(3); // Navigate after saving
+    setPageIndex(prev=>prev+1); // Navigate after saving
   };
 
   const hasChanges = () => {
@@ -352,9 +348,18 @@ const Experience = ({setPageIndex}) => {
           <label className="text-xs md:text-sm font-medium tracking-wider">
             Description
           </label>
-          <Button variant={'outline'} type="button" size={'sm'} onClick={()=>generateDesc(item.jobTitle, index)} disabled={loader}>
-          {loader ? <Loader2 className="animate-spin"/> : <Sparkles/>}
-          Generate from AI</Button>
+          <Button variant={'outline'} type="button" size={'sm'} className={'dark:hover:bg-transparent !border-primary hover:brightness-110 hover:scale-102'} onClick={()=>generateDesc(item.jobTitle, index)} disabled={loader}>
+          {loader ? <Loader2 className="animate-spin text-blue-500"/> : <Sparkles className="text-blue-500"/>}
+          {loader ? (
+                  <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                    Generating...
+                  </span>
+                ) : (
+                  <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                    Generate with AI
+                  </span>
+                )}
+          </Button>
         </div>
         <RichTextEditor
           onRichTextEditorChange={(e) =>
@@ -366,24 +371,14 @@ const Experience = ({setPageIndex}) => {
     </div>
   ))}
 
-  <div className="flex flex-col sm:flex-row items-center gap-3">
     <Button 
       type="button" 
+      variant={'outline'}
       onClick={addMoreExperience}
-      className="w-full sm:w-auto"
+      className="w-full border-2 border-dashed"
     >
       + Add More Experience
     </Button>
-    <Button 
-      type="button" 
-      variant="secondary" 
-      onClick={removeExperience}
-      className="w-full sm:w-auto"
-      disabled={experienceList.length <=1}
-    >
-      - Remove Experience
-    </Button>
-  </div>
   
   <div className="flex flex-col-reverse sm:flex-row justify-between gap-4">
     <Button

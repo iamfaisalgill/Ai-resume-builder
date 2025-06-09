@@ -1,12 +1,20 @@
 import LoaderComponent from "@/components/Loader";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useResume } from "@/context/ResumeInfoContext";
 import { generateResumeSummaries } from "@/services/geminiService";
 import {
   Brain,
   Check,
+  CheckCircle,
   ChevronLeft,
   ChevronRight,
   Info,
@@ -16,6 +24,11 @@ import {
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const Summary = ({ setPageIndex }) => {
   const { resumeInfo, setResumeInfo } = useResume();
@@ -26,13 +39,21 @@ const Summary = ({ setPageIndex }) => {
   const [aiGeneratedText, setAiGeneratedText] = useState(
     resumeInfo.aiGeneratedSummaries || []
   );
-  const [aigeneratedSummary, setAigeneratedSummary] = useState(resumeInfo.aiGeneratedSummaries || [])
-  const [loader, setLoader] = useState(false)
-  const navigate = useNavigate()
+  const [aigeneratedSummary, setAigeneratedSummary] = useState(
+    resumeInfo.aiGeneratedSummaries || []
+  );
+  const [loader, setLoader] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const navigate = useNavigate();
 
   const useThis = () => {
     setTextareaValue(aiGeneratedText[currentIndex]);
     setIsUsingAI(true);
+  };
+
+  const handleSelectOption = () => {
+    setTextareaValue(aiGeneratedText[currentIndex]);
+    setIsPopoverOpen(false);
   };
 
   const handleGoBack = () => {
@@ -67,133 +88,147 @@ const Summary = ({ setPageIndex }) => {
     setTimeout(() => {
       setResumeInfo((prevInfo) => ({ ...prevInfo, summary: textareaValue }));
       setLoading(false);
-      navigate('/select-theme')
+      navigate("/select-theme");
     }, 1000);
   };
 
   const handleGenerate = async () => {
     try {
-      setLoader(true)
+      if (aiGeneratedText.length > 0) {
+        setIsPopoverOpen(true);
+        return;
+      }
+      setLoader(true);
+      setIsPopoverOpen(true);
       const results = await generateResumeSummaries(resumeInfo);
       setResumeInfo((prev) => ({ ...prev, aiGeneratedSummaries: results }));
       setAiGeneratedText(results);
-      setLoader(false)
+      setLoader(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(()=>{
-    if (aigeneratedSummary.length==0) {
-      handleGenerate()  
+  useEffect(() => {
+    if (aigeneratedSummary.length == 0) {
+      handleGenerate();
     }
-  }, [])
+  }, []);
+
+  const navigateAiOptions = (direction) => {
+    setCurrentIndex((prev) => {
+      if (direction === "prev")
+        return prev === 0 ? aiGeneratedText.length - 1 : prev - 1;
+      return prev === aiGeneratedText.length - 1 ? 0 : prev + 1;
+    });
+  };
 
   return (
-    <div className="space-y-">
+    <div className="space-y-6">
+      {/* Header remains the same */}
       <div>
         <h2 className="text-2xl font-semibold">Summary</h2>
-        <p className="lead">
+        <p className="text-muted-foreground">
           Briefly describe the value that you bring through your skills,
           background and experience.
         </p>
       </div>
-      <div className="mt-9">
+
+      <div className="space-y-4">
         {isUsingAI && (
-          <p className="text-sm text-muted-foreground my-2">
-            Using AI-generated summary #{currentIndex + 1}
-          </p>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Check className="h-4 w-4 text-green-500" />
+            <span>Using AI-generated summary</span>
+          </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Textarea
-            value={textareaValue}
-            onChange={handleChange}
-            name="summary"
-            placeholder="Write a short summary telling more about yourself, your strengths and experience."
-            className="!text-[16px] resize-none min-h-64"
-          />
 
-          <div className="flex justify-center items-center bg-card min-h-64">
-            <div className="min-h-64 relative p-[1px] rounded-lg bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 w-full">
-              <div className="flex flex-col p-4 bg-card rounded-lg h-full min-h-80">
-                <div className="flex items-center">
-                  <h3 className="text-lg font-bold bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 bg-clip-text text-transparent">
-                    AI Generated Summary
-                  </h3>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info className="ml-1.5 size-4 self-center text-green-500" />
-                      </TooltipTrigger>
-                      <TooltipContent className="max-w-lg text-sm shadow font-medium">
-                        <p>Our <span className="text-primary">AI Builder</span> can generate your <span className="text-primary">Professional Summary</span> text based on your work history and skills. You can regenerate up to 3 personalized summaries.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <div className={loader? "flex items-center justify-center mb-6 mt-3 flex-1 min-h-44 max-h-48" : "mb-6 mt-3 flex-1 min-h-44 max-h-48 overflow-y-auto"}>
-                {
-                  loader?<LoaderComponent/> : aiGeneratedText[currentIndex]
-                }
-                   
-                {/* { aiGeneratedText[currentIndex]} */}
-                </div>
-                <div className=" flex justify-between">
-                  <Button disabled={loader} variant="outline" onClick={handleGenerate}>
-                    <Sparkles /> Regenerate
-                  </Button>
-                  <div className="flex items-center gap-2">
+        <div className="flex justify-end">
+          <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                onClick={handleGenerate}
+                size={'sm'}
+                type="button"
+                className="gap-2 dark:hover:bg-transparent !border-primary hover:brightness-110 hover:scale-102"
+              >
+                {loading ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+                ) : (
+                  <Sparkles className="text-blue-500" />
+                )}
+                {loading ? (
+                  <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                    Generating...
+                  </span>
+                ) : (
+                  <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                    Generate with AI
+                  </span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[480px] p-4" align="end">
+              {aiGeneratedText.length > 0 ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
                     <Button
-                      size="sm"
-                      variant="outline"
-                      className="size-7 !p-2 rounded-full cursor-pointer"
-                      onClick={handlePrevious}
-                      disabled={currentIndex === 0 || loader}
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => navigateAiOptions("prev")}
                     >
-                      <ChevronLeft />
+                      <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <span className="text-sm">
-                      {currentIndex + 1}/{aiGeneratedText.length}
-                    </span>
+
+                    <div className="flex-1 px-4 min-h-[120px] flex items-center">
+                      <p className="text-sm">{aiGeneratedText[currentIndex]}</p>
+                    </div>
+
                     <Button
-                      size="sm"
-                      variant="outline"
-                      className="size-7 !p-2 rounded-full cursor-pointer"
-                      onClick={handleNext}
-                      disabled={currentIndex === aiGeneratedText.length - 1 || loader}
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => navigateAiOptions("next")}
                     >
-                      <ChevronRight />
+                      <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
-                  <Button onClick={useThis}>
-                    <Check className="h-4 w-4" /> Use This
-                  </Button>
+
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-muted-foreground">
+                      Option {currentIndex + 1} of {aiGeneratedText.length}
+                    </span>
+                    <Button onClick={handleSelectOption}>
+                      Use this version
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
+              ) : (
+                <div className="flex items-center justify-center h-[120px]">
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                </div>
+              )}
+            </PopoverContent>
+          </Popover>
         </div>
+
+        <Textarea
+          value={textareaValue}
+          onChange={handleChange}
+          placeholder="Write a short summary about yourself..."
+          className="min-h-[200px] text-base"
+        />
       </div>
-      <div className="mt-9 flex justify-between">
-        <Button
-          onClick={handleGoBack}
-          type="button"
-          variant="link"
-          size="lg"
-          className="cursor-pointer"
-        >
-          <ChevronLeft className="mr-2 h-4 w-4" /> Back
+
+      {/* Footer buttons remain the same */}
+      <div className="flex justify-between">
+        <Button variant="ghost" onClick={handleGoBack}>
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back
         </Button>
-        <Button
-          onClick={onSave}
-          disabled={loading || !textareaValue}
-          type="submit"
-          size="lg"
-          className="cursor-pointer"
-        >
+        <Button onClick={onSave} disabled={loading || !textareaValue}>
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save & Next <ChevronRight className="h-4 w-4" />
+          Save & Continue
+          <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
     </div>

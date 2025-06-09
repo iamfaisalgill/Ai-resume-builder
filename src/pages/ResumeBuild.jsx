@@ -10,8 +10,8 @@ import Languages from "./Languages";
 
 const ResumeBuild = ({ pageIndex, setPageIndex }) => {
   return (
-    <div className="min-w-full p-7">
-      <div className="mt-8 space-y-9 p-6 max-w-[1020px] mx-auto bg-card rounded-lg border">
+    <div className="min-w-full sm:p-7">
+      <div className="mt-8 space-y-9 p-6 max-w-[1020px] mx-auto sm:bg-card rounded-lg sm:border">
         {pageIndex == 1 ? (
           <ContactDetails setPageIndex={setPageIndex} />
         ) : pageIndex == 2 ? (

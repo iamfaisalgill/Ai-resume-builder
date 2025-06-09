@@ -33,7 +33,7 @@ const Home = () => {
             Choose a template, customize it with smart features, and download a
             professional resume in minutes.
           </p>
-          <Button asChild size="lg" className="text-lg px-8 py-6">
+          <Button asChild size="lg" variant={'gradient'} className="text-lg px-8 py-6">
             <Link to="/resumebuild">Start Building</Link>
           </Button>
         </div>
@@ -177,7 +177,7 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto text-center">
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-blue-500/20 rounded-sm text-white">
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-blue-500/20 rounded-xl text-white">
               <FileText size={24} className="text-blue-500" />
             </div>
             <h4 className="text-xl font-semibold mb-2">Multiple Templates</h4>
@@ -188,7 +188,7 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-purple-500/20 rounded-sm text-white">
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-purple-500/20 rounded-xl text-white">
               <Bot size={24} className="text-purple-500" />
             </div>
             <h4 className="text-xl font-semibold mb-2">AI-Generated Summary</h4>
@@ -199,7 +199,7 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-green-500/20 rounded-sm text-white">
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-green-500/20 rounded-xl text-white">
               <Download size={24} className="text-green-500" />
             </div>
             <h4 className="text-xl font-semibold mb-2">
@@ -212,7 +212,7 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-orange-500/20 rounded-sm text-white">
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-orange-500/20 rounded-xl text-white">
               <LayoutPanelLeft size={24} className="text-orange-500" />
             </div>
             <h4 className="text-xl font-semibold mb-2">
@@ -225,7 +225,7 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-pink-500/20 rounded-sm text-white">
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-pink-500/20 rounded-xl text-white">
               <Palette size={24} className="text-pink-500" />
             </div>
             <h4 className="text-xl font-semibold mb-2">Theme Color Options</h4>
@@ -236,7 +236,7 @@ const Home = () => {
           </div>
 
           <div className="bg-background rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-indigo-500/20 rounded-sm text-white">
+            <div className="mx-auto mb-4 flex justify-center items-center size-12 bg-indigo-500/20 rounded-xl text-white">
               <Monitor size={24} className="text-indigo-500" />
             </div>
             <h4 className="text-xl font-semibold mb-2">Live Preview</h4>
