@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from "@/components/ui/label"
-import { ResumeInfoContext, useResume } from '@/context/ResumeInfoContext'
+import { ResumeInfoContext, useMediaQuery, useResume } from '@/context/ResumeInfoContext'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -57,58 +57,58 @@ const ContactDetails = ({ setPageIndex }) => {
   };
 
 
-
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
 
   return (
     <form onSubmit={onSave}>
-      <div>
-        <h2 className='text-2xl font-semibold'>How can employers get in touch with you?</h2>
-        <p className='lead'>For your resume header, include (at minimum) your name and email so employers can contact you.</p>
+      <div className="max-sm:text-center">
+        <h2 className='text-2xl font-semibold'>Contact Info</h2>
+        <p className='lead'>This information will be on your resume header. Include at least your name and email address.</p>
       </div>
-      <div className=" p-8 rounded-lg">
-        <div className="grid grid-cols-2 gap-4 text-foreground">
+      <div className="sm:p-8 max-sm:mt-7 max-sm:mb-18 rounded-lg">
+        <div className="grid sm:grid-cols-2 gap-4 text-foreground">
 
           <div className='col-span-1'>
             <Label htmlFor="firstName">First Name</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.firstName} id="firstName" name="firstName" type='text' className=' mt-2' placeholder="e.g. Json" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.firstName} id="firstName" name="firstName" type='text' className=' mt-2 max-sm:h-9 max-sm:text-sm' placeholder="e.g. Json" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="lastName">Last Name</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.lastName} id="lastName" name="lastName" type='text' className=' mt-2' placeholder="e.g. Carter" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.lastName} id="lastName" name="lastName" type='text' className=' mt-2 max-sm:h-9 max-sm:text-sm' placeholder="e.g. Carter" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="city">City</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.city} id="city" name="city" type='text' className='mt-2' placeholder="City" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.city} id="city" name="city" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="City" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="country">Country</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.country} id="country" name="country" type='text' className='mt-2' placeholder="Country" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.country} id="country" name="country" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="Country" />
           </div>
 
           <div className=' col-span-1'>
             <Label required htmlFor="email">Email</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.email} id="email" name="email" type='email' className='mt-2' placeholder="Email" />
+            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.email} id="email" name="email" type='email' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="Email" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="country">Phone Number</Label>
-            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.phoneNumber} id="phoneNumber" name="phoneNumber" type='text' className='mt-2' placeholder="Phone Number" />
+            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.phoneNumber} id="phoneNumber" name="phoneNumber" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="Phone Number" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="linkedIn">LinkedIn</Label>
-            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.linkedIn} id="linkedIn" name="linkedIn" type='text' className='mt-2' placeholder="e.g. linkedin.com/in/jasoncarter" />
+            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.linkedIn} id="linkedIn" name="linkedIn" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="e.g. linkedin.com/in/jasoncarter" />
           </div>
 
         </div>
       </div>
-      <div className='flex justify-between'>
-        <Button onClick={handleGoBack} type="button" variant="link" size="lg" className="cursor-pointer"><ChevronLeft /> Back</Button>
-        <Button disabled={loading} type="submit" size="lg" className="cursor-pointer">
+      <div className='max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between'>
+        <Button onClick={handleGoBack} type="button" variant="link" size={isMobile?"sm" : "lg"} className="cursor-pointer"><ChevronLeft /> Back</Button>
+        <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
           {loading && <Loader2 className="animate-spin" />}
           Next: Work Experience <ChevronRight /></Button>
       </div>

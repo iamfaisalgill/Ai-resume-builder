@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useResume } from "@/context/ResumeInfoContext";
+import { useMediaQuery, useResume } from "@/context/ResumeInfoContext";
 import { generateResumeSummaries } from "@/services/geminiService";
 import {
   Brain,
@@ -70,12 +70,6 @@ const Summary = ({ setPageIndex }) => {
     );
   };
 
-  const regenerateText = () => {
-    // You would typically call an API here to regenerate texthji
-    // For now, we'll just cycle through the existing options
-    setCurrentIndex((prev) => (prev + 1) % aiGeneratedText.length);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTextareaValue(value);
@@ -123,18 +117,19 @@ const Summary = ({ setPageIndex }) => {
     });
   };
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   return (
     <div className="space-y-6">
-      {/* Header remains the same */}
-      <div>
-        <h2 className="text-2xl font-semibold">Summary</h2>
-        <p className="text-muted-foreground">
+      <div className="max-sm:text-center">
+        <h2 className="text-xl md:text-2xl font-semibold">Summary</h2>
+        <p className="text-sm md:text-base text-muted-foreground">
           Briefly describe the value that you bring through your skills,
           background and experience.
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 max-sm:mt-12">
         {isUsingAI && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Check className="h-4 w-4 text-green-500" />
@@ -148,57 +143,73 @@ const Summary = ({ setPageIndex }) => {
               <Button
                 variant={"outline"}
                 onClick={handleGenerate}
-                size={'sm'}
+                size={"sm"}
                 type="button"
                 className="gap-2 dark:hover:bg-transparent !border-primary hover:brightness-110 hover:scale-102"
               >
-                {loading ? (
+                {loader ? (
                   <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
                 ) : (
                   <Sparkles className="text-blue-500" />
                 )}
-                {loading ? (
-                  <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                {loader ? (
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
                     Generating...
                   </span>
                 ) : (
-                  <span class="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                  <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
                     Generate with AI
                   </span>
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[480px] p-4" align="end">
+            <PopoverContent className="w-[95vw] sm:w-[480px] p-4" align="end">
               {aiGeneratedText.length > 0 ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => navigateAiOptions("prev")}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-
-                    <div className="flex-1 px-4 min-h-[120px] flex items-center">
-                      <p className="text-sm">{aiGeneratedText[currentIndex]}</p>
-                    </div>
-
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => navigateAiOptions("next")}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-
+                <div className="space-y-3">
+                  {/* Moved counter to top - now properly aligned */}
                   <div className="flex justify-between items-center">
                     <span className="text-xs text-muted-foreground">
                       Option {currentIndex + 1} of {aiGeneratedText.length}
                     </span>
-                    <Button onClick={handleSelectOption}>
-                      Use this version
+
+                    {/* Navigation buttons moved up here */}
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        type="button"
+                        onClick={() => navigateAiOptions("prev")}
+                        disabled={currentIndex === 0}
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        type="button"
+                        onClick={() => navigateAiOptions("next")}
+                        disabled={currentIndex === aiGeneratedText.length - 1}
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Content area */}
+                  <div className="min-h-[120px] p-3 border rounded-md flex items-center">
+                    <p className="text-sm">{aiGeneratedText[currentIndex]}</p>
+                  </div>
+
+                  {/* Use this button */}
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={handleSelectOption}
+                      size="sm"
+                      type="button"
+                      variant={'gradient'}
+                      className="gap-2"
+                    >
+                      <Check className="h-4 w-4" /> Use this
                     </Button>
                   </div>
                 </div>
@@ -211,24 +222,33 @@ const Summary = ({ setPageIndex }) => {
           </Popover>
         </div>
 
-        <Textarea
-          value={textareaValue}
-          onChange={handleChange}
-          placeholder="Write a short summary about yourself..."
-          className="min-h-[200px] text-base"
-        />
+          <Textarea
+            value={textareaValue}
+            onChange={handleChange}
+            placeholder="Write a short summary about yourself..."
+            className="min-h-[200px] text-base mt-2"
+          />
+       
       </div>
 
-      {/* Footer buttons remain the same */}
-      <div className="flex justify-between">
-        <Button variant="ghost" onClick={handleGoBack}>
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Back
+      <div className="max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between">
+        <Button
+          onClick={handleGoBack}
+          type="button"
+          variant="ghost"
+          size={isMobile ? "sm" : "lg"}
+          className="cursor-pointer"
+        >
+          <ChevronLeft /> Back
         </Button>
-        <Button onClick={onSave} disabled={loading || !textareaValue}>
-          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save & Continue
-          <ChevronRight className="ml-2 h-4 w-4" />
+        <Button
+          onClick={onSave}
+          disabled={loading || !textareaValue}
+          size={isMobile ? "sm" : "lg"}
+          className="cursor-pointer"
+        >
+          {loading && <Loader2 className="animate-spin" />}
+          Save & Continue <ChevronRight />
         </Button>
       </div>
     </div>

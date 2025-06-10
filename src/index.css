@@ -71,6 +71,7 @@
   --sidebar-ring: oklch(0.705 0.015 286.067);
 
   --toast-bg: #fff;
+  --dark: oklch(0.205 0 0);
 }
 
 .dark {
@@ -138,6 +139,7 @@
   --sidebar-ring: oklch(0.552 0.016 285.938);
 
   --toast-bg: #3a3a46;
+  --dark: oklch(0.922 0 0);
 }
 
 
@@ -272,7 +274,7 @@ ol li {
 }
 
 .rsw-ce{
-  @apply bg-card/50
+  @apply bg-card/50 text-sm md:text-base
 }
 
 .rsw-toolbar {

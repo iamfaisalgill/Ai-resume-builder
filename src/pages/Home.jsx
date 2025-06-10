@@ -78,18 +78,18 @@ const Home = () => {
       </section>
 
       {/* How it works */}
-      <section class="px-6">
-        <h2 class="text-3xl md:text-4xl font-bold text-center relative mb-16 pb-[15px] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[80px] after:h-[4px] after:bg-primary after:rounded-[4px]">
+      <section className="px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-center relative mb-16 pb-[15px] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[80px] after:h-[4px] after:bg-primary after:rounded-[4px]">
           How It Works
         </h2>
 
-        <div class="flex justify-between mb-[60px] flex-wrap gap-[20px] max-w-6xl mx-auto">
-          <div class="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
-            <div class="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
+        <div className="flex justify-between mb-[60px] flex-wrap gap-12 max-w-6xl mx-auto">
+          <div className="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
+            <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
               1
             </div>
-            <div class="flex justify-center my-5">
-              {/* <CircleUserRound class="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
+            <div className="flex justify-center my-5">
+              {/* <CircleUserRound className="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
               <svg
                 className="text-primary size-10"
                 xmlns="http://www.w3.org/2000/svg"
@@ -101,21 +101,21 @@ const Home = () => {
                 />
               </svg>
             </div>
-            <h3 class="text-[20px] font-semibold mb-[10px]">
+            <h3 className="text-[20px] font-semibold mb-[10px]">
               Fill Your Details
             </h3>
-            <p class="text-muted-foreground text-[15px]">
+            <p className="text-muted-foreground text-[15px]">
               Enter your personal information, work experience, education, and
               skills in our user-friendly form.
             </p>
           </div>
 
-          <div class="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
-            <div class="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
+          <div className="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
+            <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
               2
             </div>
-            <div class="flex justify-center my-5">
-              {/* <Brush class="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
+            <div className="flex justify-center my-5">
+              {/* <Brush className="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
               <svg
                 className="text-primary size-10"
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,21 +127,21 @@ const Home = () => {
                 />
               </svg>
             </div>
-            <h3 class="text-[20px] font-semibold mb-[10px]">
+            <h3 className="text-[20px] font-semibold mb-[10px]">
               Choose a Template
             </h3>
-            <p class="text-muted-foreground text-[15px]">
+            <p className="text-muted-foreground text-[15px]">
               Select from our professionally designed templates and customize
               colors to match your style.
             </p>
           </div>
 
-          <div class="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
-            <div class="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
+          <div className="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
+            <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
               3
             </div>
-            <div class="flex justify-center my-5">
-              {/* <HardDriveDownload class="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
+            <div className="flex justify-center my-5">
+              {/* <HardDriveDownload className="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
               <svg
                 className="text-primary size-10"
                 xmlns="http://www.w3.org/2000/svg"
@@ -153,10 +153,10 @@ const Home = () => {
                 />
               </svg>
             </div>
-            <h3 class="text-[20px] font-semibold mb-[10px]">
+            <h3 className="text-[20px] font-semibold mb-[10px]">
               Download &amp; Share
             </h3>
-            <p class="text-muted-foreground text-[15px]">
+            <p className="text-muted-foreground text-[15px]">
               Get your resume as a PDF file ready to share with potential
               employers.
             </p>

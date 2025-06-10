@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -7,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useResume } from "@/context/ResumeInfoContext";
+import { useMediaQuery, useResume } from "@/context/ResumeInfoContext";
 import {
   ChevronLeft,
   ChevronRight,
@@ -31,6 +32,7 @@ const Education = ({ setPageIndex }) => {
   const [educationList, setEducationList] = useState(
     resumeInfo.education?.length ? resumeInfo.education : [formField]
   );
+   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleGoBack = () => {
     setPageIndex(2);
@@ -94,13 +96,11 @@ const Education = ({ setPageIndex }) => {
   };
 
   return (
-    <form onSubmit={handleSave} className="space-y-4">
-      <div>
-        <h2 className="text-2xl font-semibold">Education</h2>
-        <p className="lead">
-          Start with your most recent education and work backwards, including
-          the degree/certification, institution's name and location, and year of
-          completion.
+    <form onSubmit={handleSave} className="space-y-4 md:space-y-9">
+      <div className="max-sm:text-center">
+        <h2 className="text-xl md:text-2xl font-semibold">Education</h2>
+        <p className="text-sm md:text-base text-muted-foreground">
+          Add information about your educational background.
         </p>
       </div>
       {educationList.map((item, index) => (
@@ -117,88 +117,91 @@ const Education = ({ setPageIndex }) => {
               <Trash2 size={16} />
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="my-4 mt-8">
-              <label className="text-sm font-medium tracking-wider">
-                School Name
-              </label>
-              <Input
-                onChange={(e) => handleChange(index, e)}
-                value={item.institution}
-                name="institution"
-                className="mt-2"
-                placeholder="Enter school name"
-              />
-            </div>
-            <div className="mb-4 mt-8">
-              <label className="text-sm font-medium tracking-wider">
-                Degree
-              </label>
-              <Input
-                onChange={(e) => handleChange(index, e)}
-                value={item.degree}
-                name="degree"
-                className="mt-2"
-                placeholder="Enter degree"
-              />
-            </div>
-          </div>
-
           <div>
-            <label className="text-sm font-medium tracking-wider">
-              Graduation Date
-            </label>
-            <div className="grid grid-cols-2 gap-4 my-2">
-              <Select
-                onValueChange={(value) =>
-                  handleChange(index, value, "graduationMonth")
-                }
-                value={item.graduationMonth}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Month" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                  ].map((month) => (
-                    <SelectItem key={month} value={month}>
-                      {month}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                onValueChange={(value) =>
-                  handleChange(index, value, "graduationYear")
-                }
-                value={item.graduationYear}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Array.from(
-                    { length: 50 },
-                    (_, i) => new Date().getFullYear() - i
-                  ).map((year) => (
-                    <SelectItem key={year} value={year.toString()}>
-                      {year}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="">
+                <Label>
+                  School Name
+                </Label>
+                <Input
+                  onChange={(e) => handleChange(index, e)}
+                  value={item.institution}
+                  name="institution"
+                  className="mt-2 max-sm:text-sm max-sm:h-9"
+                  placeholder="Enter school name"
+                />
+              </div>
+              <div className="mb-4">
+                <Label>
+                  Degree
+                </Label>
+                <Input
+                  onChange={(e) => handleChange(index, e)}
+                  value={item.degree}
+                  name="degree"
+                  className="mt-2 max-sm:text-sm max-sm:h-9"
+                  placeholder="Enter degree"
+                />
+              </div>
+            </div>
+  
+            <div>
+              <Label>
+                Graduation Date
+              </Label>
+              <div className="grid grid-cols-2 gap-4 my-2">
+                <Select
+                  onValueChange={(value) =>
+                    handleChange(index, value, "graduationMonth")
+                  }
+                  value={item.graduationMonth}
+                  
+                >
+                  <SelectTrigger className="max-sm:text-sm max-sm:!h-9">
+                    <SelectValue placeholder="Month" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ].map((month) => (
+                      <SelectItem key={month} value={month}>
+                        {month}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  onValueChange={(value) =>
+                    handleChange(index, value, "graduationYear")
+                  }
+                  value={item.graduationYear}
+                >
+                  <SelectTrigger className="max-sm:text-sm max-sm:!h-9">
+                    <SelectValue placeholder="Year" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Array.from(
+                      { length: 50 },
+                      (_, i) => new Date().getFullYear() - i
+                    ).map((year) => (
+                      <SelectItem key={year} value={year.toString()}>
+                        {year}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </div>
@@ -207,30 +210,16 @@ const Education = ({ setPageIndex }) => {
         type="button"
         variant={"outline"}
         onClick={addMoreEducation}
-        className="w-full border-2 border-dashed"
+        className="w-full border-2 border-dashed max-sm:mb-18"
       >
         + Add More Education
       </Button>
-      <div className="flex justify-between">
-        <Button
-          onClick={handleGoBack}
-          type="button"
-          variant="link"
-          size="lg"
-          className="cursor-pointer"
-        >
-          <ChevronLeft /> Back
-        </Button>
-        <Button
-          disabled={loading}
-          type="submit"
-          size="lg"
-          className="cursor-pointer"
-        >
-          {loading && <Loader2 className="animate-spin" />}
-          Next: Education <ChevronRight />
-        </Button>
-      </div>
+      <div className='max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between'>
+                    <Button onClick={handleGoBack} type="button" variant="ghost" size={isMobile?"sm" : "lg"} className="cursor-pointer"><ChevronLeft /> Back</Button>
+                    <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
+                      {loading && <Loader2 className="animate-spin" />}
+                      Next: Skills <ChevronRight /></Button>
+                  </div>
     </form>
   );
 };

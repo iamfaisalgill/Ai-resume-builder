@@ -12,7 +12,7 @@ import toast, { ToastBar, Toaster } from "react-hot-toast";
 import { X } from "lucide-react";
 
 function App() {
-  const [pageIndex, setPageIndex] = useState(2);
+  const [pageIndex, setPageIndex] = useState(5);
   return (
     <div>
       <Toaster>
