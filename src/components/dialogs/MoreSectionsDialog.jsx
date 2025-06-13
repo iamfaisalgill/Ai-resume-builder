@@ -109,8 +109,6 @@ const MoreSectionsDialog = ({ isOpen, onClose }) => {
   }
 
 
-
-
   return (
     <>
       <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -131,7 +129,7 @@ const MoreSectionsDialog = ({ isOpen, onClose }) => {
       </DialogHeader>
   
       <div className="py-3">
-        {resumeInfo.summary && 
+        {(resumeInfo.summary || resumeInfo.summary === "") && 
          resumeInfo.experience && 
          resumeInfo.skills && 
          resumeInfo.education && 
@@ -143,7 +141,7 @@ const MoreSectionsDialog = ({ isOpen, onClose }) => {
           </div>
         ) : (
           <RadioGroup onValueChange={handleValueChange}>
-            {!resumeInfo.summary && (
+            {!Object.keys(resumeInfo).includes('summary') && (
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="Professional Summary" id="Professional Summary" />
                 <Label className="text-base" htmlFor="Professional Summary">Professional Summary</Label>

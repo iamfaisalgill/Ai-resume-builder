@@ -134,22 +134,16 @@ const styles = StyleSheet.create({
 });
 
 const IconicPDF = ({ resumeInfo }) => {
-  const skills = Array.isArray(resumeInfo.skills) ? resumeInfo.skills : [];
-  const experience = Array.isArray(resumeInfo.experience)
-    ? resumeInfo.experience
-    : [];
-  const education = Array.isArray(resumeInfo.education)
-    ? resumeInfo.education
-    : [];
-  const projects = Array.isArray(resumeInfo.projects)
-    ? resumeInfo.projects
-    : [];
-  const languages = Array.isArray(resumeInfo.languages)
-    ? resumeInfo.languages
-    : [];
-  const certifications = Array.isArray(resumeInfo.certifications)
-    ? resumeInfo.certifications
-    : [];
+  const {
+    contactInfo,
+    summary,
+    skills,
+    experience,
+    education,
+    projects,
+    certifications,
+    languages,
+  } = resumeInfo;
 
    const CustomUl = ({ children }) => (
       <View style={{ margin: 0, padding: 0 }}>
@@ -186,24 +180,24 @@ const IconicPDF = ({ resumeInfo }) => {
         <View style={styles.header}>
           <View>
             <Text style={styles.name}>
-              {resumeInfo.contactInfo.firstName}{" "}
-              {resumeInfo.contactInfo.lastName}
+              {contactInfo.firstName}{" "}
+              {contactInfo.lastName}
             </Text>
           </View>
           <View>
             <Text style={styles.contactInfo}>
-              {resumeInfo.contactInfo.phoneNumber}
+              {contactInfo.phoneNumber}
             </Text>
             <Text style={styles.contactInfo}>
-              {resumeInfo.contactInfo.email}
+              {contactInfo.email}
             </Text>
             <Text style={styles.contactInfo}>
-              {resumeInfo.contactInfo.linkedIn}
+              {contactInfo.linkedIn}
             </Text>
-            {(resumeInfo.contactInfo.city ||
-              resumeInfo.contactInfo.country) && (
+            {(contactInfo.city ||
+              contactInfo.country) && (
               <Text style={styles.contactInfo}>
-                {[resumeInfo.contactInfo.city, resumeInfo.contactInfo.country]
+                {[contactInfo.city, contactInfo.country]
                   .filter(Boolean)
                   .join(", ")}
               </Text>
@@ -214,20 +208,20 @@ const IconicPDF = ({ resumeInfo }) => {
         {/* Content */}
         <View style={styles.content}>
           {/* Professional Summary */}
-          {resumeInfo.summary && (
+          {(summary || summary === "") && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text style={styles.splitTitle}>PROFESSIONAL</Text>
                 <Text style={styles.splitTitle}>SUMMARY</Text>
               </View>
               <View style={styles.sectionContent}>
-                <Text style={styles.summaryText}>{resumeInfo.summary}</Text>
+                <Text style={styles.summaryText}>{summary}</Text>
               </View>
             </View>
           )}
 
           {/* Technical Skills */}
-          {skills.length > 0 && (
+          {skills && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text>TECHNICAL SKILLS</Text>
@@ -243,7 +237,7 @@ const IconicPDF = ({ resumeInfo }) => {
           )}
 
           {/* Experience */}
-          {experience.length > 0 && (
+          {experience && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text>EXPERIENCE</Text>
@@ -272,7 +266,7 @@ const IconicPDF = ({ resumeInfo }) => {
           )}
 
           {/* Projects */}
-          {projects.length > 0 && (
+          {projects && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text>PROJECTS</Text>
@@ -297,7 +291,7 @@ const IconicPDF = ({ resumeInfo }) => {
           )}
 
           {/* Education */}
-          {education.length > 0 && (
+          {education && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text>EDUCATION</Text>
@@ -320,7 +314,7 @@ const IconicPDF = ({ resumeInfo }) => {
           )}
 
           {/* Certifications */}
-          {certifications.length > 0 && (
+          {certifications && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text>CERTIFICATIONS</Text>
@@ -337,7 +331,7 @@ const IconicPDF = ({ resumeInfo }) => {
           )}
 
           {/* Languages */}
-          {languages.length > 0 && (
+          {languages && (
             <View style={styles.section}>
               <View style={styles.sectionTitle}>
                 <Text>LANGUAGES</Text>

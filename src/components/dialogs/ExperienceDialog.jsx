@@ -24,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
 import { useResume } from "@/context/ResumeInfoContext";
 import { BrainCircuit, Loader2, Pencil, Trash2, TrashIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -32,6 +31,7 @@ import clsx from "clsx";
 import { Checkbox } from "../ui/checkbox";
 import RichTextEditor from "../RichTextEditor";
 import { generateExperienceDescriptions } from "@/services/geminiService";
+import toast from "react-hot-toast";
 
 const months = [
   "January",
@@ -149,7 +149,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       ...prev,
       experience: [...experienceList],
     }));
-    toast.info("Experience Updated");
+    toast.success("Experience Updated");
     onClose();
   };
 

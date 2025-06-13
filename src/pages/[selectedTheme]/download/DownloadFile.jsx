@@ -50,6 +50,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import clsx from "clsx";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
+import VanguardPDF from "@/pdfs/VanguardPDF";
+import VanguardTemplate from "@/components/templates/VoyageTemplate";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -61,6 +63,7 @@ const DownloadFile = () => {
   const isIconic = useMatch("/theme-iconic/download");
   const isStalwart = useMatch("/theme-stalwart/download");
   const isHalley = useMatch("/theme-halley/download");
+  const isVanguard = useMatch("/theme-vanguard/download");
   const [activeDialog, setActiveDialog] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");
@@ -101,6 +104,7 @@ useEffect(() => {
       if (isHalley) return <HalleyPDF resumeInfo={resumeInfo} />;
       if (isIconic) return <IconicPDF resumeInfo={resumeInfo} />;
       if (isStalwart) return <StalwartPDF resumeInfo={resumeInfo} />;
+      if (isVanguard) return <VanguardPDF resumeInfo={resumeInfo} />;
       return <div>No template selected</div>;
     };
     return <Component />;
@@ -362,6 +366,13 @@ useEffect(() => {
             />
           ) : isStalwart ? (
             <StalwartTheme
+              activeDialog={activeDialog}
+              setActiveDialog={setActiveDialog}
+              editItem={editItem}
+              deleteItem={deleteItem}
+            />
+          ) : isVanguard ? (
+            <VanguardTemplate
               activeDialog={activeDialog}
               setActiveDialog={setActiveDialog}
               editItem={editItem}

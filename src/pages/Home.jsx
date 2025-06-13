@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/Header";
-import halley_template from "../assets/halley.png";
-import iconic_template from "../assets/iconic.png";
-import stalwart_template from "../assets/stalwart.png";
+import halley_template from "../assets/halley.webp";
+import iconic_template from "../assets/iconic.webp";
+import stalwart_template from "../assets/stalwart.webp";
+import vanguard_template from "../assets/vanguard.webp";
 import {
   FileText,
   Bot,
@@ -58,6 +59,11 @@ const Home = () => {
             className="rounded-2xl shadow-xl w-[250px] mx-5"
           />
           <img
+            src={vanguard_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+          <img
             src={halley_template}
             alt="Resume Preview"
             className="rounded-2xl shadow-xl w-[250px] mx-5"
@@ -72,6 +78,12 @@ const Home = () => {
             alt="Resume Preview"
             className="rounded-2xl shadow-xl w-[250px] mx-5"
           />
+          <img
+            src={vanguard_template}
+            alt="Resume Preview"
+            className="rounded-2xl shadow-xl w-[250px] mx-5"
+          />
+          
         </Marquee>
 
         {/* </div> */}

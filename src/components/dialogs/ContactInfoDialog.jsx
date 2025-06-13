@@ -20,13 +20,13 @@ function ContactInfoDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume()
 
   const [formData, setFormData] = useState({
-    firstName: resumeInfo.contactInfo.firstName || '',
-    lastName: resumeInfo.contactInfo.lastName || '',
-    email: resumeInfo.contactInfo.email || "",
-    city: resumeInfo.contactInfo.city || "",
-    country: resumeInfo.contactInfo.country || "",
-    phoneNumber: resumeInfo.contactInfo.phoneNumber || "",
-    linkedIn: resumeInfo.contactInfo.linkedIn || ''
+    firstName: resumeInfo.contactInfo?.firstName || '',
+    lastName: resumeInfo.contactInfo?.lastName || '',
+    email: resumeInfo.contactInfo?.email || "",
+    city: resumeInfo.contactInfo?.city || "",
+    country: resumeInfo.contactInfo?.country || "",
+    phoneNumber: resumeInfo.contactInfo?.phoneNumber || "",
+    linkedIn: resumeInfo.contactInfo?.linkedIn || ''
   })
 
   const handleChange = (e) => {
@@ -44,13 +44,13 @@ function ContactInfoDialog({ isOpen, onClose }) {
 
   const hasChanges = () => {
     if (
-      formData.firstName !== resumeInfo.contactInfo.firstName ||
-      formData.lastName !== resumeInfo.contactInfo.lastName ||
-      formData.email !== resumeInfo.contactInfo.email ||
-      formData.city !== resumeInfo.contactInfo.city ||
-      formData.country !== resumeInfo.contactInfo.country ||
-      formData.phoneNumber !== resumeInfo.contactInfo.phoneNumber ||
-      formData.linkedIn !== resumeInfo.contactInfo.linkedIn
+      formData.firstName !== resumeInfo.contactInfo?.firstName ||
+      formData.lastName !== resumeInfo.contactInfo?.lastName ||
+      formData.email !== resumeInfo.contactInfo?.email ||
+      formData.city !== resumeInfo.contactInfo?.city ||
+      formData.country !== resumeInfo.contactInfo?.country ||
+      formData.phoneNumber !== resumeInfo.contactInfo?.phoneNumber ||
+      formData.linkedIn !== resumeInfo.contactInfo?.linkedIn
     ){
       return true
     }
@@ -79,7 +79,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Input
                   required
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.firstName}
+                  defaultValue={resumeInfo.contactInfo?.firstName}
                   id="firstName"
                   name="firstName"
                   type='text'
@@ -94,7 +94,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Input
                   required
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.lastName}
+                  defaultValue={resumeInfo.contactInfo?.lastName}
                   id="lastName"
                   name="lastName"
                   type='text'
@@ -108,7 +108,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Label htmlFor="phoneNumber" className="text-xs md:text-sm">Phone Number</Label>
                 <Input
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.phoneNumber}
+                  defaultValue={resumeInfo.contactInfo?.phoneNumber}
                   id="phoneNumber"
                   name="phoneNumber"
                   type='tel'
@@ -124,7 +124,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Input
                   required
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.email}
+                  defaultValue={resumeInfo.contactInfo?.email}
                   id="email"
                   name="email"
                   type='email'
@@ -138,7 +138,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Label htmlFor="country" className="text-xs md:text-sm">Country</Label>
                 <Input
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.country}
+                  defaultValue={resumeInfo.contactInfo?.country}
                   id="country"
                   name="country"
                   type='text'
@@ -152,7 +152,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Label htmlFor="city" className="text-xs md:text-sm">City</Label>
                 <Input
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.city}
+                  defaultValue={resumeInfo.contactInfo?.city}
                   id="city"
                   name="city"
                   type='text'
@@ -166,7 +166,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
                 <Label htmlFor="linkedIn" className="text-xs md:text-sm">LinkedIn</Label>
                 <Input
                   onChange={e => handleChange(e)}
-                  defaultValue={resumeInfo.contactInfo.linkedIn}
+                  defaultValue={resumeInfo.contactInfo?.linkedIn}
                   id="linkedIn"
                   name="linkedIn"
                   type='text'

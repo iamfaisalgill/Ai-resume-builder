@@ -7,7 +7,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
   const { resumeInfo } = useResume();
 
   return (
-    <div className="bg-white max-w-4xl text-black p-4 sm:p-6 md:p-8 mx-auto font-sans text-[8px] sm:text-sm">
+    <div className="bg-white max-w-4xl min-h-[850px] shadow-lg rounded-lg text-black p-4 sm:p-6 md:p-8 mx-auto font-sans text-[8px] sm:text-sm">
       <div className="c-info relative ">
         <h1 className="text-[15px] sm:text-2xl md:text-3xl font-bold uppercase">
           {resumeInfo.contactInfo.firstName} {resumeInfo.contactInfo.lastName}
@@ -35,9 +35,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROFESSIONAL SUMMARY
           </h2>
-          <p className="mt-1 sm:mt-2 ">
-            {resumeInfo.summary}
-          </p>
+          <p className="mt-1 sm:mt-2 ">{resumeInfo.summary}</p>
           <div className="edit hidden absolute -right-1 -top-1 p-1">
             <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
               <button
@@ -97,18 +95,33 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
           <div className="space-y-1 sm:space-y-2">
             {resumeInfo.experience.map((exp, index) => (
               <div key={index}>
-                <div className="flex flex-col sm:flex-row sm:justify-between  font-bold mt-1 sm:mt-2">
-                  <p>{exp.jobTitle}</p>
-                  <p>
-                    {exp.startMonth} {exp.startYear} -{" "}
-                    {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}
-                  </p>
-                </div>
-                <p>{exp.company}</p>
-                {/* {exp.description.split('. ').map((desc,i)=>(
-                  desc && <p key={i}>• {desc.trim()}{!desc.endsWith('.') && '.'}</p>
-                  ))} */}
-                <span dangerouslySetInnerHTML={{__html: exp.description}}/>
+                {(exp.jobTitle ||
+                  exp.startMonth ||
+                  exp.startYear ||
+                  exp.endMonth ||
+                  exp.present ||
+                  exp.endYear) && (
+                  <div className="flex flex-col sm:flex-row sm:justify-between font-bold mt-1 sm:mt-2">
+                    {exp.jobTitle && <p>{exp.jobTitle}</p>}
+                    {(exp.startMonth ||
+                      exp.startYear ||
+                      exp.endMonth ||
+                      exp.present ||
+                      exp.endYear) && (
+                      <p>
+                        {exp.startMonth} {exp.startYear}
+                        {(exp.endMonth || exp.present) && " - "}
+                        {exp.present
+                          ? "Present"
+                          : exp.endMonth && `${exp.endMonth} ${exp.endYear}`}
+                      </p>
+                    )}
+                  </div>
+                )}
+                {exp.company && <p>{exp.company}</p>}
+                {exp.description && (
+                  <span dangerouslySetInnerHTML={{ __html: exp.description }} />
+                )}
               </div>
             ))}
           </div>
@@ -139,15 +152,26 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
           </h2>
           {resumeInfo.education.map((edu, index) => (
             <React.Fragment key={index}>
-              <div className="flex flex-col sm:flex-row sm:justify-between  font-bold mt-1 sm:mt-2">
-                <p>
-                  {edu.degree} in {edu.fieldOfStudy}
-                </p>
-                <p>
-                  {edu.graduationMonth} {edu.graduationYear}
-                </p>
-              </div>
-              <p>{edu.institution}</p>
+              {(edu.degree ||
+                edu.fieldOfStudy ||
+                edu.graduationMonth ||
+                edu.graduationYear) && (
+                <div className="flex flex-col sm:flex-row sm:justify-between font-bold mt-1 sm:mt-2">
+                  {(edu.degree || edu.fieldOfStudy) && (
+                    <p>
+                      {edu.degree}
+                      {edu.degree && edu.fieldOfStudy && " in "}
+                      {edu.fieldOfStudy}
+                    </p>
+                  )}
+                  {(edu.graduationMonth || edu.graduationYear) && (
+                    <p>
+                      {edu.graduationMonth} {edu.graduationYear}
+                    </p>
+                  )}
+                </div>
+              )}
+              {edu.institution && <p>{edu.institution}</p>}
             </React.Fragment>
           ))}
           <div className="edit hidden absolute -right-1 -top-1 p-1">
@@ -176,11 +200,15 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
             CERTIFICATIONS
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2  mt-1 sm:mt-2">
-            {resumeInfo.certifications.map((cert, index) => (
-              <p key={index}>
-                • {cert.name} ({cert.issueYear})
-              </p>
-            ))}
+            {resumeInfo.certifications.map(
+              (cert, index) =>
+                (cert.name || cert.issueYear) && (
+                  <p key={index}>
+                    • {cert.name}
+                    {cert.issueYear && ` (${cert.issueYear})`}
+                  </p>
+                )
+            )}
           </div>
           <div className="edit hidden absolute -right-1 -top-1 p-1">
             <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
@@ -208,12 +236,17 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
             PROJECTS
           </h2>
           <div className=" mt-1 sm:mt-2">
-            {resumeInfo.projects.map((project, index) => (
-              <div className="mt-1 sm:mt-2" key={index}>
-                <p className="font-bold">{project.title}</p>
-                <p>{project.description}</p>
-              </div>
-            ))}
+            {resumeInfo.projects.map(
+              (project, index) =>
+                (project.title || project.description) && (
+                  <div className="mt-1 sm:mt-2" key={index}>
+                    {project.title && (
+                      <p className="font-bold">{project.title}</p>
+                    )}
+                    {project.description && <p>{project.description}</p>}
+                  </div>
+                )
+            )}
           </div>
           <div className="edit hidden absolute -right-1 -top-1 p-1">
             <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
@@ -241,14 +274,15 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
             LANGUAGES
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2 mt-1 sm:mt-2">
-            {resumeInfo.languages.map((lang, index) => (
-              <p
-                key={index}
-                className="font-bold mt-1 sm:mt-2 "
-              >
-                {lang.language} {lang.proficiency && `(${lang.proficiency})`}
-              </p>
-            ))}
+            {resumeInfo.languages.map(
+              (lang, index) =>
+                lang.language && (
+                  <p key={index} className="font-bold mt-1 sm:mt-2">
+                    {lang.language}
+                    {lang.proficiency && ` (${lang.proficiency})`}
+                  </p>
+                )
+            )}
           </div>
           <div className="edit hidden absolute -right-1 -top-1 p-1">
             <div className="flex gap-1.5 sm:gap-3 bg-gray-900">

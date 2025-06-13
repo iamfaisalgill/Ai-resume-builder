@@ -29,6 +29,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import toast from "react-hot-toast";
 
 const Summary = ({ setPageIndex }) => {
   const { resumeInfo, setResumeInfo } = useResume();
@@ -100,6 +101,7 @@ const Summary = ({ setPageIndex }) => {
       setLoader(false);
     } catch (error) {
       console.log(error);
+      toast.error("Failed to generate Summary. Please try again.");
     }
   };
 

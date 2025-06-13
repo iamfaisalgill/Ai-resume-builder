@@ -32,8 +32,7 @@ let dummyData = {
       endMonth: "",
       present: true,
       description:
-        "<ul><li>Led development of <b>TensorFlow</b> models, improving prediction accuracy by <u>15%</u>.</li><li>Implemented <i>statistical</i> analysis using <b>R</b> to identify key business drivers.</li><li>Designed and deployed <b>Spark</b>-based data pipelines, reducing processing time by <u>50%</u>.</li><li>Mentored junior data scientists in <b>Python</b>, <i>machine learning</i>, and data visualization.</li></ul>"
-,
+        "<ul><li>Led development of <b>TensorFlow</b> models, improving prediction accuracy by <u>15%</u>.</li><li>Implemented <i>statistical</i> analysis using <b>R</b> to identify key business drivers.</li><li>Designed and deployed <b>Spark</b>-based data pipelines, reducing processing time by <u>50%</u>.</li><li>Mentored junior data scientists in <b>Python</b>, <i>machine learning</i>, and data visualization.</li></ul>",
     },
     {
       jobTitle: "Data Analyst",
@@ -44,8 +43,7 @@ let dummyData = {
       endMonth: "March",
       present: false,
       description:
-        "<ul><li>Utilized <b>SQL</b> and <b>Python</b> to extract, transform, and load data for analysis.</li><li>Developed interactive dashboards using <b>Tableau</b> to visualize key performance indicators.</li><li>Implemented <i>data mining</i> techniques to identify trends, resulting in <u>15%</u> increase in sales.</li><li>Performed statistical analysis with <b>R</b> to predict customer churn rate.</li></ul>"
-,
+        "<ul><li>Utilized <b>SQL</b> and <b>Python</b> to extract, transform, and load data for analysis.</li><li>Developed interactive dashboards using <b>Tableau</b> to visualize key performance indicators.</li><li>Implemented <i>data mining</i> techniques to identify trends, resulting in <u>15%</u> increase in sales.</li><li>Performed statistical analysis with <b>R</b> to predict customer churn rate.</li></ul>",
     },
   ],
   education: [
@@ -143,6 +141,107 @@ let emptyData = {
       fieldOfStudy: "",
     },
   ],
+};
+
+let myData = {
+  contactInfo: {
+    firstName: "Faisal",
+    lastName: "Gill",
+    email: "faisalzakriagill@gmail.com",
+    city: "Lahore",
+    country: "Pakistan",
+    phoneNumber: "+92 3151361735",
+    linkedIn: "linkedin.com/in/faisal-gill",
+  },
+  summary:
+    "Front-End Developer with 2+ years of experience building responsive, high-performance web applications using React, JavaScript, and Tailwind CSS. Adept at Agile development, optimizing load times (up to 25% faster), and crafting reusable components for scalable solutions. Passionate about clean code, accessibility, and performance optimization while collaborating effectively in team environments.",
+  aiGeneratedSummaries: [],
+  skills: [
+    "HTML5 & Semantic Markup",
+    "CSS3 & Preprocessors (Sass, LESS)",
+    "JavaScript (ES6+)",
+    "React.js/Next.js",
+    "Responsive & Mobile-First Design",
+    "CSS Frameworks (Bootstrap, Tailwind CSS)",
+    "Version Control (Git, GitHub/GitLab)",
+    "RESTful APIs & AJAX/Fetch",
+    "Web Performance Optimization",
+    "Accessibility (WCAG, ARIA)",
+    "Build Tools (Webpack, Vite, npm/yarn)",
+    "Basic Backend Knowledge (Node.js, Express)",
+    "UI/UX Design Principles",
+  ],
+  experience: [
+    {
+      jobTitle: "Frontend developer",
+      company: "Pixlab.io",
+      startYear: "2024",
+      startMonth: "August",
+      endYear: "",
+      endMonth: "",
+      present: true,
+      description:
+        "<ul>\n  <li>Built responsive UI with <b>React</b> and <b>Tailwind CSS</b>, improving user experience.</li>\n  <li>Implemented <i>Agile</i> methodologies for efficient and collaborative feature development.</li>\n  <li>Optimized website performance using <b>Webpack</b>, resulting in <u>25%</u> faster load times.</li>\n  <li>Developed reusable <b>JavaScript</b> components and <b>RESTful</b> APIs for scalable applications.</li>\n</ul>",
+      isNew: false,
+    },
+    {
+      jobTitle: "Reactjs Developer",
+      company: "ESP Inspire",
+      startMonth: "March",
+      startYear: "2023",
+      endMonth: "July",
+      endYear: "2023",
+      description:
+        "<ul>\n  <li>Built responsive UIs using <b>HTML</b>, <b>CSS</b>, and <b>JavaScript</b>, adhering to <i>accessibility</i> guidelines.</li>\n  <li>Assisted in developing <b>React</b> components, improving page load times by <u>15%</u>.</li>\n  <li>Participated in <i>Agile</i> sprints, contributing to feature development and bug fixing using <b>Git</b>.</li>\n  <li>Implemented unit tests with <b>Jest</b> and <b>React Testing Library</b>, achieving <u>80%</u> code coverage.</li>\n</ul>",
+      present: false,
+      isNew: false,
+    },
+  ],
+  projects: [
+    {
+      title: "AI Resume Builder",
+      description:
+        "Developed a smart resume builder using React.js and Gemini API to help users generate professional, ATS-friendly resumes effortlessly.",
+      url: "github.com/iamfaisalgill/Resume-builder",
+    },
+    {
+      title: "Background Removal App",
+      description:
+        "Developed the user interface for an AI-powered background removal web application at Pixlab.io, enabling users to upload images in bulk and instantly extract subjects with high precision.",
+      url: "https://bg-remove.pixlab.io",
+    },
+    {
+      title: "Vision Workspace | Pixlab",
+      description:
+        "Led frontend development for Vision Workspace, an all-in-one AI-enhanced office suite at PixLab, designed to streamline document editing, data analysis, and team collaboration.",
+      url: "https://vision.pixlab.io/",
+    },
+  ],
+  certifications: [
+    {
+      name: "React.js Developer Certification",
+      organization: "CodeMaster Academy",
+      issueMonth: "September",
+      issueYear: "2023",
+    },
+    {
+      name: " Responsive web design",
+      organization: "freeCodeCamp",
+      issueMonth: "November",
+      issueYear: "2022",
+    },
+  ],
+  languages: [
+    {
+      language: "English",
+      proficiency: "Fluent",
+    },
+    {
+      language: "Urdu",
+      proficiency: "Native",
+    },
+  ],
+  fileName: "Faisal-Resume",
 };
 
 let degrees = [

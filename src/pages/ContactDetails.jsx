@@ -27,35 +27,39 @@ const ContactDetails = ({ setPageIndex }) => {
   }
   const navigate = useNavigate()
 
-  const onSave = (e) => {
-    e.preventDefault()
-    setLoading(true); // Set loading state to true
+  const onSave = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (formData) {
-          resolve(formData); // Resolve with formData if it exists
-        } else {
-          reject(new Error("Failed to save data")); // Reject if formData is missing
-        }
-      }, 1000);
-    })
-      .then(data => {
-        setResumeInfo(prevState => ({ ...prevState, contactInfo: data })); // Save data when promise is fulfilled
-      })
-      .catch(error => {
-        console.error(error.message); // Handle error (you can show a message to the user)
-      })
-      .finally(() => {
-        setPageIndex(2)
-        setLoading(false); // Stop loading after operation completes
-      });
+    if (hasChanges()) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    } else {
+      await new Promise((resolve) => resolve());
+    }
+
+    setResumeInfo(prevState => ({ ...prevState, contactInfo: formData }));
+
+    setLoading(false);
+    setPageIndex((prev) => prev + 1);
   };
 
   const handleGoBack = () => {
     navigate(-1); // Navigate back to the previous page
   };
 
+  const hasChanges = () => {
+    if (
+      formData.firstName !== resumeInfo.contactInfo.firstName ||
+      formData.lastName !== resumeInfo.contactInfo.lastName ||
+      formData.email !== resumeInfo.contactInfo.email ||
+      formData.city !== resumeInfo.contactInfo.city ||
+      formData.country !== resumeInfo.contactInfo.country ||
+      formData.phoneNumber !== resumeInfo.contactInfo.phoneNumber ||
+      formData.linkedIn !== resumeInfo.contactInfo.linkedIn
+    ){
+      return true
+    }
+  }
 
   const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -107,7 +111,7 @@ const ContactDetails = ({ setPageIndex }) => {
         </div>
       </div>
       <div className='max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between'>
-        <Button onClick={handleGoBack} type="button" variant="link" size={isMobile?"sm" : "lg"} className="cursor-pointer"><ChevronLeft /> Back</Button>
+        <Button onClick={handleGoBack} type="button" variant="ghost" size={isMobile?"sm" : "lg"} className="cursor-pointer"><ChevronLeft /> Back</Button>
         <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
           {loading && <Loader2 className="animate-spin" />}
           Next: Work Experience <ChevronRight /></Button>

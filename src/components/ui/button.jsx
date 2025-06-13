@@ -43,7 +43,7 @@ const buttonVariants = cva(
 
       // ✅ Semantic Variants
       success:
-        "bg-[--success] text-[--success-foreground] hover:bg-[--success]/90",
+        "bg-[var(--success)] text-[var(--success-foreground)] hover:bg-[var(--success)]/90",
       warning:
         "bg-[--warning] text-[--warning-foreground] hover:bg-[--warning]/90",
       info:

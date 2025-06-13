@@ -8,7 +8,7 @@ import {
   Svg,
   Path,
 } from "@react-pdf/renderer";
-import georgia from "../assets/fonts/georgiab.ttf";
+import georgia from "../assets/fonts/Georgia/georgiab.ttf";
 import { useResume } from "../context/ResumeInfoContext.jsx";
 import { Children, useEffect } from "react";
 import Html from "react-pdf-html";

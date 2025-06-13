@@ -7,20 +7,10 @@ import { Edit, Edit3, Trash2 } from "lucide-react";
 // template name: Halley
 const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) => {
 
-  const { resumeInfo, setResumeInfo } = useResume()
-
-  const parseHtmlToList = (htmlString) => {
-  // Parse the HTML string
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, "text/html");
-
-  // Extract text from each <li> element
-  const listItems = Array.from(doc.querySelectorAll("li")).map(li => li.textContent);
-  return listItems
-};
+  const { resumeInfo } = useResume()
 
   return (
-    <div className="mx-auto bg-white max-w-4xl text-[8px] sm:text-sm md:text-base">
+    <div className="mx-auto bg-white max-w-4xl min-h-[850px] shadow-lg rounded-lg text-[8px] sm:text-sm md:text-base">
       <div className="flex">
         {/* Main Content (Left 3/4) */}
         <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
@@ -67,7 +57,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
               <div key={index} className="mb-2 sm:mb-3 md:mb-4 mt-1 sm:mt-1.5 md:mt-2">
                 <div className="flex justify-between">
                   <p className="font-bold text-gray-900">{exp.jobTitle}</p>
-                  <p className=" text-gray-700">{exp.startMonth} {exp.startYear} - {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}</p>
+                  <p className=" text-gray-700">{exp.startMonth} {exp.startYear}
+                  {(exp.endMonth || exp.present) && " - "}
+                  {exp.present ? "Present" : (exp.endMonth && `${exp.endMonth} ${exp.endYear}`)}</p>
                 </div>
                 <p className="text-gray-700 italic">
                   {exp.company}
@@ -107,7 +99,9 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
             {resumeInfo.education.map((edu, index) => (
               <div key={index} className="mt-1 sm:mt-1.5 md:mt-2">
                 <p className="font-bold text-gray-900">
-                  {edu.degree} - {edu.fieldOfStudy}
+                  {edu.degree}
+                  {edu.degree && edu.fieldOfStudy && " - "}
+                  {edu.fieldOfStudy}
                 </p>
                 <p className="text-gray-700">{edu.institution}</p>
                 {edu.graduationMonth && <p className="text-gray-500">{edu.graduationMonth} {edu.graduationYear}</p>}
@@ -142,7 +136,7 @@ const HalleyTheme = ({ activeDialog, setActiveDialog, deleteItem, editItem }) =>
         </div>
 
         {/* Sidebar (Right 1/4) */}
-        <div className="w-1/4 bg-[#305276] text-white text-[8px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
+        <div className="w-1/4 min-h-[850px] bg-[#305276] text-white text-[8px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
           <div className="c-info relative">
             <p className="break-words">{resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country}</p>
             <p className="mt-1 sm:mt-2 md:mt-3 break-words">{resumeInfo.contactInfo.phoneNumber}</p>

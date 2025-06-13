@@ -56,8 +56,7 @@ const Skills = ({ setPageIndex }) => {
     setPageIndex((prev) => prev - 1);
   };
 
-  const onSave = async (e) => {
-    e.preventDefault();
+  const onSave = async () => {
     setLoading(true);
 
     if (hasChanges()) {
@@ -163,7 +162,7 @@ const Skills = ({ setPageIndex }) => {
         <Button
           onClick={handleGoBack}
           type="button"
-          variant="link"
+          variant="ghost"
           size={isMobile ? "sm" : "lg"}
           className="cursor-pointer"
         >
