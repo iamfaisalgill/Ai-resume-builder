@@ -19,6 +19,8 @@ import {
   FilePen,
   Loader2,
   PencilLineIcon,
+  ArrowDown,
+  ArrowDownToLine,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
@@ -51,7 +53,8 @@ import clsx from "clsx";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import VanguardPDF from "@/pdfs/VanguardPDF";
-import VanguardTemplate from "@/components/templates/VoyageTemplate";
+import VanguardTemplate from "@/components/templates/VanguardTemplate";
+import Modal from "@/components/Modal";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -68,24 +71,27 @@ const DownloadFile = () => {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");
   const [sidebar, setSidebar] = useState(true);
-  const inputRef = useRef(null)
-  const [fileName, setFileName] = useState(resumeInfo.fileName? resumeInfo.fileName : "New Resume")
-  const [loading, setLoading] = useState(false)
-    const [width, setWidth] = useState(null)
-useEffect(() => {
+  const inputRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [fileName, setFileName] = useState(
+    resumeInfo.fileName ? resumeInfo.fileName : "New Resume"
+  );
+  const [loading, setLoading] = useState(false);
+  const [width, setWidth] = useState(null);
+  useEffect(() => {
     const handleResize = () => {
-      console.log('Window innerWidth:', setWidth(window.innerWidth));
+      setWidth(window.innerWidth);
     };
 
     // Initial log
     handleResize();
 
     // Add event listener
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup on unmount
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -133,21 +139,21 @@ useEffect(() => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [width, setWidth] = useState(window.innerWidth);
-     useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    useEffect(() => {
+      const handleResize = () => setWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-    const isLargeScreen = useMediaQuery('(min-width: 1200px)');
-    const isMediumScreen = useMediaQuery('(min-width: 768px)');
-    const isSmallScreen = useMediaQuery('(max-width: 767px)');
+    const isLargeScreen = useMediaQuery("(min-width: 1200px)");
+    const isMediumScreen = useMediaQuery("(min-width: 768px)");
+    const isSmallScreen = useMediaQuery("(max-width: 767px)");
 
-  const getPageWidth = () => {
-    if (isLargeScreen) return 900;
-    if (isMediumScreen) return 600;
-    if (isSmallScreen) return 300; // Small screens
-  };
+    const getPageWidth = () => {
+      if (isLargeScreen) return 900;
+      if (isMediumScreen) return 600;
+      if (isSmallScreen) return 300; // Small screens
+    };
 
     const onDocumentLoadSuccess = ({ numPages }) => {
       setNumPages(numPages);
@@ -209,17 +215,16 @@ useEffect(() => {
 
   const handleDownload = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       // Generate PDF blob
       const blob = await pdf(getPdfComponent()).toBlob();
 
       // Create download link
       const url = URL.createObjectURL(blob);
-      console.log(url);
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${fileName.trim() || 'My-Resume'}.pdf`;
+      link.download = `${fileName.trim() || "My-Resume"}.pdf`;
 
       // Trigger download
       document.body.appendChild(link);
@@ -230,31 +235,28 @@ useEffect(() => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }, 100);
-      setLoading(false)
-
+      setLoading(false);
     } catch (error) {
       console.error("Error generating PDF:", error);
       alert("Failed to generate PDF. Please try again.");
     }
   };
 
-
   const saveFileName = () => {
-    const trimmedFileName = fileName.trim()
-    setResumeInfo(prev=>({...prev, fileName: trimmedFileName}))
-    
-  }
+    const trimmedFileName = fileName.trim();
+    setResumeInfo((prev) => ({ ...prev, fileName: trimmedFileName }));
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      if (fileName===resumeInfo.fileName) {
-      inputRef.current.blur()
-      return
-    }
+      if (fileName === resumeInfo.fileName) {
+        inputRef.current.blur();
+        return;
+      }
       saveFileName();
-      inputRef.current.blur()
+      inputRef.current.blur();
     }
-  }
+  };
 
   /*const downloadPdf = () =>{
     window.print()
@@ -302,7 +304,7 @@ useEffect(() => {
               Your resume is ready!
             </h3> */}
 
-              {/* File name */}
+            {/* File name */}
             <div className="relative">
               <PencilLineIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
@@ -310,11 +312,11 @@ useEffect(() => {
                 className="border-input bg-background h-10 w-full max-w-[200px] rounded-md text-sm border pl-10 pr-10"
                 value={fileName}
                 placeholder={"Untitle document"}
-                onChange={(e)=>setFileName(e.target.value)}
+                onChange={(e) => setFileName(e.target.value)}
                 onKeyDown={handleKeyDown}
-                 onBlur={(e) => {
-                  if (fileName===resumeInfo.fileName) {
-                    return
+                onBlur={(e) => {
+                  if (fileName === resumeInfo.fileName) {
+                    return;
                   }
                   saveFileName();
                 }}
@@ -327,12 +329,12 @@ useEffect(() => {
             <Button
               onClick={handleDownload}
               className="cursor-pointer"
-              disabled={!resumeInfo || loading} 
+              disabled={!resumeInfo || loading}
             >
-             {loading? <Loader2 className="animate-spin"/> : <FileDown />} 
+              {loading ? <Loader2 className="animate-spin" /> : <ArrowDownToLine />}
               <span className="max-sm:hidden">Download PDF</span>
             </Button>
-            <div className="max-sm:hidden">
+            {/* <div className="max-sm:hidden">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant={"secondary"} className="cursor-pointer">
@@ -340,12 +342,15 @@ useEffect(() => {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[900px] p-0">
+                <DialogHeader>
+                  <DialogTitle>Resume Preview</DialogTitle>
+                </DialogHeader>
                   <ScrollArea className={"h-[600px]"}>
                     <MyPDFViewer />
                   </ScrollArea>
                 </DialogContent>
               </Dialog>
-            </div>
+            </div> */}
           </div>
           <ModeToggle />
         </div>

@@ -6,17 +6,61 @@ import React, { useEffect } from "react";
 const StalwartTheme = ({ deleteItem, editItem }) => {
   const { resumeInfo } = useResume();
 
+  const {
+    contactInfo,
+    summary,
+    skills,
+    experience,
+    education,
+    projects,
+    certifications,
+    languages,
+  } = resumeInfo;
+
   return (
-    <div className="bg-white max-w-4xl min-h-[850px] shadow-lg rounded-lg text-black p-4 sm:p-6 md:p-8 mx-auto font-sans text-[8px] sm:text-sm">
+    <div className="bg-white max-w-4xl min-h-[1122px] shadow-lg rounded-lg text-black p-4 sm:p-6 md:p-8 mx-auto font-sans text-[8px] sm:text-sm">
       <div className="c-info relative ">
         <h1 className="text-[15px] sm:text-2xl md:text-3xl font-bold uppercase">
-          {resumeInfo.contactInfo.firstName} {resumeInfo.contactInfo.lastName}
+          {contactInfo.firstName ||
+          contactInfo.lastName ? (
+            `${contactInfo.firstName || ""} ${
+              contactInfo.lastName || ""
+            }`.trim()
+          ) : (
+            <span className="text-gray-400">Your Name</span>
+          )}
         </h1>
-        <p className=" text-gray-600">
-          {resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country} •{" "}
-          {resumeInfo.contactInfo.phoneNumber} • {resumeInfo.contactInfo.email}{" "}
-          {resumeInfo.contactInfo.linkedIn &&
-            `• ${resumeInfo.contactInfo.linkedIn}`}
+        <p className="text-gray-600">
+          {/* City & Country */}
+          {contactInfo.city || contactInfo.country ? (
+            <>
+              {contactInfo.city}
+              {contactInfo.city &&
+                contactInfo.country &&
+                ", "}
+              {contactInfo.country}
+            </>
+          ) : (
+            <span className="italic text-gray-400">Location</span>
+          )}
+
+          {/* Phone */}
+          {contactInfo.phoneNumber && " • "}
+          {contactInfo.phoneNumber || (
+            <span className="italic text-gray-400"> • Phone</span>
+          )}
+
+          {/* Email */}
+          {contactInfo.email && " • "}
+          {contactInfo.email || (
+            <span className="italic text-gray-400"> • Email</span>
+          )}
+
+          {/* LinkedIn */}
+          {contactInfo.linkedIn && " • "}
+          {contactInfo.linkedIn || (
+            <span className="italic text-gray-400"> • LinkedIn/Portfolio</span>
+          )}
         </p>
         <div className="edit hidden absolute -right-1 -top-1 p-1">
           <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
@@ -30,12 +74,12 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
         </div>
       </div>
 
-      {(resumeInfo.summary || resumeInfo.summary === "") && (
+      {(summary || summary === "") && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROFESSIONAL SUMMARY
           </h2>
-          <p className="mt-1 sm:mt-2 ">{resumeInfo.summary}</p>
+          <p className="mt-1 sm:mt-2 ">{summary}</p>
           <div className="edit hidden absolute -right-1 -top-1 p-1">
             <div className="flex gap-1.5 sm:gap-3 bg-gray-900">
               <button
@@ -56,13 +100,13 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       )}
 
       {/* Skills */}
-      {resumeInfo.skills && (
+      {skills && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             TECHNICAL SKILLS
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2  mt-1 sm:mt-2">
-            {resumeInfo.skills.map((skill, index) => (
+            {skills.map((skill, index) => (
               <p key={index}>• {skill}</p>
             ))}
           </div>
@@ -86,14 +130,14 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       )}
 
       {/* Experience */}
-      {resumeInfo.experience && (
+      {experience && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROFESSIONAL EXPERIENCE
           </h2>
 
           <div className="space-y-1 sm:space-y-2">
-            {resumeInfo.experience.map((exp, index) => (
+            {experience.map((exp, index) => (
               <div key={index}>
                 {(exp.jobTitle ||
                   exp.startMonth ||
@@ -145,12 +189,12 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       )}
 
       {/* Education */}
-      {resumeInfo.education && (
+      {education && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             EDUCATION
           </h2>
-          {resumeInfo.education.map((edu, index) => (
+          {education.map((edu, index) => (
             <React.Fragment key={index}>
               {(edu.degree ||
                 edu.fieldOfStudy ||
@@ -194,17 +238,17 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       )}
 
       {/* Certifications */}
-      {resumeInfo.certifications && (
+      {certifications && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             CERTIFICATIONS
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2  mt-1 sm:mt-2">
-            {resumeInfo.certifications.map(
+            {certifications.map(
               (cert, index) =>
                 (cert.name || cert.issueYear) && (
                   <p key={index}>
-                    • {cert.name}
+                    {cert.name}
                     {cert.issueYear && ` (${cert.issueYear})`}
                   </p>
                 )
@@ -230,13 +274,13 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       )}
 
       {/* Projects */}
-      {resumeInfo.projects && (
+      {projects && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             PROJECTS
           </h2>
           <div className=" mt-1 sm:mt-2">
-            {resumeInfo.projects.map(
+            {projects.map(
               (project, index) =>
                 (project.title || project.description) && (
                   <div className="mt-1 sm:mt-2" key={index}>
@@ -244,6 +288,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
                       <p className="font-bold">{project.title}</p>
                     )}
                     {project.description && <p>{project.description}</p>}
+                    {project.url && <p className="text-[#1E3A5F]">{project.url}</p>}
                   </div>
                 )
             )}
@@ -268,13 +313,13 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
       )}
 
       {/* Languages */}
-      {resumeInfo.languages && (
+      {languages && (
         <div className="c-info relative mt-4 sm:mt-6 md:mt-8">
           <h2 className="text-[10px] sm:text-base font-bold bg-[#EEEEEE] sm:px-2 px-1">
             LANGUAGES
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2 mt-1 sm:mt-2">
-            {resumeInfo.languages.map(
+            {languages.map(
               (lang, index) =>
                 lang.language && (
                   <p key={index} className="font-bold mt-1 sm:mt-2">

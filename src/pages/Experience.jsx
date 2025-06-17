@@ -415,9 +415,12 @@ const Experience = ({ setPageIndex }) => {
 
       <div className='max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between'>
               <Button onClick={handleGoBack} type="button" variant="ghost" size={isMobile?"sm" : "lg"} className="cursor-pointer"><ChevronLeft /> Back</Button>
-              <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
-                {loading && <Loader2 className="animate-spin" />}
-                Next: Education <ChevronRight /></Button>
+              <div className='space-x-2'>
+                        <Button variant={'link'}  type="button" size={isMobile?"sm" : "lg"} onClick={()=>setPageIndex(prev=>prev+1)}>Skip</Button>
+                        <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
+                          {loading && <Loader2 className="animate-spin" />}
+                          <span className='max-sm:hidden'>Next: Education</span> <span className='sm:hidden'>Save</span> <ChevronRight /></Button>
+                      </div>
             </div>
     </form>
   );

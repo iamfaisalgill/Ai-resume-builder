@@ -142,7 +142,7 @@ export default function VanguardPDF({ resumeInfo }) {
           <View style={styles.rowBetween}>
             <View>
               <Text style={styles.name}>
-                {contactInfo.firstName} {contactInfo.lastName}
+                {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
               </Text>
             </View>
             <View style={styles.contactRight}>
@@ -201,8 +201,13 @@ export default function VanguardPDF({ resumeInfo }) {
         {experience && (
           <View style={styles.section}>
             <Text style={styles.subtitle}>PROFESSIONAL EXPERIENCE</Text>
-            {experience.map((exp, idx) => (
-              <View key={idx} style={idx > 0 && { marginTop: 8 }}>
+            {experience.map((exp, idx) => 
+              (exp.jobTitle ||
+                exp.startMonth ||
+                exp.startYear ||
+                exp.endMonth ||
+                exp.present ||
+                exp.endYear) && (<View key={idx} style={idx > 0 && { marginTop: 8 }}>
                 <View style={styles.rowBetween}>
                   <View>
                     <Text style={{ fontWeight: "bold" }}>{exp.jobTitle}</Text>
@@ -221,8 +226,8 @@ export default function VanguardPDF({ resumeInfo }) {
                     {exp.description}
                   </Html>
                 )}
-              </View>
-            ))}
+              </View>)
+            )}
           </View>
         )}
 
@@ -231,7 +236,10 @@ export default function VanguardPDF({ resumeInfo }) {
           <View style={styles.section}>
             <Text style={styles.subtitle}>EDUCATION</Text>
             {education.map((edu, idx) => (
-              <View key={idx} style={idx > 0 && { marginTop: 8 }}>
+              (edu.degree ||
+                edu.fieldOfStudy ||
+                edu.graduationMonth ||
+                edu.graduationYear) && (<View key={idx} style={idx > 0 && { marginTop: 8 }}>
                 <View style={styles.rowBetween}>
                   <View>
                     <Text style={{ fontWeight: "bold" }}>
@@ -249,7 +257,7 @@ export default function VanguardPDF({ resumeInfo }) {
                     </Text>
                   )}
                 </View>
-              </View>
+              </View>)
             ))}
           </View>
         )}
@@ -259,7 +267,7 @@ export default function VanguardPDF({ resumeInfo }) {
           <View style={styles.section}>
             <Text style={styles.subtitle}>PROJECTS</Text>
             {projects.map((project, idx) => (
-              <View key={idx} style={idx > 0 && { marginTop: 8 }}>
+               (project.title || project.description || project.url) && (<View key={idx} style={idx > 0 && { marginTop: 8 }}>
                 {project.title && (
                   <Text style={{ fontWeight: "bold" }}>{project.title}</Text>
                 )}
@@ -276,7 +284,7 @@ export default function VanguardPDF({ resumeInfo }) {
                     {project.url}
                   </Link>
                 )}
-              </View>
+              </View>)
             ))}
           </View>
         )}
@@ -286,7 +294,7 @@ export default function VanguardPDF({ resumeInfo }) {
           <View style={styles.section}>
             <Text style={styles.subtitle}>CERTIFICATIONS</Text>
             {certifications.map((cert, idx) => (
-              <View key={idx} style={idx > 0 && { marginTop: 8 }}>
+              (cert.name || cert.organization || cert.issueMonth || cert.issueYear) && (<View key={idx} style={idx > 0 && { marginTop: 8 }}>
                 <View style={styles.rowBetween}>
                   <View>
                     {cert.name && (
@@ -300,7 +308,7 @@ export default function VanguardPDF({ resumeInfo }) {
                     </Text>
                   )}
                 </View>
-              </View>
+              </View>)
             ))}
           </View>
         )}
@@ -311,7 +319,7 @@ export default function VanguardPDF({ resumeInfo }) {
             <Text style={styles.subtitle}>LANGUAGES</Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
               {languages.map((lang, idx) => (
-                <View key={idx} style={{ marginRight: 8, marginBottom: 4 }}>
+               (lang.language || lang.proficiency) && <View key={idx} style={{ marginRight: 8, marginBottom: 4 }}>
                   <Text>
                     <Text style={{ fontWeight: "bold" }}>{lang.language}:</Text>{" "}
                     <Text>{lang.proficiency}</Text>

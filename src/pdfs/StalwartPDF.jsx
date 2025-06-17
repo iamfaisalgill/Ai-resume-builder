@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   Font,
+  Link,
 } from "@react-pdf/renderer";
 import segeo from "../assets/fonts/Seogeo/segoeuithis.ttf";
 import segeo_bold from "../assets/fonts/Seogeo/segoeuithibd.ttf";
@@ -45,40 +46,38 @@ const StalwartPDF = ({ resumeInfo }) => {
       fontFamily: "Segeo",
     },
     name: {
-      fontSize: 18, 
+      fontSize: 18,
       fontFamily: "Segeo",
       fontWeight: "bold",
       textTransform: "uppercase",
       marginBottom: 4,
     },
     contactInfo: {
-      fontSize: 10, 
+      fontSize: 10,
       color: "#666666",
       marginBottom: 12,
     },
     sectionHeader: {
-      fontSize: 11, 
+      fontSize: 11,
       fontFamily: "Segeo",
       fontWeight: "bold",
       backgroundColor: "#EEEEEE",
       paddingLeft: 5,
       paddingRight: 5,
       marginBottom: 5,
-      marginTop: 8,
+      marginTop: 15,
     },
     sectionText: {
-      fontSize: 10, 
-      marginBottom: 12,
+      fontSize: 10,
       lineHeight: 1.4,
     },
     skillGrid: {
       flexDirection: "row",
       flexWrap: "wrap",
-      marginBottom: 12,
     },
     skillItem: {
       width: "33%",
-      fontSize: 10, 
+      fontSize: 10,
       marginBottom: 4,
     },
     jobHeader: {
@@ -87,67 +86,67 @@ const StalwartPDF = ({ resumeInfo }) => {
       marginBottom: 2,
     },
     jobTitle: {
-      fontSize: 10, 
+      fontSize: 10,
       fontFamily: "Segeo",
       fontWeight: "bold",
     },
     jobDate: {
-      fontSize: 10, 
+      fontSize: 10,
       fontFamily: "Segeo",
       fontWeight: "bold",
     },
     companyInfo: {
-      fontSize: 10, 
-      marginBottom: 4,
+      fontSize: 10,
+      marginBottom: 2,
     },
     bulletList: {
-      fontSize: 10, 
+      fontSize: 10,
       marginLeft: 8,
     },
     bulletItem: {
       fontSize: 10,
-      marginBottom: 2, 
+      marginBottom: 2,
       marginLeft: 8,
       lineHeight: 1.3, // Better readability
     },
     educationItem: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginBottom: 4,
+      marginBottom: 2,
     },
     educationTitle: {
-      fontSize: 10, 
+      fontSize: 10,
       fontFamily: "Segeo",
       fontWeight: "bold",
     },
     educationDate: {
-      fontSize: 10, 
+      fontSize: 10,
       fontFamily: "Segeo",
       fontWeight: "bold",
     },
     educationSchool: {
-      fontSize: 10, 
-      marginBottom: 8,
+      fontSize: 10,
     },
     certGrid: {
       flexDirection: "row",
       flexWrap: "wrap",
-      marginBottom: 12,
     },
     certItem: {
       width: "50%",
-      fontSize: 10, 
+      fontSize: 10,
       marginBottom: 4,
     },
     projectTitle: {
-      fontSize: 10, 
+      fontSize: 10,
       fontFamily: "Segeo",
       fontWeight: "bold",
-      marginBottom: 2,
     },
     projectDesc: {
-      fontSize: 10, 
-      marginBottom: 8,
+      fontSize: 10,
+    },
+    projectUrl: {
+      fontSize: 10,
+      color: "#1E3A5F",
     },
     languageGrid: {
       flexDirection: "row",
@@ -156,14 +155,13 @@ const StalwartPDF = ({ resumeInfo }) => {
     },
     languageTitle: {
       width: "33%",
-      fontSize: 10, 
+      fontSize: 10,
       fontFamily: "Segeo",
       fontWeight: "bold",
-      marginTop: 8,
       marginBottom: 2,
     },
     languageLevel: {
-      fontSize: 10, 
+      fontSize: 10,
       color: "#666666",
       marginBottom: 4,
     },
@@ -180,79 +178,107 @@ const StalwartPDF = ({ resumeInfo }) => {
     },
   });
 
-  const skills = Array.isArray(resumeInfo.skills) ? resumeInfo.skills : [];
-  const experience = Array.isArray(resumeInfo.experience)
-    ? resumeInfo.experience
-    : [];
-  const education = Array.isArray(resumeInfo.education)
-    ? resumeInfo.education
-    : [];
-  const projects = Array.isArray(resumeInfo.projects)
-    ? resumeInfo.projects
-    : [];
-  const languages = Array.isArray(resumeInfo.languages)
-    ? resumeInfo.languages
-    : [];
-  const certifications = Array.isArray(resumeInfo.certifications)
-    ? resumeInfo.certifications
-    : [];
-  
+  const {
+    contactInfo,
+    summary,
+    skills,
+    experience,
+    education,
+    projects,
+    certifications,
+    languages,
+  } = resumeInfo;
 
   const CustomUl = ({ children }) => (
-     <View style={{ margin: 0, padding: 0 }}>
-       {Children.map(children, (child, index) => (
-         <View style={{ flexDirection: "row", marginBottom: 2 }}>
-           <Text style={{ marginRight: 5 }}>•</Text>
-           {child}
-         </View>
-       ))}
-     </View>
-   );
- 
-   const CustomOl = ({ children }) => (
-     <View style={{ margin: 0, padding: 0, counterReset: "item" }}>
-       {Children.map(children, (child, index) => (
-         <View style={{ flexDirection: "row", marginBottom: 2 }}>
-           <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
-           {child}
-         </View>
-       ))}
-     </View>
-   );
- 
-   const customRenderers = {
-     ul: CustomUl,
-     ol: CustomOl,
-     li: ({ children }) => <Text>{children}</Text>,
-   };
+    <View style={{ margin: 0, padding: 0 }}>
+      {Children.map(children, (child, index) => (
+        <View style={{ flexDirection: "row", marginBottom: 2 }}>
+          <Text style={{ marginRight: 5 }}>•</Text>
+          {child}
+        </View>
+      ))}
+    </View>
+  );
+
+  const CustomOl = ({ children }) => (
+    <View style={{ margin: 0, padding: 0, counterReset: "item" }}>
+      {Children.map(children, (child, index) => (
+        <View style={{ flexDirection: "row", marginBottom: 2 }}>
+          <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
+          {child}
+        </View>
+      ))}
+    </View>
+  );
+
+  const customRenderers = {
+    ul: CustomUl,
+    ol: CustomOl,
+    li: ({ children }) => <Text>{children}</Text>,
+  };
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <Text style={styles.name}>
-          {resumeInfo.contactInfo.firstName} {resumeInfo.contactInfo.lastName}
+          {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
         </Text>
         <Text style={styles.contactInfo}>
-          {resumeInfo.contactInfo.city}, {resumeInfo.contactInfo.country} •{" "}
-          {resumeInfo.contactInfo.phoneNumber} • {resumeInfo.contactInfo.email}{" "}
-          • {resumeInfo.contactInfo.linkedIn}
+          {/* City and Country */}
+          {contactInfo.city}
+          {contactInfo.city && contactInfo.country && ", "}
+          {contactInfo.country}
+
+          {/* First Bullet (only if something exists before and after) */}
+          {(contactInfo.city || contactInfo.country) &&
+            (contactInfo.phoneNumber ||
+              contactInfo.email ||
+              contactInfo.linkedIn) &&
+            " • "}
+
+          {/* Phone Number */}
+          {contactInfo.phoneNumber}
+
+          {/* Second Bullet */}
+          {contactInfo.phoneNumber &&
+            (contactInfo.email || contactInfo.linkedIn) &&
+            " • "}
+
+          {/* Email */}
+          {contactInfo.email}
+
+          {/* Third Bullet */}
+          {contactInfo.email && contactInfo.linkedIn && " • "}
+
+          {/* LinkedIn */}
+          {/* {contactInfo.linkedIn} */}
+          <Link
+                  src={
+                    contactInfo.linkedIn.startsWith("http")
+                      ? contactInfo.linkedIn
+                      : `https://${contactInfo.linkedIn}`
+                  }
+                  style={{ color: "#666666" }}
+                >
+                  {contactInfo.linkedIn}
+                </Link>
         </Text>
 
         {/* Professional Summary */}
-        {resumeInfo.summary && (
+        {(summary || summary === "") && (
           <>
             <Text style={styles.sectionHeader}>PROFESSIONAL SUMMARY</Text>
-            <Text style={styles.sectionText}>{resumeInfo.summary}</Text>
+            <Text style={styles.sectionText}>{summary}</Text>
           </>
         )}
 
         {/* Technical Skills */}
-        {skills.length > 0 && (
+        {skills && (
           <>
             <Text style={styles.sectionHeader}>TECHNICAL SKILLS</Text>
             <View style={styles.skillGrid}>
-              {resumeInfo.skills.map((skill, index) => (
+              {skills.map((skill, index) => (
                 <Text key={index} style={styles.skillItem}>
                   • {skill}
                 </Text>
@@ -262,87 +288,135 @@ const StalwartPDF = ({ resumeInfo }) => {
         )}
 
         {/* Professional Experience */}
-        {experience.length > 0 && (
+        {experience && (
           <>
             <Text style={styles.sectionHeader}>PROFESSIONAL EXPERIENCE</Text>
-            {resumeInfo.experience.map((exp, index) => (
-              <View key={index}>
-                <View style={styles.jobHeader}>
-                  <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
-                  {/* <Text style={styles.jobDate}>{exp.startDate} - {exp.endDate}</Text> */}
-                  <Text style={styles.jobDate}>
-                    {exp.startMonth} {exp.startYear} -{" "}
-                    {exp.present ? "Present" : `${exp.endMonth} ${exp.endYear}`}{" "}
-                  </Text>
-                </View>
-                <Text style={styles.companyInfo}>{exp.company}</Text>
-                <Html
-                  style={{ fontFamily: 'Segeo', fontSize: 10 }}
-                  renderers={customRenderers}
-                >
-                  {exp.description}
-                </Html>
-              </View>
-            ))}
+            {experience.map(
+              (exp, index) =>
+                (exp.jobTitle ||
+                  exp.startMonth ||
+                  exp.startYear ||
+                  exp.endMonth ||
+                  exp.present ||
+                  exp.endYear) && (
+                  <View key={index}>
+                    <View
+                      style={[styles.jobHeader, index > 0 && { marginTop: 8 }]}
+                    >
+                      <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
+                      <Text style={styles.jobDate}>
+                        {/* Start Date */}
+                        {exp.startMonth && `${exp.startMonth} `}
+                        {exp.startYear}
+
+                        {(exp.startMonth || exp.startYear) &&
+                          (exp.endMonth || exp.endYear || exp.present) &&
+                          " - "}
+
+                        {/* End Date */}
+                        {exp.present
+                          ? "Present"
+                          : exp.endMonth && `${exp.endMonth} `}
+                        {!exp.present && exp.endYear}
+                      </Text>
+                    </View>
+                    <Text style={styles.companyInfo}>{exp.company}</Text>
+                    <Html
+                      style={{ fontFamily: "Segeo", fontSize: 10 }}
+                      renderers={customRenderers}
+                    >
+                      {exp.description}
+                    </Html>
+                  </View>
+                )
+            )}
           </>
         )}
 
         {/* Education */}
-        {education.length > 0 && (
+        {education && (
           <>
             <Text style={styles.sectionHeader}>EDUCATION</Text>
-            {resumeInfo.education.map((edu, index) => (
-              <View key={index}>
-                <View style={styles.educationItem}>
-                  <Text style={styles.educationTitle}>
-                    {edu.degree} in {edu.fieldOfStudy}
-                  </Text>
-                  <Text style={styles.educationDate}>
-                    {edu.graduationMonth} {edu.graduationYear}
-                  </Text>
-                </View>
-                <Text style={styles.educationSchool}>{edu.institution}</Text>
-              </View>
-            ))}
+            {education.map(
+              (edu, index) =>
+                (edu.degree ||
+                  edu.fieldOfStudy ||
+                  edu.graduationMonth ||
+                  edu.graduationYear) && (
+                  <View key={index} style={index > 0 && { marginTop: 8 }}>
+                    <View style={styles.educationItem}>
+                      <Text style={styles.educationTitle}>
+                        {edu.degree}
+                        {edu.degree && edu.fieldOfStudy && " in "}
+                        {edu.fieldOfStudy}
+                      </Text>
+                      <Text style={styles.educationDate}>
+                        {edu.graduationMonth} {edu.graduationYear}
+                      </Text>
+                    </View>
+                    <Text style={styles.educationSchool}>
+                      {edu.institution}
+                    </Text>
+                  </View>
+                )
+            )}
           </>
         )}
 
         {/* Certifications */}
-        {certifications.length > 0 && (
+        {certifications && (
           <>
             <Text style={styles.sectionHeader}>CERTIFICATIONS</Text>
             <View style={styles.certGrid}>
-              {resumeInfo.certifications.map((cert, index) => (
-                <Text key={index} style={styles.certItem}>
-                  {cert.name} ({cert.issueYear})
-                </Text>
-              ))}
+              {certifications.map(
+                (cert, index) =>
+                  (cert.name || cert.issueYear) && (
+                    <Text key={index} style={styles.certItem}>
+                      {cert.name} {cert.issueYear && ` (${cert.issueYear})`}
+                    </Text>
+                  )
+              )}
             </View>
           </>
         )}
 
         {/* Projects */}
-        {projects.length > 0 && (
+        {projects && (
           <>
             <Text style={styles.sectionHeader}>PROJECTS</Text>
-            {resumeInfo.projects.map((project, index) => (
-              <View key={index}>
-                <Text style={styles.projectTitle}>{project.title}</Text>
-                <Text style={styles.projectDesc}>{project.description}</Text>
-                {/* {project.url && <Text style={styles.projectUrl}>URL: {project.url}</Text>} */}
-              </View>
-            ))}
+            {projects.map(
+              (project, index) =>
+                (project.title || project.description) && (
+                  <View key={index} style={index > 0 && { marginTop: 8 }}>
+                    <Text style={styles.projectTitle}>{project.title}</Text>
+                    <Text style={styles.projectDesc}>
+                      {project.description}
+                    </Text>
+
+                    <Link
+                      src={
+                        project.url.startsWith("http")
+                          ? project.url
+                          : `https://${project.url}`
+                      }
+                      style={styles.projectUrl}
+                    >
+                      {project.url}
+                    </Link>
+                  </View>
+                )
+            )}
           </>
         )}
 
         {/* Languages */}
-        {languages.length > 0 && (
+        {languages && (
           <>
             <Text style={styles.sectionHeader}>LANGUAGES</Text>
             <View style={styles.languageGrid}>
-              {resumeInfo.languages.map((lang, index) => (
-                <Text key={index} style={styles.languageTitle}>
-                  {lang.language} ({lang.proficiency})
+              {languages.map((lang, index) => (
+                lang.language && <Text key={index} style={styles.languageTitle}>
+                  {lang.language} {lang.proficiency && ` (${lang.proficiency})`}
                 </Text>
               ))}
               {/* {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}

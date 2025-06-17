@@ -104,7 +104,7 @@ const ContactDetails = ({ setPageIndex }) => {
           </div>
 
           <div className='col-span-1'>
-            <Label htmlFor="linkedIn">LinkedIn</Label>
+            <Label htmlFor="linkedIn">LinkedIn/Portfolio</Label>
             <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.linkedIn} id="linkedIn" name="linkedIn" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="e.g. linkedin.com/in/jasoncarter" />
           </div>
 
@@ -112,9 +112,12 @@ const ContactDetails = ({ setPageIndex }) => {
       </div>
       <div className='max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between'>
         <Button onClick={handleGoBack} type="button" variant="ghost" size={isMobile?"sm" : "lg"} className="cursor-pointer"><ChevronLeft /> Back</Button>
-        <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
-          {loading && <Loader2 className="animate-spin" />}
-          Next: Work Experience <ChevronRight /></Button>
+        <div className='space-x-2'>
+          <Button variant={'link'}  type="button" size={isMobile?"sm" : "lg"} onClick={()=>setPageIndex(prev=>prev+1)}>Skip</Button>
+          <Button disabled={loading} type="submit" size={isMobile?"sm" : "lg"} className="cursor-pointer">
+            {loading && <Loader2 className="animate-spin" />}
+            <span className='max-sm:hidden'>Next: Work Experience</span> <span className='sm:hidden'>Save</span> <ChevronRight /></Button>
+        </div>
       </div>
     </form>
   )

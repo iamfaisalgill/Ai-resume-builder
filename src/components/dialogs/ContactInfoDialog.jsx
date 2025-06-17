@@ -163,7 +163,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
     
               {/* LinkedIn */}
               <div className='sm:col-span-2'>
-                <Label htmlFor="linkedIn" className="text-xs md:text-sm">LinkedIn</Label>
+                <Label htmlFor="linkedIn" className="text-xs md:text-sm">LinkedIn/Portfolio</Label>
                 <Input
                   onChange={e => handleChange(e)}
                   defaultValue={resumeInfo.contactInfo?.linkedIn}

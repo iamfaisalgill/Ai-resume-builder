@@ -18,7 +18,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
   } = resumeInfo || {};
 
   return (
-    <div className="text-white max-w-4xl min-h-[850px] shadow-lg rounded-lg mx-auto text-[10px] sm:text-base ">
+    <div className="text-white max-w-4xl min-h-[1122px] bg-white shadow-lg rounded-lg mx-auto text-[10px] sm:text-base ">
       <div className="c-info relative bg-[#1E3A5F] p-3 sm:p-6 flex justify-between">
         <h1 className="text-[15px] sm:text-3xl font-bold uppercase">
           {!(contactInfo.firstName || contactInfo.lastName) ? (
@@ -27,7 +27,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
             `${contactInfo.firstName} ${contactInfo.lastName}`
           )}
         </h1>
-        <div className="text-right">
+        <div>
           {contactInfo.phoneNumber ? (
             <p className="mt-1 sm:mt-2 text-[8px] sm:text-sm">
               {contactInfo.phoneNumber}
@@ -40,17 +40,17 @@ const IconicTheme = ({ deleteItem, editItem }) => {
           ) : (
             <p className="text-gray-400">Email</p>
           )}
+          {contactInfo.linkedIn ? (
+            <p className="text-[8px] sm:text-sm">{contactInfo.linkedIn}</p>
+          ) : (
+            <p className="text-gray-400">LinkedIn/Portfolio</p>
+          )}
           {contactInfo.city || contactInfo.country ? (
             <p className="text-[8px] sm:text-sm">{`${contactInfo.city || ""}${
               contactInfo.city && contactInfo.country ? ", " : ""
             }${contactInfo.country || ""}`}</p>
           ) : (
             <p className="text-gray-400">Location</p>
-          )}
-          {contactInfo.linkedIn ? (
-            <p className="text-[8px] sm:text-sm">{contactInfo.linkedIn}</p>
-          ) : (
-            <p className="text-gray-400">LinkedIn/Portfolio</p>
           )}
         </div>
         <div className="edit hidden absolute -right-1 -top-1 p-1">
@@ -65,7 +65,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
         </div>
       </div>
 
-      <div className="bg-white min-h-[850px] text-black p-3 sm:p-6 space-y-3 sm:space-y-6">
+      <div className=" text-black p-3 sm:p-6 space-y-3 sm:space-y-6">
         {/* PROFESSIONAL SUMMARY */}
         {(summary || summary === "") && (
           <div className="c-info relative grid grid-cols-3 gap-2 sm:gap-4">
@@ -130,18 +130,17 @@ const IconicTheme = ({ deleteItem, editItem }) => {
             </h2>
             <div className="col-span-2 space-y-3">
               {experience?.map((exp, index) => (
-                <div key={index}>
+                (exp.jobTitle ||
+                  exp.startMonth ||
+                  exp.startYear ||
+                  exp.endMonth ||
+                  exp.present ||
+                  exp.endYear) && <div key={index}>
                   {exp.jobTitle && (
                     <p className="font-bold mt-1 sm:mt-2 text-[8px] sm:text-sm">
                       {exp.jobTitle}
                     </p>
                   )}
-                  {(exp.company ||
-                    exp.startMonth ||
-                    exp.startYear ||
-                    exp.endMonth ||
-                    exp.present ||
-                    exp.endYear) && (
                     <p className="text-[8px] sm:text-sm">
                       {exp.company}
                       {exp.company && (exp.startMonth || exp.startYear) && ", "}
@@ -151,7 +150,6 @@ const IconicTheme = ({ deleteItem, editItem }) => {
                         ? "Present"
                         : `${exp.endMonth || ""} ${exp.endYear || ""}`}
                     </p>
-                  )}
                   {exp.description && (
                     <span
                       className="text-[8px] sm:text-sm"
@@ -188,7 +186,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
             </h2>
             <div className="col-span-2 space-y-2 sm:space-y-4">
               {projects?.map((project, index) => (
-                <div key={index}>
+                (project.title || project.description || project.url) && <div key={index}>
                   {project.title && (
                     <p className="font-bold text-[8px] sm:text-sm">
                       {project.title}
@@ -321,7 +319,7 @@ const IconicTheme = ({ deleteItem, editItem }) => {
               {languages?.map((lang, index) => (
                 <div key={index}>
                   {lang.language && (
-                    <p className="font-bold text-[8px] sm:text-sm">
+                    <p className="font-bold text-[8px] sm:text-sm capitalize">
                       {lang.language}
                     </p>
                   )}

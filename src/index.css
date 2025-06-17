@@ -274,7 +274,7 @@ ol li {
 }
 
 .rsw-ce{
-  @apply bg-card/50 text-sm md:text-base
+  @apply bg-card/50 text-sm md:text-base break-all
 }
 
 .rsw-toolbar {

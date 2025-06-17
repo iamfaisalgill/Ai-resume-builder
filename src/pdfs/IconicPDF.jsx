@@ -1,4 +1,11 @@
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Link,
+} from "@react-pdf/renderer";
 import { Children } from "react";
 import Html from "react-pdf-html";
 
@@ -111,11 +118,9 @@ const styles = StyleSheet.create({
   certifications: {
     fontSize: 10,
     lineHeight: 1.3,
-    marginBottom: 3, // Added spacing between certs
   },
   languageItem: {
     width: "33.33%", // More precise than '33%'
-    marginBottom: 4, // Reduced from 5
   },
   languageName: {
     fontSize: 10,
@@ -145,33 +150,33 @@ const IconicPDF = ({ resumeInfo }) => {
     languages,
   } = resumeInfo;
 
-   const CustomUl = ({ children }) => (
-      <View style={{ margin: 0, padding: 0 }}>
-        {Children.map(children, (child, index) => (
-          <View style={{ flexDirection: "row", marginBottom: 2 }}>
-            <Text style={{ marginRight: 5 }}>•</Text>
-            {child}
-          </View>
-        ))}
-      </View>
-    );
-  
-    const CustomOl = ({ children }) => (
-      <View style={{ margin: 0, padding: 0, counterReset: "item" }}>
-        {Children.map(children, (child, index) => (
-          <View style={{ flexDirection: "row", marginBottom: 2 }}>
-            <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
-            {child}
-          </View>
-        ))}
-      </View>
-    );
-  
-    const customRenderers = {
-      ul: CustomUl,
-      ol: CustomOl,
-      li: ({ children }) => <Text>{children}</Text>,
-    };
+  const CustomUl = ({ children }) => (
+    <View style={{ margin: 0, padding: 0 }}>
+      {Children.map(children, (child, index) => (
+        <View style={{ flexDirection: "row", marginBottom: 2 }}>
+          <Text style={{ marginRight: 5 }}>•</Text>
+          {child}
+        </View>
+      ))}
+    </View>
+  );
+
+  const CustomOl = ({ children }) => (
+    <View style={{ margin: 0, padding: 0, counterReset: "item" }}>
+      {Children.map(children, (child, index) => (
+        <View style={{ flexDirection: "row", marginBottom: 2 }}>
+          <Text style={{ marginRight: 5 }}>{index + 1}.</Text>
+          {child}
+        </View>
+      ))}
+    </View>
+  );
+
+  const customRenderers = {
+    ul: CustomUl,
+    ol: CustomOl,
+    li: ({ children }) => <Text>{children}</Text>,
+  };
 
   return (
     <Document>
@@ -180,22 +185,23 @@ const IconicPDF = ({ resumeInfo }) => {
         <View style={styles.header}>
           <View>
             <Text style={styles.name}>
-              {contactInfo.firstName}{" "}
-              {contactInfo.lastName}
+              {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
             </Text>
           </View>
           <View>
-            <Text style={styles.contactInfo}>
-              {contactInfo.phoneNumber}
-            </Text>
-            <Text style={styles.contactInfo}>
-              {contactInfo.email}
-            </Text>
-            <Text style={styles.contactInfo}>
+            <Text style={styles.contactInfo}>{contactInfo.phoneNumber}</Text>
+            <Text style={styles.contactInfo}>{contactInfo.email}</Text>
+            <Link
+              src={
+                contactInfo.linkedIn.startsWith("http")
+                  ? contactInfo.linkedIn
+                  : `https://${contactInfo.linkedIn}`
+              }
+              style={[styles.contactInfo, {color: "#fff"}]}
+            >
               {contactInfo.linkedIn}
-            </Text>
-            {(contactInfo.city ||
-              contactInfo.country) && (
+            </Link>
+            {(contactInfo.city || contactInfo.country) && (
               <Text style={styles.contactInfo}>
                 {[contactInfo.city, contactInfo.country]
                   .filter(Boolean)
@@ -243,24 +249,37 @@ const IconicPDF = ({ resumeInfo }) => {
                 <Text>EXPERIENCE</Text>
               </View>
               <View style={styles.sectionContent}>
-                {experience.map((exp, index) => (
-                  <View key={index} style={{ marginBottom: 8 }}>
-                    <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
-                    <Text style={styles.jobDetails}>
-                      {exp.company}, {exp.startMonth} {exp.startYear} -{" "}
-                      {exp.present
-                        ? "Present"
-                        : `${exp.endMonth} ${exp.endYear}`}
-                    </Text>
+                {experience.map(
+                  (exp, index) =>
+                    (exp.jobTitle ||
+                      exp.startMonth ||
+                      exp.startYear ||
+                      exp.endMonth ||
+                      exp.present ||
+                      exp.endYear) && (
+                      <View key={index} style={index > 0 && { marginTop: 8 }}>
+                        <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
+                        <Text style={styles.jobDetails}>
+                          {exp.company}
+                          {exp.company &&
+                            (exp.startMonth || exp.startYear) &&
+                            ", "}
+                          {exp.startMonth} {exp.startYear}
+                          {(exp.endMonth || exp.present) && " - "}
+                          {exp.present
+                            ? "Present"
+                            : `${exp.endMonth || ""} ${exp.endYear || ""}`}
+                        </Text>
 
-                    <Html
-                      style={{ fontFamily: "Helvetica", fontSize: 10 }}
-                      renderers={customRenderers}
-                    >
-                      {exp.description}
-                    </Html>
-                  </View>
-                ))}
+                        <Html
+                          style={{ fontFamily: "Helvetica", fontSize: 10 }}
+                          renderers={customRenderers}
+                        >
+                          {exp.description}
+                        </Html>
+                      </View>
+                    )
+                )}
               </View>
             </View>
           )}
@@ -272,20 +291,29 @@ const IconicPDF = ({ resumeInfo }) => {
                 <Text>PROJECTS</Text>
               </View>
               <View style={styles.sectionContent}>
-                {projects.map((project, index) => (
-                  <View key={index} style={{ marginBottom: 8 }}>
-                    <Text style={styles.projectTitle}>{project.title}</Text>
-                    <Text style={styles.projectDesc}>
-                      {project.description}
-                    </Text>
-                    {project.url && (
-                      <Text style={styles.projectUrl}>
-                        {project.url.replace(/^https?:\/\//, "")}{" "}
-                        {/* Remove http(s):// */}
-                      </Text>
-                    )}
-                  </View>
-                ))}
+                {projects.map(
+                  (project, index) =>
+                    (project.title || project.description || project.url) && (
+                      <View key={index} style={index > 0 && { marginTop: 8 }}>
+                        <Text style={styles.projectTitle}>{project.title}</Text>
+                        <Text style={styles.projectDesc}>
+                          {project.description}
+                        </Text>
+                        {project.url && (
+                          <Link
+                            src={
+                              project.url.startsWith("http")
+                                ? project.url
+                                : `https://${project.url}`
+                            }
+                            style={styles.projectUrl}
+                          >
+                            {project.url}
+                          </Link>
+                        )}
+                      </View>
+                    )
+                )}
               </View>
             </View>
           )}
@@ -298,15 +326,26 @@ const IconicPDF = ({ resumeInfo }) => {
               </View>
               <View style={styles.sectionContent}>
                 {education.map((edu, index) => (
-                  <View key={index} style={styles.educationItem}>
-                    <Text style={styles.educationDegree}>
-                      {edu.degree} in {edu.fieldOfStudy}
-                    </Text>
-                    <Text style={styles.educationDetails}>
-                      {edu.institution}, {edu.graduationMonth}{" "}
-                      {edu.graduationYear}
-                      {edu.gpa && `, GPA: ${edu.gpa}`}
-                    </Text>
+                  <View key={index} style={index > 0 && { marginTop: 8 }}>
+                    {(edu.degree || edu.fieldOfStudy) && (
+                      <Text style={styles.educationDegree}>
+                        {edu.degree}
+                        {edu.degree && edu.fieldOfStudy && " in "}
+                        {edu.fieldOfStudy}
+                      </Text>
+                    )}
+                    {(edu.institution ||
+                      edu.graduationMonth ||
+                      edu.graduationYear) && (
+                      <Text style={styles.educationDetails}>
+                        {edu.institution}
+                        {edu.institution &&
+                          (edu.graduationMonth || edu.graduationYear) &&
+                          ", "}
+                        {edu.graduationMonth} {edu.graduationYear}
+                        {edu.gpa && `, GPA: ${edu.gpa}`}
+                      </Text>
+                    )}
                   </View>
                 ))}
               </View>
@@ -320,12 +359,24 @@ const IconicPDF = ({ resumeInfo }) => {
                 <Text>CERTIFICATIONS</Text>
               </View>
               <View style={styles.sectionContent}>
-                {certifications.map((cert, index) => (
-                  <Text key={index} style={styles.certifications}>
-                    • {cert.name} ({cert.issueYear})
-                    {cert.issuer && ` • ${cert.issuer}`}
-                  </Text>
-                ))}
+                {certifications.map(
+                  (cert, index) =>
+                    (cert.organization || cert.issueYear) && (
+                      <Text
+                        key={index}
+                        style={[
+                          styles.certifications,
+                          index > 0 && { marginTop: 3 },
+                        ]}
+                      >
+                        {cert.name}
+                        {(cert.organization || cert.issueYear) &&
+                          ` (${cert.organization}${
+                            cert.organization && cert.issueYear ? " " : ""
+                          }${cert.issueYear || ""})`}
+                      </Text>
+                    )
+                )}
               </View>
             </View>
           )}
@@ -337,12 +388,26 @@ const IconicPDF = ({ resumeInfo }) => {
                 <Text>LANGUAGES</Text>
               </View>
               <View style={[styles.sectionContent, styles.skillGrid]}>
-                {" "}
-                {/* Reused skillGrid styles */}
                 {languages.map((lang, index) => (
-                  <View key={index} style={styles.languageItem}>
-                    <Text style={styles.languageName}>{lang.language}</Text>
-                    <Text style={styles.languageLevel}>{lang.proficiency}</Text>
+                  <View
+                    key={index}
+                    style={[styles.languageItem, index > 0 && { marginTop: 5 }]}
+                  >
+                    {lang.language && (
+                      <Text
+                        style={[
+                          styles.languageName,
+                          { textTransform: "capitalize" },
+                        ]}
+                      >
+                        {lang.language}
+                      </Text>
+                    )}
+                    {lang.proficiency && (
+                      <Text style={styles.languageLevel}>
+                        {lang.proficiency}
+                      </Text>
+                    )}
                   </View>
                 ))}
               </View>
