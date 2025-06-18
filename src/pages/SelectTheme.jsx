@@ -30,15 +30,15 @@ export default function SelectTheme() {
 
   const handleSelect = (templateName) => {
     setSelectedTemplate(templateName);
-    navigate(`/theme-${templateName.toLowerCase()}/download`);
+    navigate(`/template-${templateName.toLowerCase()}/download`);
   };
 
   return (
     <div className="min-w-full p-4">
       <div className="max-w-3xl sm:max-w-5xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-medium text-gray-900">Choose Your Design</h1>
-          <p className="text-gray-500 mt-2">Select a template to continue</p>
+        <div className="text-center my-8">
+          <h1 className="text-2xl font-medium">Choose Your Design</h1>
+          <p className="text-muted-foreground mt-2">Select a template to continue</p>
         </div>
 
         {isMobile ? (

@@ -9,52 +9,26 @@ import HalleyPDF from "@/pdfs/HalleyPDF";
 import IconicPDF from "@/pdfs/IconicPDF";
 import StalwartPDF from "@/pdfs/StalwartPDF";
 import {
-  FileDown,
   ChevronLeft,
   ChevronRight,
-  Eye,
   PanelRightOpen,
   PanelRightClose,
-  File,
-  FilePen,
   Loader2,
   PencilLineIcon,
-  ArrowDown,
   ArrowDownToLine,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 // pdf related
-import { pdf, usePDF } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import clsx from "clsx";
 import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
 import VanguardPDF from "@/pdfs/VanguardPDF";
 import VanguardTemplate from "@/components/templates/VanguardTemplate";
-import Modal from "@/components/Modal";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -63,10 +37,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 const DownloadFile = () => {
   const { resumeInfo, setResumeInfo } = useResume();
   const { selectedTheme } = useParams();
-  const isIconic = useMatch("/theme-iconic/download");
-  const isStalwart = useMatch("/theme-stalwart/download");
-  const isHalley = useMatch("/theme-halley/download");
-  const isVanguard = useMatch("/theme-vanguard/download");
+  const isIconic = useMatch("/template-iconic/download");
+  const isStalwart = useMatch("/template-stalwart/download");
+  const isHalley = useMatch("/template-halley/download");
+  const isVanguard = useMatch("/template-vanguard/download");
   const [activeDialog, setActiveDialog] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");

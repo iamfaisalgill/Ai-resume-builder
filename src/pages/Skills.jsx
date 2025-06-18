@@ -168,16 +168,19 @@ const Skills = ({ setPageIndex }) => {
         >
           <ChevronLeft /> Back
         </Button>
-        <Button
-          onClick={onSave}
-          disabled={loading}
-          type="submit"
-          size={isMobile ? "sm" : "lg"}
-          className="cursor-pointer"
-        >
-          {loading && <Loader2 className="animate-spin" />}
-          Next: Summary <ChevronRight />
-        </Button>
+        <div className="space-x-2">
+          <Button variant={'link'}  type="button" size={isMobile?"sm" : "lg"} onClick={()=>setPageIndex(prev=>prev+1)}>Skip</Button>
+          <Button
+            onClick={onSave}
+            disabled={loading}
+            type="submit"
+            size={isMobile ? "sm" : "lg"}
+            className="cursor-pointer"
+          >
+            {loading && <Loader2 className="animate-spin" />}
+            Next: Summary <ChevronRight />
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -49,7 +49,7 @@ function App() {
               }
             />
             <Route
-              path="/select-theme"
+              path="/select-template"
               element={
                 <>
                   <Header pageIndex={pageIndex} setPageIndex={setPageIndex} />

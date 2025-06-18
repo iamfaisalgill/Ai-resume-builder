@@ -22,12 +22,6 @@ const ResumeBuild = ({ pageIndex, setPageIndex }) => {
           <Skills setPageIndex={setPageIndex} />
         ) : pageIndex == 5 ? (
           <Summary setPageIndex={setPageIndex} />
-        ) : pageIndex == 6 ? (
-          <Projects/> 
-        ) : pageIndex == 7 ? (
-          <Certifications/> 
-        ) : pageIndex == 8 ? (
-          <Languages/> 
         ) : null}
       </div>
     </div>
