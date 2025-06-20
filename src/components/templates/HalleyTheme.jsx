@@ -31,6 +31,7 @@ const HalleyTheme = ({
 
   return (
     <div className="mx-auto bg-white max-w-4xl min-h-[1122px] shadow-lg rounded-lg text-[8px] sm:text-sm md:text-base">
+    
       <div className="flex">
         {/* Main Content (Left 3/4) */}
         <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
@@ -316,11 +317,11 @@ const HalleyTheme = ({
                 )}
               </p>
             </>
-            {contactInfo.github && (
+            {/* {contactInfo.github && (
               <p className="mt-1 sm:mt-2 md:mt-3 break-all">
                 {github}
               </p>
-            )}
+            )} */}
             <div className="edit hidden absolute -right-1 -top-1">
               <div className="flex gap-2 sm:gap-3 bg-gray-900">
                 <button

@@ -29,6 +29,10 @@ import clsx from "clsx";
 import { Separator } from "@/components/ui/separator";
 import VanguardPDF from "@/pdfs/VanguardPDF";
 import VanguardTemplate from "@/components/templates/VanguardTemplate";
+import HorizonTemplate from "@/components/templates/HorizonTemplate";
+import ApexTemplate from "@/components/templates/ApexTemplate";
+import ApexPDF from "@/pdfs/ApexPDF";
+import HorizonPDF from "@/pdfs/HorizonPDF";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -41,6 +45,8 @@ const DownloadFile = () => {
   const isStalwart = useMatch("/template-stalwart/download");
   const isHalley = useMatch("/template-halley/download");
   const isVanguard = useMatch("/template-vanguard/download");
+  const isHorizon = useMatch("/template-horizon/download");
+  const isApex = useMatch("/template-apex/download");
   const [activeDialog, setActiveDialog] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");
@@ -85,6 +91,8 @@ const DownloadFile = () => {
       if (isIconic) return <IconicPDF resumeInfo={resumeInfo} />;
       if (isStalwart) return <StalwartPDF resumeInfo={resumeInfo} />;
       if (isVanguard) return <VanguardPDF resumeInfo={resumeInfo} />;
+      if (isHorizon) return <HorizonPDF resumeInfo={resumeInfo} />;
+      if (isApex) return <ApexPDF resumeInfo={resumeInfo} />;
       return <div>No template selected</div>;
     };
     return <Component />;
@@ -352,6 +360,20 @@ const DownloadFile = () => {
             />
           ) : isVanguard ? (
             <VanguardTemplate
+              activeDialog={activeDialog}
+              setActiveDialog={setActiveDialog}
+              editItem={editItem}
+              deleteItem={deleteItem}
+            />
+          ) : isHorizon ? (
+            <HorizonTemplate
+              activeDialog={activeDialog}
+              setActiveDialog={setActiveDialog}
+              editItem={editItem}
+              deleteItem={deleteItem}
+            />
+          ) : isApex ? (
+            <ApexTemplate
               activeDialog={activeDialog}
               setActiveDialog={setActiveDialog}
               editItem={editItem}

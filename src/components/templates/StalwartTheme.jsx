@@ -288,7 +288,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
                       <p className="font-bold">{project.title}</p>
                     )}
                     {project.description && <p>{project.description}</p>}
-                    {project.url && <p className="text-[#1E3A5F]">{project.url}</p>}
+                    {project.url&&<p className="text-[#1E3A5F]">{project.url}</p>}
                   </div>
                 )
             )}

@@ -139,7 +139,7 @@ export default function ResumeSidebar({
         </div>
         <span className="py-2 px-4 font-bold border-b">Customize</span>
         <div className="my-4 px-4">
-          <Link to="/select-theme">
+          <Link to="/select-template">
             <Button
               variant="outline"
               className="w-full flex items-center justify-center gap-2"

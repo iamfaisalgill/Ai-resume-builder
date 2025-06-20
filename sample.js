@@ -7,6 +7,7 @@ let dummyData = {
     country: "Canada",
     phoneNumber: "+1 (416) 987-6543",
     linkedIn: "linkedin.com/in/michaelchen",
+    role: "Data Scientist"
   },
   summary:
     "Innovative data scientist with 5+ years of experience in machine learning and big data analytics. Specialized in developing predictive models and data-driven solutions for business challenges. Strong communicator with proven ability to translate complex technical concepts for non-technical stakeholders.",
@@ -115,6 +116,7 @@ let emptyData = {
     country: "",
     phoneNumber: "",
     linkedIn: "",
+    role: ""
   },
   summary: "",
   aiGeneratedSummaries: [],
@@ -152,6 +154,7 @@ let myData = {
     country: "Pakistan",
     phoneNumber: "+92 3151361735",
     linkedIn: "linkedin.com/in/faisal-gill",
+    role: "Frontend Developer"
   },
   summary:
     "Front-End Developer with 2+ years of experience building responsive, high-performance web applications using React, JavaScript, and Tailwind CSS. Adept at Agile development, optimizing load times (up to 25% faster), and crafting reusable components for scalable solutions. Passionate about clean code, accessibility, and performance optimization while collaborating effectively in team environments.",

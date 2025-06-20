@@ -6,6 +6,8 @@ import halley_template from "../assets/halley.webp";
 import iconic_template from "../assets/iconic.webp";
 import stalwart_template from "../assets/stalwart.webp";
 import vanguard_template from "../assets/vanguard.webp";
+import horizon_template from '../assets/horizon.webp'
+import apex_template from '../assets/apex.webp'
 import {
   FileText,
   Bot,
@@ -46,42 +48,52 @@ const Home = () => {
           <img
             src={halley_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-md w-[250px] mx-5"
+            className="rounded-lg shadow-md w-[250px] mx-5"
           />
           <img
             src={iconic_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
             src={stalwart_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
             src={vanguard_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={horizon_template}
+            alt="Resume Preview"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={apex_template}
+            alt="Resume Preview"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
             src={halley_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
             src={iconic_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
             src={stalwart_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
             src={vanguard_template}
             alt="Resume Preview"
-            className="rounded-2xl shadow-xl w-[250px] mx-5"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           
         </Marquee>
