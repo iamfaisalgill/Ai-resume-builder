@@ -19,9 +19,9 @@ const HorizonTemplate = ({ deleteItem, editItem }) => {
   } = resumeInfo;
 
   return (
-    <div className="max-w-4xl min-h-[1122px] mx-auto my-8 bg-white shadow-md">
+    <div className="max-w-4xl min-h-[1122px] shadow-lg rounded-lg mx-auto my-8 bg-white">
       {/* Clean Header */}
-      <div className="c-info relative bg-gray-800 text-white p-8">
+      <div className="c-info relative bg-gray-800 text-white p-8 rounded-t-lg">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
             <h1 className="text-3xl font-bold">

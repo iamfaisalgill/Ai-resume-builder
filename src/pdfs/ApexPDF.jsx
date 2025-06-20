@@ -213,10 +213,10 @@ const ApexPDF = ({ resumeInfo }) => {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.name}>
-            {contactInfo.firstName}{' '}
-            <Text style={styles.lastName}>{contactInfo.lastName}</Text>
+            {contactInfo.firstName || 'John'}{' '}
+            <Text style={styles.lastName}>{contactInfo.lastName || 'Doe'}</Text>
           </Text>
-          <Text style={styles.title}>Data Scientist</Text>
+          {/* <Text style={styles.title}>{contactInfo.title || 'Your Profession'}</Text> */}
           <View style={styles.contactInfo}>
             <View style={styles.contactItem}>
               <Text>{contactInfo.email}</Text>
@@ -225,7 +225,11 @@ const ApexPDF = ({ resumeInfo }) => {
               <Text>{contactInfo.phoneNumber}</Text>
             </View>
             <View style={styles.contactItem}>
-              <Text>{contactInfo.city}, {contactInfo.country}</Text>
+              {contactInfo.city || contactInfo.country && <Text>{contactInfo.city}
+              {contactInfo.city &&
+                contactInfo.country &&
+                ", "}
+              {contactInfo.country}</Text>}
             </View>
             <View style={styles.contactItem}>
               <Text>{contactInfo.linkedIn}</Text>
@@ -234,53 +238,58 @@ const ApexPDF = ({ resumeInfo }) => {
         </View>
 
         {/* Summary */}
-        <View>
+        {(summary || summary === "") && <View>
           <Text style={styles.sectionTitle}>Summary</Text>
           <Text style={styles.summary}>{summary}</Text>
-        </View>
+        </View>}
 
         <View style={styles.twoColumns}>
           <View style={styles.mainColumn}>
             {/* Experience */}
-            <View>
+            {experience && <View>
               <Text style={styles.sectionTitle}>Experience</Text>
               {experience.map((exp, index) => (
-                <View key={index} style={{ marginBottom: 16 }}>
+                (exp.jobTitle ||
+                    exp.startMonth ||
+                    exp.startYear ||
+                    exp.endMonth ||
+                    exp.present ||
+                    exp.endYear) && <View key={index} style={{ marginBottom: 16 }}>
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={styles.jobTitle}>{exp.jobTitle}</Text>
+                    {exp.jobTitle && <Text style={styles.jobTitle}>{exp.jobTitle}</Text>}
                     <Text style={styles.date}>
                       {formatDateRange(exp.startMonth, exp.startYear, exp.endMonth, exp.endYear, exp.present)}
                     </Text>
                   </View>
-                  <Text style={styles.company}>{exp.company}</Text>
-                  <Html
+                  {exp.company && <Text style={styles.company}>{exp.company}</Text>}
+                  {exp.description && <Html
                         style={{ fontFamily: "Helvetica", fontSize: 9 }}
                         renderers={customRenderers}
                       >
                         {exp.description}
-                      </Html>
+                      </Html>}
                 </View>
               ))}
-            </View>
+            </View>}
 
             {/* Projects */}
-            <View>
+            {projects && <View>
               <Text style={styles.sectionTitle}>Projects</Text>
               {projects.map((project, index) => (
-                <View key={index} style={{ marginBottom: 12 }}>
-                  <Text style={styles.projectTitle}>{project.title}</Text>
-                  <Text style={styles.projectDescription}>{project.description}</Text>
-                  <Link src={`https://${project.url}`} style={styles.projectLink}>
+                (project.title || project.description || project.url) && <View key={index} style={{ marginBottom: 12 }}>
+                  {project.title && <Text style={styles.projectTitle}>{project.title}</Text>}
+                  {project.description &&<Text style={styles.projectDescription}>{project.description}</Text>}
+                  {project.url &&<Link src={project.url.startsWith("http") ? p.url : `https://${project.url}`} style={styles.projectLink}>
                     {project.url}
-                  </Link>
+                  </Link>}
                 </View>
               ))}
-            </View>
+            </View>}
           </View>
 
           <View style={styles.sideColumn}>
             {/* Skills */}
-            <View>
+            {skills && <View>
               <Text style={styles.sectionTitle}>Skills</Text>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {skills.map((skill, index) => (
@@ -289,47 +298,50 @@ const ApexPDF = ({ resumeInfo }) => {
                   </Text>
                 ))}
               </View>
-            </View>
+            </View>}
 
             {/* Education */}
-            <View style={{ marginTop: 20 }}>
+            {education && <View style={{ marginTop: 20 }}>
               <Text style={styles.sectionTitle}>Education</Text>
               {education?.map((edu, index) => (
-                <View key={index} style={{ marginBottom: 12 }}>
-                  <Text style={styles.educationDegree}>{edu.degree}</Text>
-                  <Text style={styles.educationInstitution}>{edu.institution}</Text>
-                  <Text style={styles.educationField}>{edu.fieldOfStudy}</Text>
+                (edu.degree ||
+                edu.fieldOfStudy ||
+                edu.graduationMonth ||
+                edu.graduationYear) && (<View key={index} style={{ marginBottom: 12 }}>
+                  {edu.degree && <Text style={styles.educationDegree}>{edu.degree}</Text>}
+                  {edu.institution && <Text style={styles.educationInstitution}>{edu.institution}</Text>}
+                  {edu.fieldOfStudy && <Text style={styles.educationField}>{edu.fieldOfStudy}</Text>}
                   <Text style={styles.educationDate}>
                     {formatEducationDate(edu.graduationMonth, edu.graduationYear)}
                   </Text>
-                </View>
+                </View>)
               ))}
-            </View>
+            </View>}
 
             {/* Certifications */}
-            <View style={{ marginTop: 20 }}>
+            {certifications && <View style={{ marginTop: 20 }}>
               <Text style={styles.sectionTitle}>Certifications</Text>
               {certifications.map((cert, index) => (
-                <View key={index} style={{ marginBottom: 8 }}>
+                (cert.name || cert.issueYear) && <View key={index} style={{ marginBottom: 8 }}>
                   <Text style={styles.certificationName}>{cert.name}</Text>
-                  <Text style={styles.certificationOrg}>{cert.organization}</Text>
+                  {cert.organization && <Text style={styles.certificationOrg}>{cert.organization}</Text>}
                   <Text style={styles.certificationDate}>
                     {cert.issueMonth} {cert.issueYear}
                   </Text>
                 </View>
               ))}
-            </View>
+            </View>}
 
             {/* Languages */}
-            <View style={{ marginTop: 20 }}>
+            {languages && <View style={{ marginTop: 20 }}>
               <Text style={styles.sectionTitle}>Languages</Text>
               {languages.map((lang, index) => (
-                <View key={index} style={styles.languageItem}>
+                lang.language && <View key={index} style={styles.languageItem}>
                   <Text style={styles.languageName}>{lang.language}</Text>
                   <Text style={styles.languageProficiency}>{lang.proficiency}</Text>
                 </View>
               ))}
-            </View>
+            </View>}
           </View>
         </View>
       </Page>

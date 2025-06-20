@@ -16,6 +16,7 @@ import {
   Loader2,
   PencilLineIcon,
   ArrowDownToLine,
+  Eye,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useMatch, useParams } from "react-router-dom";
@@ -33,6 +34,8 @@ import HorizonTemplate from "@/components/templates/HorizonTemplate";
 import ApexTemplate from "@/components/templates/ApexTemplate";
 import ApexPDF from "@/pdfs/ApexPDF";
 import HorizonPDF from "@/pdfs/HorizonPDF";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -316,7 +319,7 @@ const DownloadFile = () => {
               {loading ? <Loader2 className="animate-spin" /> : <ArrowDownToLine />}
               <span className="max-sm:hidden">Download PDF</span>
             </Button>
-            {/* <div className="max-sm:hidden">
+            <div className="max-sm:hidden">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant={"secondary"} className="cursor-pointer">
@@ -332,7 +335,7 @@ const DownloadFile = () => {
                   </ScrollArea>
                 </DialogContent>
               </Dialog>
-            </div> */}
+            </div>
           </div>
           <ModeToggle />
         </div>
