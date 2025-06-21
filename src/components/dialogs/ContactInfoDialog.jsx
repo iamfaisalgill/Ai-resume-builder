@@ -12,9 +12,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
 import { useResume } from '@/context/ResumeInfoContext'
 import { ScrollArea } from '../ui/scroll-area'
+import toast from 'react-hot-toast'
 
 function ContactInfoDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume()
@@ -38,7 +38,7 @@ function ContactInfoDialog({ isOpen, onClose }) {
     e.preventDefault()
     setResumeInfo(prev => ({ ...prev, contactInfo: formData }))
 
-    toast.info("Contact Information Updated");
+    toast.success("Contact Information Updated");
     onClose()
   }
 

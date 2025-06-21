@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { toast } from "sonner";
 import { Pencil, Trash, Plus, Check } from "lucide-react";
 import {
   Dialog,
@@ -16,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { useResume } from "@/context/ResumeInfoContext";
+import toast from "react-hot-toast";
 
 export default function SkillsDialog({ isOpen, onClose }) {
   const { resumeInfo, setResumeInfo } = useResume();
@@ -66,7 +66,7 @@ export default function SkillsDialog({ isOpen, onClose }) {
       skills: skills,
     }));
     setIsEditing(false);
-    toast.info("Skills Updated");
+    toast.success("Skills Updated");
     onClose();
   };
 

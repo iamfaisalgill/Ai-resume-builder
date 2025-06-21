@@ -10,8 +10,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { useResume } from "@/context/ResumeInfoContext"
 import { useState } from "react"
-import { toast } from "sonner"
 import { Textarea } from "../ui/textarea";
+import toast from "react-hot-toast";
 
 const SummaryDialog = ({ isOpen, onClose }) => {
 
@@ -28,7 +28,7 @@ const SummaryDialog = ({ isOpen, onClose }) => {
       ...prev,
       summary: textareaValue
     }))
-    toast.info("Summary Updated");
+    toast.success("Summary Updated");
     onClose()
   }
 

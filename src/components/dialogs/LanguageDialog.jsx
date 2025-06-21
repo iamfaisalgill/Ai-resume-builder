@@ -20,8 +20,8 @@ import { useResume } from "@/context/ResumeInfoContext";
 import { useEffect, useState } from "react";
 import { Plus, Trash2, TrashIcon } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import { toast } from "sonner";
 import { Separator } from "../ui/separator";
+import toast from "react-hot-toast";
 
 const formField = {
   language: "",
@@ -106,7 +106,7 @@ export default function LanguageDialog({ isOpen, onClose }) {
       languages: [...languageList],
     }));
 
-    toast.info("Language Updated");
+    toast.success("Languages Updated");
     onClose();
   };
 

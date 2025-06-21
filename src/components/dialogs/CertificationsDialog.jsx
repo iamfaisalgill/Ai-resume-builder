@@ -19,10 +19,10 @@ import { Button } from "@/components/ui/button";
 import { useResume } from "@/context/ResumeInfoContext";
 import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-import { toast } from "sonner";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Plus, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const formField = {
   name: "",
@@ -59,7 +59,7 @@ export default function CertificationsDialog({ isOpen, onClose }) {
       ...prev,
       certifications: [...certificationsList],
     }));
-    toast.info("Certifications Updated");
+    toast.success("Certifications Updated");
     onClose();
   };
 

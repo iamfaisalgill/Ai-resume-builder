@@ -70,7 +70,8 @@ const Education = ({ setPageIndex }) => {
     await new Promise(resolve => resolve());
   }
 
-    setResumeInfo({ ...resumeInfo, education: [...educationList] });
+  const updatedEdu = educationList.filter((edu) => edu.institution);
+    setResumeInfo({ ...resumeInfo, education: [...updatedEdu] });
 
     setLoading(false);
     setPageIndex(prev=>prev+1);

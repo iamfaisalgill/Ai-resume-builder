@@ -87,7 +87,7 @@ const Skills = ({ setPageIndex }) => {
   };
 
   return (
-    <div className="space-y-9">
+    <div className="space-y-9 min-h-[440px] flex flex-col">
       <div className="max-sm:text-center">
         <h2 className="text-xl md:text-2xl font-semibold">Skills</h2>
         <p className="text-sm md:text-base text-muted-foreground">
@@ -158,7 +158,7 @@ const Skills = ({ setPageIndex }) => {
         </div>
       </div>
 
-      <div className="max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t w-full flex justify-between">
+      <div className="max-sm:fixed max-sm:bottom-0 max-sm:right-0 max-sm:bg-background max-sm:p-5 max-sm:border-t mt-auto w-full flex justify-between">
         <Button
           onClick={handleGoBack}
           type="button"

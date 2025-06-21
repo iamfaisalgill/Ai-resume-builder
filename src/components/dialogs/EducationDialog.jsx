@@ -34,12 +34,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { toast } from "sonner"
 import { useResume } from "@/context/ResumeInfoContext";
 import { PlusCircle, TrashIcon } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
+import toast from "react-hot-toast";
 
 
 const months = [
@@ -74,7 +74,7 @@ const formField = {
 const EducationDialog = ({ isOpen, onClose }) => {
 
   const { resumeInfo, setResumeInfo } = useResume();
-  const [EducationList, setEducationList] = useState(
+  const [educationList, setEducationList] = useState(
     resumeInfo?.education?.length ? [...resumeInfo.education] : []
   );
   const [openItem, setOpenItem] = useState("");
@@ -83,8 +83,8 @@ const EducationDialog = ({ isOpen, onClose }) => {
   const [date, setDate] = useState(new Date())
 
   const addMore = () => {
-    const newIndex = EducationList.length + 1;
-    setEducationList([...EducationList, { ...formField, isNew: true }]);
+    const newIndex = educationList.length + 1;
+    setEducationList([...educationList, { ...formField, isNew: true }]);
     setOpenItem(`item-${newIndex}`);
   };
 
@@ -111,11 +111,11 @@ const EducationDialog = ({ isOpen, onClose }) => {
   }
 
   const hasChanges = () => {
-    if (EducationList.length !== resumeInfo.education.length) {
+    if (educationList.length !== resumeInfo.education.length) {
       return true;
     }
 
-    return EducationList.some((edu, index) => {
+    return educationList.some((edu, index) => {
       const originalEdu = resumeInfo.education[index];
       if (!originalEdu) return true;
 
@@ -129,24 +129,20 @@ const EducationDialog = ({ isOpen, onClose }) => {
     });
   };
 
-  // institution: "",
-  // degree: "",
-  // graduationMonth: "",
-  // graduationYear: "",
-  // fieldOfStudy: "",
 
   const handleSave = () => {
+    const updatedEdu = educationList.filter((edu) => edu.institution);
     setResumeInfo(prev => ({
       ...prev,
-      education: [...EducationList],
+      education: [...updatedEdu],
     }));
-    toast.info("Education Updated");
+    toast.success("Education Updated");
     setIsEditing(true)
     onClose()
   }
 
   const deleteThis = (index) => {
-    const newList = EducationList.filter((_, i) => i !== index);
+    const newList = educationList.filter((_, i) => i !== index);
 
     // Handle openItem state
     if (openItem === `item-${index + 1}`) {
@@ -169,7 +165,7 @@ const EducationDialog = ({ isOpen, onClose }) => {
   }
 
   useEffect(() => {
-    if (EducationList.length > 0 && (!EducationList[0].institution && !EducationList[0].degree)) {
+    if (educationList.length > 0 && (!educationList[0].institution && !educationList[0].degree)) {
       setOpenItem("item-1");
     }
   }, []);
@@ -195,7 +191,7 @@ const EducationDialog = ({ isOpen, onClose }) => {
                 // If collapsing an item (value is empty) and it's a new empty item
                 if (!value && openItem) {
                   const index = parseInt(openItem.split('-')[1]) - 1;
-                  const item = EducationList[index];
+                  const item = educationList[index];
 
                   // Check if the item is empty (new and not modified)
                   if (item.isNew && !item.jobTitle && !item.company) {
@@ -206,7 +202,7 @@ const EducationDialog = ({ isOpen, onClose }) => {
                 setOpenItem(value);
               }}
             >
-              {EducationList.map((item, index) => (
+              {educationList.map((item, index) => (
                 <div className="flex gap-1 md:gap-2 space-y-2 md:space-y-3" key={index}>
                   <AccordionItem value={`item-${index + 1}`} className='flex-1 border-0 AccordionItem rounded-lg'>
                     <AccordionTrigger className="AccordionTrigger px-3 md:px-5 items-center">

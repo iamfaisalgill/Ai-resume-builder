@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button";
 import { useResume } from "@/context/ResumeInfoContext";
 import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-import { toast } from "sonner";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const formField = {
   title: "",
@@ -43,8 +43,9 @@ export default function LanguageDialog({ isOpen, onClose }) {
   };
 
   const handleSave = () => {
+    
     setResumeInfo((prev) => ({ ...prev, projects: [...projectList] }));
-    toast.info("Projects Updated");
+    toast.success("Projects Updated");
     onClose();
   };
 

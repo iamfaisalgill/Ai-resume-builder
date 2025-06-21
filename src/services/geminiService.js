@@ -13,9 +13,12 @@ export const generateResumeSummaries = async (userDetails) => {
           temperature: 0.6, // Balance creativity and focus
         }
       });
+      const firstName = userDetails.firstName;
+      const lastName = userDetails.lastName;
+      const fullName = `${firstName} ${lastName}`.trim();
     
     const prompt = `Generate 3 distinct professional resume summary variations (30-40 words each) for:
-    - Name: ${userDetails.fullName || 'Candidate'}
+    - Name: ${fullName || 'Candidate'}
     - Skills: ${userDetails.skills?.join(', ') || 'various technical skills'}
     
     Requirements:
@@ -35,7 +38,7 @@ export const generateResumeSummaries = async (userDetails) => {
     
     const result = await model.generateContent(prompt);
     const response = await result.response;
-    const text = response.text();
+  const text = response.text();
     
     // Clean the response to ensure valid JSON
     const cleanedText = text.replace(/```json|```/g, '').trim();

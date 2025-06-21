@@ -12,7 +12,7 @@ import { Label } from "../ui/label"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { useEffect, useState } from "react"
 import { useResume } from "@/context/ResumeInfoContext"
-import { toast } from "sonner"
+import toast from "react-hot-toast"
 
 
 const formFields = {
@@ -103,7 +103,7 @@ const MoreSectionsDialog = ({ isOpen, onClose }) => {
         projects: [formFields.projects]
       }))
     }
-    toast.info(`${selectedValue} Added`);
+    toast.success(`${selectedValue} Added`);
       onClose();
     
   }

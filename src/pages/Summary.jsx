@@ -40,17 +40,9 @@ const Summary = ({ setPageIndex }) => {
   const [aiGeneratedText, setAiGeneratedText] = useState(
     resumeInfo.aiGeneratedSummaries || []
   );
-  const [aigeneratedSummary, setAigeneratedSummary] = useState(
-    resumeInfo.aiGeneratedSummaries || []
-  );
   const [loader, setLoader] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const navigate = useNavigate();
-
-  const useThis = () => {
-    setTextareaValue(aiGeneratedText[currentIndex]);
-    setIsUsingAI(true);
-  };
 
   const handleSelectOption = () => {
     setTextareaValue(aiGeneratedText[currentIndex]);
@@ -61,25 +53,14 @@ const Summary = ({ setPageIndex }) => {
     setPageIndex((prev) => prev - 1);
   };
 
-  const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev < aiGeneratedText.length - 1 ? prev + 1 : prev
-    );
-  };
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { value } = e.target;
     setTextareaValue(value);
     setIsUsingAI(false);
   };
 
   const onSave = () => {
     setLoading(true);
-    // Simulate API call
     setTimeout(() => {
       setResumeInfo((prevInfo) => ({ ...prevInfo, summary: textareaValue }));
       setLoading(false);
@@ -102,14 +83,9 @@ const Summary = ({ setPageIndex }) => {
     } catch (error) {
       console.log(error);
       toast.error("Failed to generate Summary. Please try again.");
+      setLoader(false);
     }
   };
-
-  useEffect(() => {
-    if (aigeneratedSummary.length == 0) {
-      handleGenerate();
-    }
-  }, []);
 
   const navigateAiOptions = (direction) => {
     setCurrentIndex((prev) => {

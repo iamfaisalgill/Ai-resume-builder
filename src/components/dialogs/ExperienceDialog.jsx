@@ -145,9 +145,10 @@ export default function ExperienceDialog({ isOpen, onClose }) {
   };
 
   const handleSave = () => {
+    const updatedExperience = experienceList.filter((exp) => exp.jobTitle);
     setResumeInfo((prev) => ({
       ...prev,
-      experience: [...experienceList],
+      experience: [...updatedExperience],
     }));
     toast.success("Experience Updated");
     onClose();
@@ -207,6 +208,7 @@ export default function ExperienceDialog({ isOpen, onClose }) {
       });
     } catch (error) {
       console.log(error);
+      setLoader(false);
     }
   };
 

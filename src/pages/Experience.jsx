@@ -172,6 +172,7 @@ const Experience = ({ setPageIndex }) => {
     } catch (error) {
       console.log(error);
       toast.error("Failed to generate description. Please try again.");
+      setLoader(false);
     }
   };
 
