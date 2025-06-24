@@ -8,6 +8,7 @@ import stalwart_template from "../assets/stalwart.webp";
 import vanguard_template from "../assets/vanguard.webp";
 import horizon_template from '../assets/horizon.webp'
 import apex_template from '../assets/apex.webp'
+import impresa_template from '../assets/impresa.webp'
 import {
   FileText,
   Bot,
@@ -76,9 +77,14 @@ const Home = () => {
             className="rounded-lg shadow-xl w-[250px] mx-5"
           />
           <img
-            src={halley_template}
+            src={impresa_template}
             alt="Resume Preview"
             className="rounded-lg shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={halley_template}
+            alt="Resume Preview"
+            className="rounded-lg shadow-md w-[250px] mx-5"
           />
           <img
             src={iconic_template}
@@ -95,7 +101,21 @@ const Home = () => {
             alt="Resume Preview"
             className="rounded-lg shadow-xl w-[250px] mx-5"
           />
-          
+          <img
+            src={horizon_template}
+            alt="Resume Preview"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={apex_template}
+            alt="Resume Preview"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
+          />
+          <img
+            src={impresa_template}
+            alt="Resume Preview"
+            className="rounded-lg shadow-xl w-[250px] mx-5"
+          />
         </Marquee>
 
         {/* </div> */}

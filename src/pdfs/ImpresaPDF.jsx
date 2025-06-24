@@ -7,50 +7,73 @@ import {
   Font,
   Link,
 } from "@react-pdf/renderer";
-import segeo from "../assets/fonts/Seogeo/segoeuithis.ttf";
-import segeo_bold from "../assets/fonts/Seogeo/segoeuithibd.ttf";
-import segeo_italic from "../assets/fonts/Seogeo/segoeuithisi.ttf";
-import segeo_italicb from "../assets/fonts/Seogeo/segoeuithisz.ttf";
 import Html from "react-pdf-html";
 import { Children } from "react";
 
-Font.register({
-  family: "Segeo",
-  fonts: [
-    {
-      src: segeo, // Regular
-      fontWeight: "normal",
-      fontStyle: "normal",
-    },
-    {
-      src: segeo_bold, // Bold
-      fontWeight: "bold",
-    },
-    {
-      src: segeo_italic, // Italic
-      fontStyle: "italic",
-    },
-    {
-      src: segeo_italicb, // Bold Italic
-      fontWeight: "bold",
-      fontStyle: "italic",
-    },
-  ],
-});
 
-const StalwartPDF = ({ resumeInfo }) => {
+
+const ImpresaPDF = ({ resumeInfo }) => {
   // Create styles
   const styles = StyleSheet.create({
     page: {
       padding: 15,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
     },
     name: {
       fontSize: 18,
-      fontFamily: "Segeo",
-      fontWeight: "bold", // make name & heading 500
+      fontFamily: "Helvetica",
+      fontWeight: 500, // make name & heading 500
       textTransform: "uppercase",
       marginBottom: 4,
+    },
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+      color: "#000",
+      marginBottom: 12,
+    },
+    logoBox: {
+      width: 50,
+      height: 50,
+      border: "2 solid black",
+      position: "relative",
+      justifyContent: "center",
+      alignItems: "center",
+      display: "flex",
+    },
+    fgWrapper: {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+      padding: 4,
+      justifyContent: "space-between",
+      flexDirection: "column",
+    },
+    fgRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    letter: {
+      fontSize: 18,
+      fontWeight: 500,
+      textTransform: 'uppercase'
+    },
+    slashLine: {
+      position: "absolute",
+      left: 0,
+      width: '100%',
+      height: 2,
+      backgroundColor: "#000",
+      transform: "rotate(-45deg)",
+    },
+    nameBlock: {
+      marginLeft: 12,
+      fontWeight: 500,
+      textTransform: 'uppercase'
+    },
+    nameLine: {
+      fontSize: 22,
+      lineHeight: 1.1,
     },
     contactInfo: {
       fontSize: 10,
@@ -59,12 +82,9 @@ const StalwartPDF = ({ resumeInfo }) => {
     },
     sectionHeader: {
       fontSize: 11,
-      fontFamily: "Segeo",
-      fontWeight: "bold",
-      backgroundColor: "#EEEEEE",
-      paddingLeft: 5,
-      paddingRight: 5,
-      marginBottom: 5,
+      fontFamily: "Helvetica",
+      fontWeight: 600,
+      marginBottom: 7,
       marginTop: 15,
     },
     sectionText: {
@@ -87,12 +107,12 @@ const StalwartPDF = ({ resumeInfo }) => {
     },
     jobTitle: {
       fontSize: 10,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
       fontWeight: "bold",
     },
     jobDate: {
       fontSize: 10,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
       fontWeight: "bold",
     },
     companyInfo: {
@@ -116,12 +136,12 @@ const StalwartPDF = ({ resumeInfo }) => {
     },
     educationTitle: {
       fontSize: 10,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
       fontWeight: "bold",
     },
     educationDate: {
       fontSize: 10,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
       fontWeight: "bold",
     },
     educationSchool: {
@@ -138,7 +158,7 @@ const StalwartPDF = ({ resumeInfo }) => {
     },
     projectTitle: {
       fontSize: 10,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
       fontWeight: "bold",
     },
     projectDesc: {
@@ -156,7 +176,7 @@ const StalwartPDF = ({ resumeInfo }) => {
     languageTitle: {
       width: "33%",
       fontSize: 10,
-      fontFamily: "Segeo",
+      fontFamily: "Helvetica",
       fontWeight: "bold",
       marginBottom: 2,
     },
@@ -221,9 +241,29 @@ const StalwartPDF = ({ resumeInfo }) => {
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
-        <Text style={styles.name}>
-          {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
-        </Text>
+        {/* <Text style={styles.name}>
+            {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
+          </Text> */}
+        <View style={styles.container}>
+          <View style={styles.logoBox}>
+            <View style={styles.fgWrapper}>
+              <View style={styles.fgRow}>
+                <Text style={styles.letter}>{contactInfo.firstName.charAt(0) || 'J'}</Text>
+                <Text></Text>
+              </View>
+              <View style={styles.fgRow}>
+                <Text></Text>
+                <Text style={styles.letter}>{contactInfo.lastName.charAt(0) || 'D'}</Text>
+              </View>
+            </View>
+            <View style={styles.slashLine} />
+          </View>
+          <View style={styles.nameBlock}>
+            <Text style={styles.nameLine}>{contactInfo.firstName || "John"}</Text>
+            <Text style={styles.nameLine}>{contactInfo.lastName || "Doe"}</Text>
+          </View>
+        </View>
+
         <Text style={styles.contactInfo}>
           {/* City and Country */}
           {contactInfo.city}
@@ -254,15 +294,15 @@ const StalwartPDF = ({ resumeInfo }) => {
           {/* LinkedIn */}
           {/* {contactInfo.linkedIn} */}
           <Link
-                  src={
-                    contactInfo.linkedIn.startsWith("http")
-                      ? contactInfo.linkedIn
-                      : `https://${contactInfo.linkedIn}`
-                  }
-                  style={{ color: "#666666" }}
-                >
-                  {contactInfo.linkedIn}
-                </Link>
+            src={
+              contactInfo.linkedIn.startsWith("http")
+                ? contactInfo.linkedIn
+                : `https://${contactInfo.linkedIn}`
+            }
+            style={{ color: "#666666" }}
+          >
+            {contactInfo.linkedIn}
+          </Link>
         </Text>
 
         {/* Professional Summary */}
@@ -322,7 +362,7 @@ const StalwartPDF = ({ resumeInfo }) => {
                     </View>
                     <Text style={styles.companyInfo}>{exp.company}</Text>
                     <Html
-                      style={{ fontFamily: "Segeo", fontSize: 10 }}
+                      style={{ fontFamily: "Helvetica", fontSize: 10 }}
                       renderers={customRenderers}
                     >
                       {exp.description}
@@ -414,13 +454,15 @@ const StalwartPDF = ({ resumeInfo }) => {
           <>
             <Text style={styles.sectionHeader}>LANGUAGES</Text>
             <View style={styles.languageGrid}>
-              {languages.map((lang, index) => (
-                lang.language && <Text key={index} style={styles.languageTitle}>
-                  {lang.language} {lang.proficiency && ` (${lang.proficiency})`}
-                </Text>
-              ))}
-              {/* {lang.certification && <Text style={styles.languageCert}>Certification: {lang.certification}</Text>}
-            {lang.yearsOfExperience && <Text style={styles.languageExp}>Years of Experience: {lang.yearsOfExperience}</Text>} */}
+              {languages.map(
+                (lang, index) =>
+                  lang.language && (
+                    <Text key={index} style={styles.languageTitle}>
+                      {lang.language}{" "}
+                      {lang.proficiency && ` (${lang.proficiency})`}
+                    </Text>
+                  )
+              )}
             </View>
           </>
         )}
@@ -429,4 +471,4 @@ const StalwartPDF = ({ resumeInfo }) => {
   );
 };
 
-export default StalwartPDF;
+export default ImpresaPDF;

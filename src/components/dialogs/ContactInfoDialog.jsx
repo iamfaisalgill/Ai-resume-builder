@@ -77,7 +77,6 @@ function ContactInfoDialog({ isOpen, onClose }) {
               <div className='col-span-1'>
                 <Label htmlFor="firstName" className="text-xs md:text-sm">First Name</Label>
                 <Input
-                  required
                   onChange={e => handleChange(e)}
                   defaultValue={resumeInfo.contactInfo?.firstName}
                   id="firstName"
@@ -92,7 +91,6 @@ function ContactInfoDialog({ isOpen, onClose }) {
               <div className='col-span-1'>
                 <Label htmlFor="lastName" className="text-xs md:text-sm">Last Name</Label>
                 <Input
-                  required
                   onChange={e => handleChange(e)}
                   defaultValue={resumeInfo.contactInfo?.lastName}
                   id="lastName"

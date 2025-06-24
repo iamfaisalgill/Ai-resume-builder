@@ -39,6 +39,7 @@ Font.register({
   ],
 });
 
+
 const styles = StyleSheet.create({
   page: {
     padding: 20,

@@ -34,8 +34,11 @@ import HorizonTemplate from "@/components/templates/HorizonTemplate";
 import ApexTemplate from "@/components/templates/ApexTemplate";
 import ApexPDF from "@/pdfs/ApexPDF";
 import HorizonPDF from "@/pdfs/HorizonPDF";
+import ImpresaPDF from "@/pdfs/ImpresaPDF";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import VoyageTemplate from "@/components/templates/VoyageTemplate";
+import ImpresaTemplate from "@/components/templates/ImpresaTemplate";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -50,12 +53,13 @@ const DownloadFile = () => {
   const isVanguard = useMatch("/template-vanguard/download");
   const isHorizon = useMatch("/template-horizon/download");
   const isApex = useMatch("/template-apex/download");
+  const isImpresa = useMatch("/template-impresa/download");
+  const isVoyage = useMatch("/template-voyage/download");
   const [activeDialog, setActiveDialog] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");
   const [sidebar, setSidebar] = useState(true);
   const inputRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileName, setFileName] = useState(
     resumeInfo.fileName ? resumeInfo.fileName : "New Resume"
   );
@@ -96,6 +100,7 @@ const DownloadFile = () => {
       if (isVanguard) return <VanguardPDF resumeInfo={resumeInfo} />;
       if (isHorizon) return <HorizonPDF resumeInfo={resumeInfo} />;
       if (isApex) return <ApexPDF resumeInfo={resumeInfo} />;
+      if (isImpresa) return <ImpresaPDF resumeInfo={resumeInfo} />;
       return <div>No template selected</div>;
     };
     return <Component />;
@@ -342,43 +347,41 @@ const DownloadFile = () => {
         <div className="mt-5 p-4">
           {isHalley ? (
             <HalleyTheme
-              activeDialog={activeDialog}
-              setActiveDialog={setActiveDialog}
               editItem={editItem}
               deleteItem={deleteItem}
             />
           ) : isIconic ? (
             <IconicTheme
-              activeDialog={activeDialog}
-              setActiveDialog={setActiveDialog}
               editItem={editItem}
               deleteItem={deleteItem}
             />
           ) : isStalwart ? (
             <StalwartTheme
-              activeDialog={activeDialog}
-              setActiveDialog={setActiveDialog}
               editItem={editItem}
               deleteItem={deleteItem}
             />
           ) : isVanguard ? (
             <VanguardTemplate
-              activeDialog={activeDialog}
-              setActiveDialog={setActiveDialog}
               editItem={editItem}
               deleteItem={deleteItem}
             />
           ) : isHorizon ? (
             <HorizonTemplate
-              activeDialog={activeDialog}
-              setActiveDialog={setActiveDialog}
               editItem={editItem}
               deleteItem={deleteItem}
             />
           ) : isApex ? (
             <ApexTemplate
-              activeDialog={activeDialog}
-              setActiveDialog={setActiveDialog}
+              editItem={editItem}
+              deleteItem={deleteItem}
+            />
+          ) : isImpresa ? (
+            <ImpresaTemplate
+              editItem={editItem}
+              deleteItem={deleteItem}
+            />
+          ) : isVoyage ? (
+            <VoyageTemplate
               editItem={editItem}
               deleteItem={deleteItem}
             />

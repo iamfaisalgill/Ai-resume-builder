@@ -7,6 +7,7 @@ import stalwart_template from "../assets/stalwart.webp";
 import vanguard_template from "../assets/vanguard.webp";
 import horizon_template from '../assets/horizon.webp'
 import apex_template from '../assets/apex.webp'
+import impresa_template from '../assets/impresa.webp'
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useResume, useMediaQuery } from "@/context/ResumeInfoContext";
@@ -23,8 +24,9 @@ const templates = [
   { id: 2, name: "Iconic", src: iconic_template },
   { id: 3, name: "Stalwart", src: stalwart_template },
   { id: 4, name: "Vanguard", src: vanguard_template },
-  { id: 5, name: "Horizon", src: horizon_template },
+  { id: 5, name: "Impresa", src: impresa_template },
   { id: 6, name: "Apex", src: apex_template },
+  { id: 7, name: "Horizon", src: horizon_template },
 ];
 
 export default function SelectTheme() {

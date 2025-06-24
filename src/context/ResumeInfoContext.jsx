@@ -7,41 +7,42 @@ export const ResumeInfoProvider = ({ children }) => {
   const [resumeInfo, setResumeInfo] = useState(()=>{
     const savedData = localStorage.getItem('resumeInfo')
     return savedData ? JSON.parse(savedData) : {
-  contactInfo: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    city: "",
-    country: "",
-    phoneNumber: "",
-    linkedIn: "",
-  },
-  summary: "",
-  aiGeneratedSummaries: [],
-  skills: [],
-
-  experience: [
-    {
-      jobTitle: "",
-      company: "",
-      startYear: "",
-      startMonth: "",
-      endYear: "",
-      endMonth: "",
-      present: false,
-      description: "",
-    },
-  ],
-  education: [
-    {
-      institution: "",
-      degree: "",
-      graduationMonth: "",
-      graduationYear: "",
-      fieldOfStudy: "",
-    },
-  ],
-};
+      contactInfo: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        city: "",
+        country: "",
+        phoneNumber: "",
+        linkedIn: "",
+        role: ""
+      },
+      summary: "",
+      aiGeneratedSummaries: [],
+      skills: [],
+    
+      experience: [
+        {
+          jobTitle: "",
+          company: "",
+          startYear: "",
+          startMonth: "",
+          endYear: "",
+          endMonth: "",
+          present: false,
+          description: "",
+        },
+      ],
+      education: [
+        {
+          institution: "",
+          degree: "",
+          graduationMonth: "",
+          graduationYear: "",
+          fieldOfStudy: "",
+        },
+      ],
+    };
   });
 
     // Save state to localStorage whenever it changes
