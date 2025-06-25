@@ -16,7 +16,7 @@ import {
   ArrowDownToLine,
   Eye,
 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 // pdf related
 import { pdf } from "@react-pdf/renderer";
@@ -36,6 +36,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import VoyageTemplate from "@/components/templates/VoyageTemplate";
 import ImpresaTemplate from "@/components/templates/ImpresaTemplate";
+import Modal from "@/components/Modal";
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "react-pdf/node_modules/pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url
@@ -108,7 +109,7 @@ const DownloadFile = () => {
     return <Component />;
   };
 
-  const PDFGenerator = ({ onGenerated }) => {
+  const PDFGenerator = React.memo(({ onGenerated, resumeInfo }) => {
     useEffect(() => {
       const generatePdf = async () => {
         try {
@@ -119,14 +120,14 @@ const DownloadFile = () => {
           console.error("Error generating PDF:", err);
         }
       };
-
+  
       generatePdf();
-    }, [onGenerated]);
-
-    return null; // no UI needed
-  };
-
-  const MyPDFViewer = () => {
+    }, [onGenerated, resumeInfo]); // Add resumeInfo to dependency array
+  
+    return null;
+  });
+  
+  const MyPDFViewer = React.memo(({ resumeInfo }) => {
     const [fileUrl, setFileUrl] = useState(null);
     const [numPages, setNumPages] = useState(null);
     const [width, setWidth] = useState(window.innerWidth);
@@ -136,52 +137,48 @@ const DownloadFile = () => {
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, []);
-
+  
     const isLargeScreen = useMediaQuery("(min-width: 1200px)");
     const isMediumScreen = useMediaQuery("(min-width: 768px)");
     const isSmallScreen = useMediaQuery("(max-width: 767px)");
-
-    const getPageWidth = () => {
+  
+    const getPageWidth = useCallback(() => {
       if (isLargeScreen) return 900;
       if (isMediumScreen) return 600;
       if (isSmallScreen) return 300;
-    };
-
-    const onDocumentLoadSuccess = ({ numPages }) => {
+    }, [isLargeScreen, isMediumScreen, isSmallScreen]);
+  
+    const onDocumentLoadSuccess = useCallback(({ numPages }) => {
       setNumPages(numPages);
-    };
-
+    }, []);
+  
     return (
-      <div className="flex flex-col items-center">
+      <>
         {!fileUrl ? (
-          <PDFGenerator onGenerated={setFileUrl} />
+          <PDFGenerator onGenerated={setFileUrl} resumeInfo={resumeInfo} />
         ) : (
-          <div className="flex flex-col items-center w-full gap-4">
-            <Document
-              file={fileUrl}
-              onLoadSuccess={onDocumentLoadSuccess}
-              onLoadError={console.error}
-            >
-              {/* Render all pages */}
+          <Document
+            file={fileUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={console.error}
+            loading={<div className="flex items-center justify-center gap-3 text-white text-center h-screen" ><Loader2 className="animate-spin"/> Loading PDF...</div>}
+          >
               {Array.from(new Array(numPages), (el, index) => (
                 <div key={`page_${index + 1}`} className="mb-4">
-                <div className="text-center text-sm text-gray-500 mt-2">
-  Page {index + 1} of {numPages}
-</div>
                   <Page
                     key={`page_${index + 1}`}
                     pageNumber={index + 1}
                     width={getPageWidth()}
-                    className="border shadow-sm"
+                    
                   />
                 </div>
               ))}
             </Document>
-          </div>
+          
         )}
-      </div>
+      </>
     );
-  };
+  });
 
   const handleDownload = async () => {
     try {
@@ -305,26 +302,19 @@ const DownloadFile = () => {
               <span className="max-sm:hidden">Download PDF</span>
             </Button>
             <div className="max-sm:hidden">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant={"secondary"} className="cursor-pointer">
-                    <Eye />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[900px] p-0">
-                <DialogHeader>
-                  <DialogTitle>Resume Preview</DialogTitle>
-                </DialogHeader>
-                  <ScrollArea className={"h-[600px]"}>
-                    <MyPDFViewer />
-                  </ScrollArea>
-                </DialogContent>
-              </Dialog>
+              <Button variant={"secondary"} title="Preview Document" onClick={()=>setShowModal(true)}>
+                <Eye />
+              </Button>
             </div>
           </div>
           <ModeToggle />
         </div>
-        <div className="mt-5 p-4">
+        <div className="mt-5 p-4 flex flex-col gap-3">
+        <div className="sm:hidden self-end">
+          <Button variant={"secondary"} title="Preview Document" onClick={()=>setShowModal(true)}>
+            <Eye />
+          </Button>
+        </div>
           {isHalley ? (
             <HalleyTheme
               editItem={editItem}
@@ -369,6 +359,7 @@ const DownloadFile = () => {
           {/* <div className="flex justify-center"><MyPDFViewer/></div> */}
         </div>
       </div>
+        <Modal showModal={showModal} setShowModal={setShowModal} ><MyPDFViewer /></Modal>
     </>
   );
 };

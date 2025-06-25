@@ -35,19 +35,12 @@ const ApexTemplate = ({ deleteItem, editItem }) => {
   };
 
   return (
-    <div className="font-sans bg-white text-gray-800 max-w-4xl min-h-[1122px] shadow-lg rounded-lg mx-auto p-8 shadow-lg">
+    <div className="font-sans bg-white text-gray-800 max-w-4xl min-h-[1122px] rounded-lg mx-auto p-8 shadow-lg">
       {/* Header */}
       <header className="c-info relative bg-[#2b6cb0] text-white p-6 rounded-lg mb-6">
-        <h1 className="text-4xl font-bold">
-          <span className={!contactInfo.firstName ? "text-blue-100 italic" : ""}>
-            {contactInfo.firstName || "Your"}
-          </span>{" "}
-          <span
-            className={`text-blue-200 ${!contactInfo.lastName && "italic"}`}
-          >
-            {contactInfo.lastName || "Name"}
-          </span>
-        </h1>
+        {contactInfo.firstName || contactInfo.lastName ? <h1 className="text-4xl font-bold">
+            {contactInfo.firstName} <span className={`text-blue-200`}>{contactInfo.lastName}</span>
+        </h1> : <h1 className="text-4xl font-bold italic text-blue-100">Your Name</h1>}
         {/* <h2 className={`text-xl text-blue-100 mt-1 ${!contactInfo.title && 'italic'}`}>
           {contactInfo.title || 'Your Profession'}
         </h2> */}

@@ -145,6 +145,12 @@ const HorizonPDF = ({ resumeInfo }) => {
     li: ({ children }) => <Text>{children}</Text>,
   };
 
+  const formatDateRange = (startMonth, startYear, endMonth, endYear, present) => {
+    const start = `${startMonth} ${startYear}`;
+    const end = present ? "Present" : `${endMonth} ${endYear}`;
+    return `${start} - ${end}`;
+  };
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -185,8 +191,12 @@ const HorizonPDF = ({ resumeInfo }) => {
               <View style={styles.contactItem}>
                 <View style={styles.headDot} />
                 <Link
-                  style={{ color: "#ffffff" }}
-                  src={`https://${contactInfo.linkedIn}`}
+                  src={
+                    contactInfo.linkedIn.startsWith("http")
+                      ? contactInfo.linkedIn
+                      : `https://${contactInfo.linkedIn}`
+                  }
+                  style={{ color: "#fff" }}
                 >
                   {contactInfo.linkedIn}
                 </Link>
@@ -266,11 +276,7 @@ const HorizonPDF = ({ resumeInfo }) => {
                             </View>
                           )}
                           <Text>
-                            {(exp.endMonth || exp.present) && " - "}
-                            {exp.present
-                              ? "Present"
-                              : exp.endMonth &&
-                                `${exp.endMonth} ${exp.endYear}`}
+                          {formatDateRange(exp.startMonth, exp.startYear, exp.endMonth, exp.endYear, exp.present)}
                           </Text>
                         </View>
                         <Html
@@ -294,7 +300,7 @@ const HorizonPDF = ({ resumeInfo }) => {
                       <View key={i} style={{ marginBottom: 8 }}>
                         <Text style={{ fontWeight: "bold" }}>{p.title}</Text>
                         <Text>{p.description}</Text>
-                        {project.url && (
+                        {p.url && (
                           <Link
                             src={
                               p.url.startsWith("http")

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 16,
   },
   lastName: {
     color: '#bee3f8',
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 8,
     fontSize: 9,
-    marginBottom: 16,
   },
   contactItem: {
     flexDirection: 'row',
@@ -232,7 +231,16 @@ const ApexPDF = ({ resumeInfo }) => {
               {contactInfo.country}</Text>}
             </View>
             <View style={styles.contactItem}>
-              <Text>{contactInfo.linkedIn}</Text>
+            <Link
+              src={
+                contactInfo.linkedIn.startsWith("http")
+                  ? contactInfo.linkedIn
+                  : `https://${contactInfo.linkedIn}`
+              }
+              style={{color: '#fff'}}
+            >
+              {contactInfo.linkedIn}
+            </Link>
             </View>
           </View>
         </View>
@@ -279,7 +287,7 @@ const ApexPDF = ({ resumeInfo }) => {
                 (project.title || project.description || project.url) && <View key={index} style={{ marginBottom: 12 }}>
                   {project.title && <Text style={styles.projectTitle}>{project.title}</Text>}
                   {project.description &&<Text style={styles.projectDescription}>{project.description}</Text>}
-                  {project.url &&<Link src={project.url.startsWith("http") ? p.url : `https://${project.url}`} style={styles.projectLink}>
+                  {project.url &&<Link src={project.url.startsWith("http") ? project.url : `https://${project.url}`} style={styles.projectLink}>
                     {project.url}
                   </Link>}
                 </View>

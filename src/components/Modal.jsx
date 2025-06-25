@@ -1,13 +1,20 @@
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
+import { Button } from './ui/button';
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ showModal, setShowModal, children }) => {
+
+  const onClose = () => {
+    setShowModal(false)
+  }
+  
+
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') onClose();
     };
 
-    if (isOpen) {
+    if (showModal) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
@@ -16,9 +23,9 @@ const Modal = ({ isOpen, onClose, children }) => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
     };
-  }, [isOpen, onClose]);
+  }, [showModal, onClose]);
 
-  if (!isOpen) return null;
+  if (!showModal) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -30,23 +37,20 @@ const Modal = ({ isOpen, onClose, children }) => {
       />
 
       {/* Scrollable container */}
-      <div className="flex min-h-full items-start justify-center p-4">
-        {/* Modal card */}
-        <div className="relative my-8">
+      <div className="flex min-h-full items-start justify-center sm:p-8 p-4">
+          {/* Content area */}
+          <div className='relative lg:min-w-[900px] md:min-w-[600px] max-sm:min-w-[300px]'>
           {/* Close button (scrolls with content) */}
-          <button
+          <Button
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none"
-            aria-label="Close"
+            className="absolute right-[-14px] top-[-14px] z-10 rounded-full max-md:size-6"
+            size={'icon'}
+             title="Close"
           >
             <X className="h-5 w-5" />
-          </button>
-
-          {/* Content area */}
-          <div className="p-6">
+          </Button>
             {children}
           </div>
-        </div>
       </div>
     </div>
   );
