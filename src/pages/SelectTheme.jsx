@@ -30,13 +30,17 @@ const templates = [
 ];
 
 export default function SelectTheme() {
+  const {resumeInfo, setResumeInfo} = useResume()
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const handleSelect = (templateName) => {
     setSelectedTemplate(templateName);
-    navigate(`/template-${templateName.toLowerCase()}/download`);
+    setResumeInfo({...resumeInfo, template: templateName})
+    // navigate(`/template-${templateName.toLowerCase()}/download`);
+    navigate('/resume-finalize')
+
   };
 
   return (

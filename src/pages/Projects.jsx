@@ -91,7 +91,6 @@ const Projects = () => {
                 defaultValue={item.title}
                 placeholder="Enter project title"
                 name="title"
-                required
               />
             </div>
 
@@ -105,7 +104,6 @@ const Projects = () => {
                 name="description"
                 className="mt-2 min-h-[100px]"
                 placeholder="Describe the project, your role, technologies used, and any notable achievements"
-                required
               />
             </div>
 

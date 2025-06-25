@@ -5,7 +5,7 @@ import { ModeToggle } from "./mode-toggle";
 import Logo from "/logo-resume.svg";
 
 const Header = ({ pageIndex, setPageIndex }) => {
-  const isResumeBuildPath = useMatch("/resumebuild");
+  const isResumeBuildPath = useMatch("/resume-builder");
   const isContactInfoPath = pageIndex == 1;
   const isExperiencePath = pageIndex == 2;
   const isEducationPath = pageIndex == 3;
@@ -63,12 +63,6 @@ const Header = ({ pageIndex, setPageIndex }) => {
     </span>
     <span className={isSummaryPath ? "font-normal text-primary" : "text-muted-foreground"}>
       Summary
-    </span>
-    <span className="text-gray-400">
-      <ChevronRight className="size-3" />
-    </span>
-    <span className={isSummaryPath ? "font-normal text-primary" : "text-muted-foreground"}>
-      Review & download
     </span>
   </div>
 

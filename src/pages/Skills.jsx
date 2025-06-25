@@ -178,7 +178,7 @@ const Skills = ({ setPageIndex }) => {
             className="cursor-pointer"
           >
             {loading && <Loader2 className="animate-spin" />}
-            Next: Summary <ChevronRight />
+            <span className='max-sm:hidden'>Next: Summary</span> <span className='sm:hidden'>Save</span> <ChevronRight />
           </Button>
         </div>
       </div>

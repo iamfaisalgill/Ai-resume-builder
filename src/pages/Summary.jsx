@@ -64,7 +64,7 @@ const Summary = ({ setPageIndex }) => {
     setTimeout(() => {
       setResumeInfo((prevInfo) => ({ ...prevInfo, summary: textareaValue }));
       setLoading(false);
-      navigate("/select-template");
+      navigate("/templates");
     }, 1000);
   };
 
@@ -220,7 +220,7 @@ const Summary = ({ setPageIndex }) => {
           <ChevronLeft /> Back
         </Button>
         <div className="space-x-2">
-          <Button variant={'link'}  type="button" size={isMobile?"sm" : "lg"} onClick={()=>navigate('/select-template')}>Skip</Button>
+          <Button variant={'link'}  type="button" size={isMobile?"sm" : "lg"} onClick={()=>navigate('/templates')}>Skip</Button>
         <Button
           onClick={onSave}
           disabled={loading || !textareaValue}
@@ -228,7 +228,7 @@ const Summary = ({ setPageIndex }) => {
           className="cursor-pointer"
         >
           {loading && <Loader2 className="animate-spin" />}
-          Save & Continue <ChevronRight />
+          <span className='max-sm:hidden'>Save & Continue</span> <span className='sm:hidden'>Save</span> <ChevronRight />
         </Button>
         </div>
       </div>

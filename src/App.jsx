@@ -10,6 +10,7 @@ import { ResumeInfoProvider } from "./context/ResumeInfoContext";
 import ResumeBuild from "./pages/ResumeBuild";
 import toast, { ToastBar, Toaster } from "react-hot-toast";
 import { X } from "lucide-react";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [pageIndex, setPageIndex] = useState(1);
@@ -37,7 +38,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
-              path="/resumebuild"
+              path="/resume-builder"
               element={
                 <>
                   <Header pageIndex={pageIndex} setPageIndex={setPageIndex} />
@@ -49,7 +50,7 @@ function App() {
               }
             />
             <Route
-              path="/select-template"
+              path="/templates"
               element={
                 <>
                   <Header pageIndex={pageIndex} setPageIndex={setPageIndex} />
@@ -57,7 +58,8 @@ function App() {
                 </>
               }
             />
-            <Route path="/:selectedTheme/download" element={<DownloadFile />} />
+            <Route path="/resume-finalize" element={<DownloadFile />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           {/* <Toaster richColors /> */}
         </ThemeProvider>

@@ -28,14 +28,14 @@ const HorizonTemplate = ({ deleteItem, editItem }) => {
               <span
                 className={!contactInfo.firstName && "text-gray-400 italic"}
               >
-                {contactInfo.firstName || "First Name"}
+                {contactInfo.firstName || "Your"}
               </span>{" "}
               <span
                 className={`text-gray-300 ${
                   !contactInfo.lastName && "text-gray-400 italic"
                 }`}
               >
-                {contactInfo.lastName || "Last Name"}
+                {contactInfo.lastName || "Name"}
               </span>
             </h1>
             {/* Optional: Title field

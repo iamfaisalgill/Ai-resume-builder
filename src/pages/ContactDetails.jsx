@@ -85,16 +85,16 @@ const ContactDetails = ({ setPageIndex }) => {
 
           <div className='col-span-1'>
             <Label htmlFor="city">City</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.city} id="city" name="city" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="City" />
+            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.city} id="city" name="city" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="City" />
           </div>
 
           <div className='col-span-1'>
             <Label htmlFor="country">Country</Label>
-            <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.country} id="country" name="country" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="Country" />
+            <Input onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.country} id="country" name="country" type='text' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="Country" />
           </div>
 
           <div className=' col-span-1'>
-            <Label required htmlFor="email">Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input required onChange={e => handleChange(e)} defaultValue={resumeInfo.contactInfo?.email} id="email" name="email" type='email' className='mt-2 max-sm:h-9 max-sm:text-sm' placeholder="Email" />
           </div>
 

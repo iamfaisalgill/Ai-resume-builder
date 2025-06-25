@@ -20,7 +20,6 @@ export const ResumeInfoProvider = ({ children }) => {
       summary: "",
       aiGeneratedSummaries: [],
       skills: [],
-    
       experience: [
         {
           jobTitle: "",
@@ -42,6 +41,7 @@ export const ResumeInfoProvider = ({ children }) => {
           fieldOfStudy: "",
         },
       ],
+      template: ""
     };
   });
 

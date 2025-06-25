@@ -9,8 +9,6 @@ import HalleyPDF from "@/pdfs/HalleyPDF";
 import IconicPDF from "@/pdfs/IconicPDF";
 import StalwartPDF from "@/pdfs/StalwartPDF";
 import {
-  ChevronLeft,
-  ChevronRight,
   PanelRightOpen,
   PanelRightClose,
   Loader2,
@@ -19,7 +17,6 @@ import {
   Eye,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { useMatch, useParams } from "react-router-dom";
 
 // pdf related
 import { pdf } from "@react-pdf/renderer";
@@ -46,20 +43,25 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const DownloadFile = () => {
   const { resumeInfo, setResumeInfo } = useResume();
-  const { selectedTheme } = useParams();
-  const isIconic = useMatch("/template-iconic/download");
-  const isStalwart = useMatch("/template-stalwart/download");
-  const isHalley = useMatch("/template-halley/download");
-  const isVanguard = useMatch("/template-vanguard/download");
-  const isHorizon = useMatch("/template-horizon/download");
-  const isApex = useMatch("/template-apex/download");
-  const isImpresa = useMatch("/template-impresa/download");
-  const isVoyage = useMatch("/template-voyage/download");
+  useEffect(()=>{
+    if (!resumeInfo.template) {
+      setResumeInfo({...resumeInfo, template: "Stalwart"})
+    }
+  },[])
+  const isIconic = resumeInfo.template==="Iconic";
+  const isStalwart = resumeInfo.template==="Stalwart";
+  const isHalley = resumeInfo.template==="Halley";
+  const isVanguard = resumeInfo.template==="Vanguard";
+  const isHorizon = resumeInfo.template==="Horizon";
+  const isApex = resumeInfo.template==="Apex";
+  const isImpresa = resumeInfo.template==="Impresa";
+  const isVoyage = resumeInfo.template==="Voyage";
   const [activeDialog, setActiveDialog] = useState(null);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [activeSec, setActiveSec] = useState("");
   const [sidebar, setSidebar] = useState(true);
   const inputRef = useRef(null);
+  const [showModal, setShowModal] = useState(false); // pdf preview
   const [fileName, setFileName] = useState(
     resumeInfo.fileName ? resumeInfo.fileName : "New Resume"
   );
@@ -127,8 +129,8 @@ const DownloadFile = () => {
   const MyPDFViewer = () => {
     const [fileUrl, setFileUrl] = useState(null);
     const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
     const [width, setWidth] = useState(window.innerWidth);
+    
     useEffect(() => {
       const handleResize = () => setWidth(window.innerWidth);
       window.addEventListener("resize", handleResize);
@@ -142,18 +144,12 @@ const DownloadFile = () => {
     const getPageWidth = () => {
       if (isLargeScreen) return 900;
       if (isMediumScreen) return 600;
-      if (isSmallScreen) return 300; // Small screens
+      if (isSmallScreen) return 300;
     };
 
     const onDocumentLoadSuccess = ({ numPages }) => {
       setNumPages(numPages);
-      setPageNumber(1);
     };
-
-    const goToPrevPage = () => setPageNumber((prev) => Math.max(prev - 1, 1));
-
-    const goToNextPage = () =>
-      setPageNumber((prev) => Math.min(prev + 1, numPages || 1));
 
     return (
       <div className="flex flex-col items-center">
@@ -161,41 +157,25 @@ const DownloadFile = () => {
           <PDFGenerator onGenerated={setFileUrl} />
         ) : (
           <div className="flex flex-col items-center w-full gap-4">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={goToPrevPage}
-                disabled={pageNumber <= 1}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-
-              <span className="text-sm font-medium">
-                Page {pageNumber} of {numPages}
-              </span>
-
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={goToNextPage}
-                disabled={pageNumber >= (numPages || 1)}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-
             <Document
               file={fileUrl}
               onLoadSuccess={onDocumentLoadSuccess}
               onLoadError={console.error}
             >
-              <Page
-                pageNumber={pageNumber}
-                width={getPageWidth()}
-                //scale={width > 1200 ? 1.5 : width > 768 ? 1.0 : 0.6}
-                className="border shadow-sm"
-              />
+              {/* Render all pages */}
+              {Array.from(new Array(numPages), (el, index) => (
+                <div key={`page_${index + 1}`} className="mb-4">
+                <div className="text-center text-sm text-gray-500 mt-2">
+  Page {index + 1} of {numPages}
+</div>
+                  <Page
+                    key={`page_${index + 1}`}
+                    pageNumber={index + 1}
+                    width={getPageWidth()}
+                    className="border shadow-sm"
+                  />
+                </div>
+              ))}
             </Document>
           </div>
         )}

@@ -120,7 +120,6 @@ function ContactInfoDialog({ isOpen, onClose }) {
               <div className='col-span-1'>
                 <Label htmlFor="email" className="text-xs md:text-sm">Email</Label>
                 <Input
-                  required
                   onChange={e => handleChange(e)}
                   defaultValue={resumeInfo.contactInfo?.email}
                   id="email"

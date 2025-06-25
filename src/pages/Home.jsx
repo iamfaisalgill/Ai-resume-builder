@@ -6,9 +6,9 @@ import halley_template from "../assets/halley.webp";
 import iconic_template from "../assets/iconic.webp";
 import stalwart_template from "../assets/stalwart.webp";
 import vanguard_template from "../assets/vanguard.webp";
-import horizon_template from '../assets/horizon.webp'
-import apex_template from '../assets/apex.webp'
-import impresa_template from '../assets/impresa.webp'
+import horizon_template from "../assets/horizon.webp";
+import apex_template from "../assets/apex.webp";
+import impresa_template from "../assets/impresa.webp";
 import {
   FileText,
   Bot,
@@ -19,8 +19,11 @@ import {
   CircleUserRound,
   Brush,
   HardDriveDownload,
+  Zap,
+  CheckCircle,
 } from "lucide-react";
 import Marquee from "react-fast-marquee";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const Home = () => {
   return (
@@ -31,18 +34,24 @@ const Home = () => {
       <section className="bg-background px-6 py-24 flex flex-col items-center justify-center text-center">
         <div className="max-w-3xl relative z-20">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Create Stunning Resumes <span className="text-primary">Effortlessly</span>
+            Create Stunning Resumes{" "}
+            <span className="text-primary">Effortlessly</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8">
             Choose a template, customize it with smart features, and download a
             professional resume in minutes.
           </p>
-          <Button asChild size="lg" variant={'gradient'} className="text-lg px-8 py-6">
-            <Link to="/resumebuild">Start Building</Link>
-          </Button>
+          <Button
+          asChild
+          size="lg"
+          className="text-lg px-12 py-7 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-xl hover:shadow-primary/30 transition-all"
+        >
+          <Link to="/resume-builder">
+            <Zap className="w-5 h-5 mr-2" />
+            Start Building
+          </Link>
+        </Button>
         </div>
-
-        
 
         {/* <div className="mt-12 w-full max-w-5xl"> */}
         <Marquee autoFill className="mt-8 py-7">
@@ -122,91 +131,90 @@ const Home = () => {
       </section>
 
       {/* How it works */}
-      <section className="px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center relative mb-16 pb-[15px] after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[80px] after:h-[4px] after:bg-primary after:rounded-[4px]">
-          How It Works
-        </h2>
+<section className="px-6 py-24 pt-15">
+  <div
+    className="max-w-4xl mx-auto text-center mb-20"
+  >
+    <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary mb-4 text-sm font-medium">
+      <Zap className="w-4 h-4 mr-2" />
+      Simple 3-Step Process
+    </div>
+    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      Craft Your Perfect Resume in Minutes
+    </h2>
+    <p className="text-xl text-muted-foreground">
+      Our intuitive process makes resume building effortless and effective
+    </p>
+  </div>
 
-        <div className="flex justify-between mb-[60px] flex-wrap gap-12 max-w-6xl mx-auto">
-          <div className="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
-            <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
-              1
-            </div>
-            <div className="flex justify-center my-5">
-              {/* <CircleUserRound className="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
-              <svg
-                className="text-primary size-10"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 496 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 96c48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88 39.4-88 88-88zm0 344c-58.7 0-111.3-26.6-146.5-68.2 18.8-35.4 55.6-59.8 98.5-59.8 2.4 0 4.8 .4 7.1 1.1 13 4.2 26.6 6.9 40.9 6.9 14.3 0 28-2.7 40.9-6.9 2.3-.7 4.7-1.1 7.1-1.1 42.9 0 79.7 24.4 98.5 59.8C359.3 421.4 306.7 448 248 448z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-[20px] font-semibold mb-[10px]">
-              Fill Your Details
-            </h3>
-            <p className="text-muted-foreground text-[15px]">
-              Enter your personal information, work experience, education, and
-              skills in our user-friendly form.
-            </p>
-          </div>
-
-          <div className="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
-            <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
-              2
-            </div>
-            <div className="flex justify-center my-5">
-              {/* <Brush className="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
-              <svg
-                className="text-primary size-10"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M339.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L568.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S517.7-4.4 499.1 9.6L262.4 187.2c-24 18-38.2 46.1-38.4 76.1L339.3 367.1zm-19.6 25.4l-116-104.4C143.9 290.3 96 339.6 96 400c0 3.9 .2 7.8 .6 11.6C98.4 429.1 86.4 448 68.8 448L64 448c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-[20px] font-semibold mb-[10px]">
-              Choose a Template
-            </h3>
-            <p className="text-muted-foreground text-[15px]">
-              Select from our professionally designed templates and customize
-              colors to match your style.
-            </p>
-          </div>
-
-          <div className="flex-1 min-w-[250px] bg-card rounded-[16px] p-[30px] text-center shadow-md transition-all duration-300 relative border border-border">
-            <div className="absolute top-[-20px] left-1/2 -translate-x-1/2 w-[40px] h-[40px] bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-sm">
-              3
-            </div>
-            <div className="flex justify-center my-5">
-              {/* <HardDriveDownload className="w-[40px] h-[40px] text-primary mb-[20px]" /> */}
-              <svg
-                className="text-primary size-10"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-[20px] font-semibold mb-[10px]">
-              Download &amp; Share
-            </h3>
-            <p className="text-muted-foreground text-[15px]">
-              Get your resume as a PDF file ready to share with potential
-              employers.
-            </p>
+  <div className="flex flex-col lg:flex-row justify-between gap-12 max-w-6xl mx-auto">
+    {[
+      {
+        step: "1",
+        icon: (
+          <svg className="text-primary size-10" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+          </svg>
+        ),
+        title: "Tell Us About Yourself",
+        description: "Fill in your details using our smart forms that adapt to your experience level and industry.",
+        color: "from-blue-500 to-indigo-600"
+      },
+      {
+        step: "2",
+        icon: (
+          <svg className="text-primary size-10" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7Z" />
+          </svg>
+        ),
+        title: "Customize Your Design",
+        description: "Choose from our premium templates and personalize colors, fonts, and layouts to match your style.",
+        color: "from-purple-500 to-pink-600"
+      },
+      {
+        step: "3",
+        icon: (
+          <svg className="text-primary size-10" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
+          </svg>
+        ),
+        title: "Download & Impress",
+        description: "Get your polished resume as a PDF file, ready to land your dream job.",
+        color: "from-green-500 to-teal-600"
+      }
+    ].map((step, i) => (
+      <div
+        key={i}
+        className="flex-1 min-w-[300px] bg-card rounded-3xl p-8 shadow-lg border border-border/50 relative overflow-hidden group"
+      >
+        <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br ${step.color} opacity-10 group-hover:opacity-20 transition-opacity`}></div>
+        <div className="absolute top-6 right-6 w-8 h-8 rounded-full flex items-center justify-center bg-primary/10 text-primary font-bold">
+          {step.step}
+        </div>
+        <div className="mb-6 flex justify-center">
+          <div className="p-4 rounded-xl bg-gradient-to-br from-background to-card border border-border/50 shadow-inner">
+            {step.icon}
           </div>
         </div>
-      </section>
+        <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
+        <p className="text-muted-foreground mb-6">{step.description}</p>
+        {/* <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-border/50 to-transparent my-6"></div> */}
+        {/* <ul className="space-y-2">
+          {[
+            "Smart suggestions",
+            "Real-time preview",
+            "ATS optimized"
+          ].map((item, j) => (
+            <li key={j} className="flex items-center text-muted-foreground">
+              <CheckCircle className="w-4 h-4 text-primary mr-2" />
+              {item}
+            </li>
+          ))}
+        </ul> */}
+      </div>
+    ))}
+  </div>
+</section>
 
       {/* Features Section */}
       <section className="bg-muted py-20 px-6">
@@ -300,8 +308,15 @@ const Home = () => {
           Join hundreds of users who have landed interviews using our powerful
           and easy-to-use builder.
         </p>
-        <Button asChild size="lg" variant={'outline'} className="text-lg px-8 py-6">
-          <Link to="/resumebuild">Create Yours Now</Link>
+        <Button
+          asChild
+          size="lg"
+          className="text-lg px-12 py-7 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 shadow-xl hover:shadow-primary/30 transition-all"
+        >
+          <Link to="/resume-builder">
+            <Zap className="w-5 h-5 mr-2" />
+            Create Yours Now
+          </Link>
         </Button>
       </section>
 
@@ -319,7 +334,7 @@ const Home = () => {
             <Link to="/" className="hover:underline">
               Home
             </Link>
-            <Link to="/resumebuild" className="hover:underline">
+            <Link to="/resume-builder" className="hover:underline">
               Get Started
             </Link>
             <a
