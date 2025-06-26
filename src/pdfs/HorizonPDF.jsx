@@ -156,12 +156,11 @@ const HorizonPDF = ({ resumeInfo }) => {
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View style={{ width: "50%" }}>
-            <Text style={styles.headerName}>
-              {contactInfo.firstName || "John"}{" "}
-              <Text style={{ color: "#d1d5db" }}>
-                {contactInfo.lastName || "Doe"}
-              </Text>
-            </Text>
+            {contactInfo.firstName || contactInfo.lastName ? <Text style={styles.headerName}>
+              {contactInfo.firstName} <Text style={{ color: "#d1d5db" }}>{contactInfo.lastName}</Text>
+            </Text> : <Text style={styles.headerName}>
+              John <Text style={{ color: "#d1d5db" }}>Doe</Text>
+            </Text>}
             {/* <Text style={styles.headerSub}>{contactInfo.title || 'Your Profession'}</Text> */}
           </View>
           <View style={styles.contactGrid}>

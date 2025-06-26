@@ -222,7 +222,11 @@ const StalwartPDF = ({ resumeInfo }) => {
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <Text style={styles.name}>
-          {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
+          {!(contactInfo.firstName || contactInfo.lastName) ? (
+                'John Doe'
+              ) : (
+                `${contactInfo.firstName} ${contactInfo.lastName}`
+              )}
         </Text>
         <Text style={styles.contactInfo}>
           {/* City and Country */}

@@ -10,8 +10,6 @@ import {
 import Html from "react-pdf-html";
 import { Children } from "react";
 
-
-
 const ImpresaPDF = ({ resumeInfo }) => {
   // Create styles
   const styles = StyleSheet.create({
@@ -56,12 +54,12 @@ const ImpresaPDF = ({ resumeInfo }) => {
     letter: {
       fontSize: 18,
       fontWeight: 500,
-      textTransform: 'uppercase'
+      textTransform: "uppercase",
     },
     slashLine: {
       position: "absolute",
       left: 0,
-      width: '100%',
+      width: "100%",
       height: 2,
       backgroundColor: "#000",
       transform: "rotate(-45deg)",
@@ -69,7 +67,7 @@ const ImpresaPDF = ({ resumeInfo }) => {
     nameBlock: {
       marginLeft: 12,
       fontWeight: 500,
-      textTransform: 'uppercase'
+      textTransform: "uppercase",
     },
     nameLine: {
       fontSize: 22,
@@ -248,19 +246,32 @@ const ImpresaPDF = ({ resumeInfo }) => {
           <View style={styles.logoBox}>
             <View style={styles.fgWrapper}>
               <View style={styles.fgRow}>
-                <Text style={styles.letter}>{contactInfo.firstName.charAt(0) || 'J'}</Text>
+                <Text style={styles.letter}>
+                  {contactInfo.firstName.charAt(0)}
+                </Text>
                 <Text></Text>
               </View>
               <View style={styles.fgRow}>
                 <Text></Text>
-                <Text style={styles.letter}>{contactInfo.lastName.charAt(0) || 'D'}</Text>
+                <Text style={styles.letter}>
+                  {contactInfo.lastName.charAt(0)}
+                </Text>
               </View>
             </View>
             <View style={styles.slashLine} />
           </View>
           <View style={styles.nameBlock}>
-            <Text style={styles.nameLine}>{contactInfo.firstName || "John"}</Text>
-            <Text style={styles.nameLine}>{contactInfo.lastName || "Doe"}</Text>
+            {contactInfo.firstName || contactInfo.lastName ? (
+              <>
+                <Text style={styles.nameLine}>{contactInfo.firstName}</Text>
+                <Text style={styles.nameLine}>{contactInfo.lastName}</Text>
+              </>
+            ) : (
+              <>
+                <Text style={styles.nameLine}>John</Text>
+                <Text style={styles.nameLine}>Doe</Text>
+              </>
+            )}
           </View>
         </View>
 

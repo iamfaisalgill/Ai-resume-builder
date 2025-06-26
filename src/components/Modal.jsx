@@ -37,7 +37,7 @@ const Modal = ({ showModal, setShowModal, children }) => {
       />
 
       {/* Scrollable container */}
-      <div className="flex min-h-full items-start justify-center sm:p-8 p-4">
+      <div className="flex min-h-full items-start justify-center p-8">
           {/* Content area */}
           <div className='relative lg:min-w-[900px] md:min-w-[600px] max-sm:min-w-[300px]'>
           {/* Close button (scrolls with content) */}

@@ -1,8 +1,5 @@
 import { useResume } from "@/context/ResumeInfoContext";
-import {
-  Edit,
-  Trash2,
-} from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import React from "react";
 
 const HorizonTemplate = ({ deleteItem, editItem }) => {
@@ -19,25 +16,15 @@ const HorizonTemplate = ({ deleteItem, editItem }) => {
   } = resumeInfo;
 
   return (
-    <div className="max-w-4xl min-h-[1122px] shadow-lg rounded-lg mx-auto my-8 bg-white">
+    <div className="max-w-4xl min-h-[1122px] shadow-lg rounded-lg mx-auto bg-white">
       {/* Clean Header */}
       <div className="c-info relative bg-gray-800 text-white p-8 rounded-t-lg">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
-            <h1 className="text-3xl font-bold">
-              <span
-                className={!contactInfo.firstName && "text-gray-400 italic"}
-              >
-                {contactInfo.firstName || "Your"}
-              </span>{" "}
-              <span
-                className={`text-gray-300 ${
-                  !contactInfo.lastName && "text-gray-400 italic"
-                }`}
-              >
-                {contactInfo.lastName || "Name"}
-              </span>
-            </h1>
+            {contactInfo.firstName || contactInfo.lastName ? <h1 className="text-3xl font-bold">
+              {contactInfo.firstName}{" "}
+              <span className={"text-gray-300"}>{contactInfo.lastName}</span>
+            </h1>: <h1 className="text-3xl font-bold text-gray-400 italic">Your Name</h1>}
             {/* Optional: Title field
     <h2 className={`text-gray-300 mt-1 text-lg ${!contactInfo.title && 'text-gray-400 italic'}`}>
       {contactInfo.title || 'Your Profession'}

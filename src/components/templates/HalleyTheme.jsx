@@ -30,11 +30,11 @@ const HalleyTheme = ({
   } = resumeInfo;
 
   return (
-    <div className="mx-auto bg-white max-w-4xl min-h-[1122px] shadow-lg rounded-lg text-[8px] sm:text-sm md:text-base">
+    <div className="mx-auto max-w-4xl shadow-lg rounded-lg text-[8px] sm:text-sm md:text-base">
     
-      <div className="flex">
+      <div className="flex sm:min-h-[1122px] min-h-[600px]">
         {/* Main Content (Left 3/4) */}
-        <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10">
+        <div className="w-3/4 p-4 sm:p-6 md:p-8 lg:p-10 bg-white rounded-l-lg">
           {/* Name/Logo Section */}
           <div className="c-info relative flex items-center space-x-2 sm:space-x-3 md:space-x-4 text-[#305276]">
             <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 flex items-center justify-center border-2 border-[#305276] rotate-45">
@@ -57,7 +57,7 @@ const HalleyTheme = ({
               {/* Last Name */}
               <p className="text-base sm:text-xl md:text-3xl lg:text-4xl leading-none uppercase">
                 {contactInfo.lastName || (
-                  <span className="italic text-[#305276]/50 text-2xl">
+                  <span className="italic text-[#305276]/50 sm:text-2xl">
                     Last Name
                   </span>
                 )}
@@ -274,7 +274,7 @@ const HalleyTheme = ({
         </div>
 
         {/* Sidebar (Right 1/4) */}
-        <div className="w-1/4 min-h-[297mm] rounded-r-lg bg-[#305276] text-white text-[8px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
+        <div className="w-1/4 rounded-r-lg min-h-full bg-[#305276] text-white text-[8px] sm:text-sm p-2 sm:p-3 md:p-5 lg:p-4 overflow-hidden">
           <div className="c-info relative">
             <>
               {/* City & Country */}

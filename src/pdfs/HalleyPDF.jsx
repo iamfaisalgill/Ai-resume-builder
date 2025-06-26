@@ -153,8 +153,8 @@ const HalleyPDF = ({ resumeInfo }) => {
     languages,
   } = resumeInfo;
 
-  const firstName = contactInfo.firstName || "John";
-  const lastName = contactInfo.lastName || "Doe";
+  const firstName = contactInfo.firstName;
+  const lastName = contactInfo.lastName;
   const fullName = `${firstName} ${lastName}`.trim();
   const initials = fullName
     .split(" ")
@@ -199,12 +199,19 @@ const HalleyPDF = ({ resumeInfo }) => {
           <View style={styles.nameContainer}>
             <View style={styles.nameBoxContainer}>
               <View style={styles.nameBoxInner} />
-              <Text style={styles.nameInitials}>{initials}</Text>
+              <Text style={styles.nameInitials}>{initials || 'JD'}</Text>
             </View>
             <View>
-              <Text style={styles.nameText}>{firstName}</Text>
-              <Text style={styles.nameText}>{lastName}</Text>
-            </View>
+            {contactInfo.firstName || contactInfo.lastName ? 
+              <>
+                <Text style={styles.nameText}>{contactInfo.firstName}</Text>
+                <Text style={styles.nameText}>{contactInfo.lastName}</Text>
+              </>
+              : <>
+                <Text style={styles.nameText}>John</Text>
+                <Text style={styles.nameText}>Doe</Text>
+              </>}
+            </View> 
           </View>
 
           {/* Professional Summary */}

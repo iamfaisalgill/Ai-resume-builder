@@ -21,11 +21,7 @@ export default function VanguardTemplate({ deleteItem, editItem }) {
       
       <header className="c-info relative sm:border-b-2 border-b-[1.5px] border-emerald-500 pb-3 sm:pb-6 mb-3 sm:mb-6">
         <div className="flex justify-between items-start md:items-center">
-            <h1
-              className={
-                "text-[15px] sm:text-3xl font-bold uppercase text-gray-800"
-              }
-            >
+            <h1 className="text-[15px] sm:text-3xl font-bold uppercase text-gray-800">
               {/* {contactInfo.firstName} {contactInfo.lastName} */}
               {!(contactInfo.firstName || contactInfo.lastName) ? (
                 <span className="text-gray-500">Your Name</span>

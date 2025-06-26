@@ -185,7 +185,11 @@ const IconicPDF = ({ resumeInfo }) => {
         <View style={styles.header}>
           <View>
             <Text style={styles.name}>
-              {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
+              {!(contactInfo.firstName || contactInfo.lastName) ? (
+                'John Doe'
+              ) : (
+                `${contactInfo.firstName} ${contactInfo.lastName}`
+              )}
             </Text>
           </View>
           <View>

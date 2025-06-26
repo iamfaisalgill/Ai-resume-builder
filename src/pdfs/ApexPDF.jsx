@@ -211,10 +211,11 @@ const ApexPDF = ({ resumeInfo }) => {
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.name}>
-            {contactInfo.firstName || 'John'}{' '}
-            <Text style={styles.lastName}>{contactInfo.lastName || 'Doe'}</Text>
-          </Text>
+          {contactInfo.firstName || contactInfo.lastName ? <Text style={styles.name}>
+            {contactInfo.firstName} <Text style={styles.lastName}>{contactInfo.lastName}</Text>
+          </Text> : <Text style={styles.name}>
+            John <Text style={styles.lastName}>Doe</Text>
+          </Text>}
           {/* <Text style={styles.title}>{contactInfo.title || 'Your Profession'}</Text> */}
           <View style={styles.contactInfo}>
             <View style={styles.contactItem}>

@@ -343,13 +343,37 @@ ol li {
   }
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.scale-container {
+  transform-origin: top left;
+  width: fit-content;
+  height: fit-content;
+  scale: 1;
 }
 
-.animate-gradient {
-  animation: gradientShift 5s ease infinite;
+@media (max-width: 1024px) {
+  .scale-container {
+    scale: 0.9;
+  }
 }
+
+@media (max-width: 768px) {
+  .scale-container {
+    scale: 0.75;
+  }
+}
+
+@media (max-width: 640px) {
+  .scale-container {
+    scale: 0.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .scale-container {
+    scale: 0.5;
+  }
+}
+
+
+
 

@@ -6,6 +6,7 @@ import Logo from "/logo-resume.svg";
 
 const Header = ({ pageIndex, setPageIndex }) => {
   const isResumeBuildPath = useMatch("/resume-builder");
+  const isTemplatesPath = useMatch('/templates')
   const isContactInfoPath = pageIndex == 1;
   const isExperiencePath = pageIndex == 2;
   const isEducationPath = pageIndex == 3;
@@ -107,7 +108,7 @@ const Header = ({ pageIndex, setPageIndex }) => {
           </a>
         </div>
       )}
-      <ModeToggle />
+      {(isResumeBuildPath || isTemplatesPath) ? "" : <ModeToggle />}
     </header>
   );
 };

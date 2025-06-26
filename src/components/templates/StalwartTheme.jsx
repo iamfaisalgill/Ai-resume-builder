@@ -21,8 +21,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
     <div className="bg-white max-w-4xl min-h-[1122px] shadow-lg rounded-lg text-black p-4 sm:p-6 md:p-8 mx-auto font-sans text-[8px] sm:text-sm">
       <div className="c-info relative ">
         <h1 className="text-[15px] sm:text-2xl md:text-3xl font-bold uppercase">
-          {contactInfo.firstName ||
-          contactInfo.lastName ? (
+          {contactInfo.firstName || contactInfo.lastName ? (
             `${contactInfo.firstName || ""} ${
               contactInfo.lastName || ""
             }`.trim()
@@ -35,9 +34,7 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
           {contactInfo.city || contactInfo.country ? (
             <>
               {contactInfo.city}
-              {contactInfo.city &&
-                contactInfo.country &&
-                ", "}
+              {contactInfo.city && contactInfo.country && ", "}
               {contactInfo.country}
             </>
           ) : (
@@ -288,7 +285,9 @@ const StalwartTheme = ({ deleteItem, editItem }) => {
                       <p className="font-bold">{project.title}</p>
                     )}
                     {project.description && <p>{project.description}</p>}
-                    {project.url&&<p className="text-[#1E3A5F]">{project.url}</p>}
+                    {project.url && (
+                      <p className="text-[#1E3A5F]">{project.url}</p>
+                    )}
                   </div>
                 )
             )}

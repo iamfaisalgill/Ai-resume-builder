@@ -45,12 +45,12 @@ const ImpresaTemplate = ({ deleteItem, editItem }) => {
             {contactInfo.firstName ? (
               <p className="text-4xl leading-none">{contactInfo.firstName}</p>
             ) : (
-              <p className="text-4xl leading-none text-gray-400">Your</p>
+              <p className="text-4xl leading-none text-gray-400">First Name</p>
             )}
             {contactInfo.lastName ? (
               <p className="text-4xl leading-none">{contactInfo.lastName}</p>
             ) : (
-              <p className="text-4xl leading-none text-gray-400">Name</p>
+              <p className="text-4xl leading-none text-gray-400">Last Name</p>
             )}
           </div>
         </div>

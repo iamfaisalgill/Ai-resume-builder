@@ -143,7 +143,11 @@ export default function VanguardPDF({ resumeInfo }) {
           <View style={styles.rowBetween}>
             <View>
               <Text style={styles.name}>
-                {contactInfo.firstName || "John"} {contactInfo.lastName || "Doe"}
+                {!(contactInfo.firstName || contactInfo.lastName) ? (
+                'John Doe'
+              ) : (
+                `${contactInfo.firstName} ${contactInfo.lastName}`
+              )}
               </Text>
             </View>
             <View style={styles.contactRight}>

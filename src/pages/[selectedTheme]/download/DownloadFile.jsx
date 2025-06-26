@@ -32,8 +32,6 @@ import ApexTemplate from "@/components/templates/ApexTemplate";
 import ApexPDF from "@/pdfs/ApexPDF";
 import HorizonPDF from "@/pdfs/HorizonPDF";
 import ImpresaPDF from "@/pdfs/ImpresaPDF";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import VoyageTemplate from "@/components/templates/VoyageTemplate";
 import ImpresaTemplate from "@/components/templates/ImpresaTemplate";
 import Modal from "@/components/Modal";
@@ -63,6 +61,7 @@ const DownloadFile = () => {
   const [sidebar, setSidebar] = useState(true);
   const inputRef = useRef(null);
   const [showModal, setShowModal] = useState(false); // pdf preview
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [fileName, setFileName] = useState(
     resumeInfo.fileName ? resumeInfo.fileName : "New Resume"
   );
@@ -272,11 +271,11 @@ const DownloadFile = () => {
             </h3> */}
 
             {/* File name */}
-            <div className="relative">
+            <div className="relative max-sm:hidden">
               <PencilLineIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
-                className="border-input bg-background h-10 w-full max-w-[200px] rounded-md text-sm border pl-10 pr-10"
+                className="border-input bg-background h-9 w-full max-w-[200px] rounded-md text-sm border pl-10 pr-10"
                 value={fileName}
                 placeholder={"Untitle document"}
                 onChange={(e) => setFileName(e.target.value)}
@@ -297,9 +296,10 @@ const DownloadFile = () => {
               onClick={handleDownload}
               className="cursor-pointer"
               disabled={!resumeInfo || loading}
+              size={isMobile?"sm" : "default"}
             >
               {loading ? <Loader2 className="animate-spin" /> : <ArrowDownToLine />}
-              <span className="max-sm:hidden">Download PDF</span>
+              Download PDF
             </Button>
             <div className="max-sm:hidden">
               <Button variant={"secondary"} title="Preview Document" onClick={()=>setShowModal(true)}>
@@ -310,52 +310,75 @@ const DownloadFile = () => {
           <ModeToggle />
         </div>
         <div className="mt-5 p-4 flex flex-col gap-3">
-        <div className="sm:hidden self-end">
+        <div className="sm:hidden flex justify-between gap-2 items-center">
+        <div className="relative">
+              <PencilLineIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                className="border-input bg-background h-9 w-full max-w-[200px] rounded-md text-sm border pl-10 pr-10"
+                value={fileName}
+                placeholder={"Untitle document"}
+                onChange={(e) => setFileName(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onBlur={(e) => {
+                  if (fileName === resumeInfo.fileName) {
+                    return;
+                  }
+                  saveFileName();
+                }}
+                ref={inputRef}
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
+                .pdf
+              </div>
+            </div>
           <Button variant={"secondary"} title="Preview Document" onClick={()=>setShowModal(true)}>
             <Eye />
           </Button>
         </div>
-          {isHalley ? (
-            <HalleyTheme
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isIconic ? (
-            <IconicTheme
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isStalwart ? (
-            <StalwartTheme
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isVanguard ? (
-            <VanguardTemplate
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isHorizon ? (
-            <HorizonTemplate
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isApex ? (
-            <ApexTemplate
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isImpresa ? (
-            <ImpresaTemplate
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : isVoyage ? (
-            <VoyageTemplate
-              editItem={editItem}
-              deleteItem={deleteItem}
-            />
-          ) : null}
+          <div className="w-full">
+            {isHalley ? (
+              <HalleyTheme
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isIconic ? (
+              <IconicTheme
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isStalwart ? (
+              <StalwartTheme
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isVanguard ? (
+              <VanguardTemplate
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isHorizon ? (
+              <HorizonTemplate
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isApex ? (
+              <ApexTemplate
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isImpresa ? (
+              <ImpresaTemplate
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : isVoyage ? (
+              <VoyageTemplate
+                editItem={editItem}
+                deleteItem={deleteItem}
+              />
+            ) : null}
+          </div>
           {/* <div className="flex justify-center"><MyPDFViewer/></div> */}
         </div>
       </div>
