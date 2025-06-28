@@ -23,7 +23,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Marquee from "react-fast-marquee";
-import { motion, useScroll, useTransform } from "framer-motion";
+import Logo from "/logo-resume.svg";
 
 const Home = () => {
   return (
@@ -324,8 +324,16 @@ const Home = () => {
       <footer className="bg-[#27272a] text-gray-100 py-10 px-6 mt-10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div>
-            <h3 className="text-2xl font-bold">ResumeBuilder</h3>
-            <p className="text-sm">
+            <Link to="/">
+                <div className="flex items-center gap">
+                  <img src={Logo} className="sm:w-[35px] w-5 text-primary"/>
+                  <span className="font-extrabold text-lg sm:text-2xl text-white">
+                    Resu<span className="text-[#8dc63f]">Flex</span>
+                  </span>
+                  
+                </div>
+              </Link>
+            <p className="text-sm mt-2">
               © {new Date().getFullYear()} All rights reserved.
             </p>
           </div>
