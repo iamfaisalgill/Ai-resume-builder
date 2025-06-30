@@ -18,6 +18,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import useImagePreloader from "@/hooks/useImagePreloader";
+
 
 const templates = [
   { id: 1, name: "Halley", src: halley_template },
@@ -29,9 +31,25 @@ const templates = [
   { id: 7, name: "Horizon", src: horizon_template },
 ];
 
-export default function SelectTheme() {
+
+/*const preloadImages = (templates) => {
+  return Promise.all(
+    templates.map(
+      (template) =>
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = template.src;
+          img.onload = resolve;
+          img.onerror = reject;
+        })
+    )
+  );
+};*/
+
+export default function SelectTemplate() {
   const {resumeInfo, setResumeInfo} = useResume()
   const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const isLoaded = useImagePreloader(templates)
   const navigate = useNavigate();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -42,6 +60,8 @@ export default function SelectTheme() {
     navigate('/resume-finalize')
 
   };
+
+  if (!isLoaded) return <div>Loading templates...</div>;
 
   return (
     <div className="min-w-full p-4">

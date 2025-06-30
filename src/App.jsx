@@ -3,7 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
-import SelectTheme from "./pages/SelectTheme";
+import SelectTemplate from "./pages/SelectTemplate";
 import DownloadFile from "./pages/[selectedTheme]/download/DownloadFile";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ResumeInfoProvider } from "./context/ResumeInfoContext";
@@ -54,7 +54,7 @@ function App() {
               element={
                 <>
                   <Header pageIndex={pageIndex} setPageIndex={setPageIndex} />
-                  <SelectTheme />
+                  <SelectTemplate />
                 </>
               }
             />
