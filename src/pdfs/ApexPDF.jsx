@@ -225,11 +225,13 @@ const ApexPDF = ({ resumeInfo }) => {
               <Text>{contactInfo.phoneNumber}</Text>
             </View>
             <View style={styles.contactItem}>
-              {contactInfo.city || contactInfo.country && <Text>{contactInfo.city}
-              {contactInfo.city &&
-                contactInfo.country &&
-                ", "}
-              {contactInfo.country}</Text>}
+             {(contactInfo.city || contactInfo.country) && (
+                  <Text>
+                    {[contactInfo.city, contactInfo.country]
+                    .filter(Boolean)
+                    .join(", ")}
+                  </Text>
+                )}
             </View>
             <View style={styles.contactItem}>
             <Link
