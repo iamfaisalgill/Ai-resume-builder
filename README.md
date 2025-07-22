@@ -14,7 +14,7 @@ Customize templates, auto-generate summaries, and export as editable PDFs – al
 
 ## ✨ Demo
 
-[Live Demo](https://your-demo-link.com) <!-- Replace with your live site link -->
+[Live Demo]([https://your-demo-link.com](https://ai-resume-builder-faisal.vercel.app/)) <!-- Replace with your live site link -->
 
 ![Screenshot](https://your-image-link.com) <!-- Optional: Add screenshots -->
 
@@ -23,12 +23,12 @@ Customize templates, auto-generate summaries, and export as editable PDFs – al
 - **Frontend**: React, Tailwind CSS, ShadCN UI
 - **AI Engine**: OpenAI / LangChain (or your choice)
 - **PDF Export**: `@react-pdf/renderer`
-- **State Management**: Zustand or Context API
+- **State Management**: Context API
 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/ai-resume-builder.git
+git clone https://github.com/iamfaisalgill/Ai-resume-builder.git
 cd ai-resume-builder
 npm install
 npm run dev
