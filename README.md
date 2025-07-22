@@ -21,7 +21,7 @@ Customize templates, auto-generate summaries, and export as editable PDFs – al
 ## 🛠️ Tech Stack
 
 - **Frontend**: React, Tailwind CSS, ShadCN UI
-- **AI Engine**: OpenAI / LangChain (or your choice)
+- **AI Engine**: Google Gemini
 - **PDF Export**: `@react-pdf/renderer`
 - **State Management**: Context API
 
