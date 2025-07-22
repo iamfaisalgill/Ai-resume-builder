@@ -14,7 +14,7 @@ Customize templates, auto-generate summaries, and export as editable PDFs – al
 
 ## ✨ Demo
 
-[Live Demo]([https://your-demo-link.com](https://ai-resume-builder-faisal.vercel.app/)) <!-- Replace with your live site link -->
+[Live Demo](https://ai-resume-builder-faisal.vercel.app) <!-- Replace with your live site link -->
 
 ![Screenshot](https://your-image-link.com) <!-- Optional: Add screenshots -->
 
